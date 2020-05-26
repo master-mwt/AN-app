@@ -1,3 +1,7 @@
 <resources>
+    <!-- TODO: language ita -->
     <string name="app_name">android-native-app</string>
+    <string name="tmdb_api_url">https://api.themoviedb.org/3/</string>
+    <string name="tmdb_api_key">609fbad41366e27a4f7a58d8d1760a3b</string>
+    <string name="tmdb_api_language">en-US</string>
 </resources>
