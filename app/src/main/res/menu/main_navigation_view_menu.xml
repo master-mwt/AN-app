@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="MAIN">
+        <menu>
+            <item android:title="search" android:icon="@drawable/ic_search_black_24dp"></item>
+            <item android:title="explore" android:icon="@drawable/ic_explore_black_24dp"></item>
+            <item android:title="collection" android:icon="@drawable/ic_star_black_24dp"></item>
+        </menu>
+    </item>
+    <item android:title="ACCOUNT">
+        <menu>
+            <item android:title="login" android:icon="@drawable/ic_person_black_24dp"></item>
+            <item android:title="register" android:icon="@drawable/ic_person_add_black_24dp"></item>
+            <item android:title="logout" android:icon="@drawable/ic_power_settings_new_black_24dp"></item>
+        </menu>
+    </item>
+    <item android:title="OTHER">
+        <menu>
+            <item android:title="settings" android:icon="@drawable/ic_settings_black_24dp"></item>
+            <item android:title="info" android:icon="@drawable/ic_info_black_24dp"></item>
+        </menu>
+    </item>
+</menu>
