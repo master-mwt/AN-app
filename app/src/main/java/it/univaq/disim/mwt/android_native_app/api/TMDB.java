@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.android_native_app.api;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -9,7 +10,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import it.univaq.disim.mwt.android_native_app.R;
+import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 import it.univaq.disim.mwt.android_native_app.utils.VolleyRequest;
 
 public class TMDB {
@@ -22,7 +27,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/" + tvShowID + "?api_key=" + API_KEY + "&language=" + LANGUAGE;
 
-        doRequest(context, requestLink);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOW_DETAILS);
     }
 
     public static void getRemoteTvShowsPopular(final Context context, long page){
@@ -33,7 +38,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/popular" + "?api_key=" + API_KEY + "&language=" + LANGUAGE + "&page=" + page;
 
-        doRequest(context, requestLink);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
     }
 
     public static void getRemoteTvShowsTopRated(final Context context, long page){
@@ -44,7 +49,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/top_rated" + "?api_key=" + API_KEY + "&language=" + LANGUAGE + "&page=" + page;
 
-        doRequest(context, requestLink);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
     }
 
     public static void getRemoteTvShowSimilars(final Context context, long tvShowID, long page){
@@ -55,7 +60,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/" + tvShowID + "/similar" + "?api_key=" + API_KEY + "&language=" + LANGUAGE + "&page=" + page;
 
-        doRequest(context, requestLink);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
     }
 
     public static void getRemoteTvShowSeason(final Context context, long tvShowID, int seasonNumber){
@@ -66,7 +71,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/" + tvShowID + "/season/" + seasonNumber + "?api_key=" + API_KEY + "&language=" + LANGUAGE;
 
-        doRequest(context, requestLink);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOW_SEASON);
     }
 
     public static void getRemoteTvShowEpisode(final Context context, long tvShowID, int seasonNumber, int episodeNumber){
@@ -77,7 +82,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/" + tvShowID + "/season/" + seasonNumber + "/episode/" + episodeNumber + "?api_key=" + API_KEY + "&language=" + LANGUAGE;
 
-        doRequest(context, requestLink);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOW_EPISODE);
     }
 
     public static void getRemoteTvShowCredits(final Context context, long tvShowID){
@@ -88,7 +93,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/" + tvShowID + "/credits" + "?api_key=" + API_KEY + "&language=" + LANGUAGE;
 
-        doRequest(context, requestLink);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOW_CREDITS);
     }
 
     public static void getRemoteTvShowsSearch(final Context context, String query, long page){
@@ -99,16 +104,16 @@ public class TMDB {
 
         String requestLink = API_URL + "search/tv" + "?api_key=" + API_KEY + "&query=" + query +  "&page=" + page + "&language=" + LANGUAGE;
 
-        doRequest(context, requestLink);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
     }
 
 
-    private static void doRequest(final Context context, String url){
+    private static void doRequest(final Context context, String url, final int action){
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        callParserService(context, response);
+                        callService(context, response, action);
                     }
                 },
                 new Response.ErrorListener() {
@@ -120,16 +125,16 @@ public class TMDB {
         VolleyRequest.getInstance(context).getQueue().add(request);
     }
 
-    private static void callParserService(final Context context, JSONObject response){
-        // TODO: Parser service creation
-        // Call service
-        /*Intent intent = new Intent(context, MyThreadService.class);
-        intent.putExtra(MyThreadService.KEY_ACTION, MyThreadService.ACTION_PARSE_DATA);
-        intent.putExtra(MyThreadService.KEY_DATA, response.toString());
-        startService(intent);*/
+    private static void callService(final Context context, JSONObject response, final int action){
+        // Call DataParserService service
+        Intent intent = new Intent(context, DataParserService.class);
+        intent.putExtra(DataParserService.KEY_ACTION, action);
+        intent.putExtra(DataParserService.KEY_DATA, response.toString());
+        context.startService(intent);
     }
 
     private static void handleResponseError(VolleyError error){
-        // TODO: Volley error handling
+        // TODO: better Volley error handling (?)
+        Logger.getLogger(TMDB.class.getName()).log(Level.SEVERE, (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
     }
 }
