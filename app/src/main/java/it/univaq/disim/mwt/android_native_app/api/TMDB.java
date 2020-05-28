@@ -19,7 +19,7 @@ import it.univaq.disim.mwt.android_native_app.utils.VolleyRequest;
 
 public class TMDB {
 
-    public static void getRemoteTvShowDetails(final Context context, long tvShowID){
+    public static void requestRemoteTvShowDetails(final Context context, long tvShowID){
 
         final String API_URL = context.getResources().getString(R.string.tmdb_api_url);
         final String API_KEY = context.getResources().getString(R.string.tmdb_api_key);
@@ -30,7 +30,7 @@ public class TMDB {
         doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOW_DETAILS);
     }
 
-    public static void getRemoteTvShowsPopular(final Context context, long page){
+    public static void requestRemoteTvShowsPopular(final Context context, long page){
 
         final String API_URL = context.getResources().getString(R.string.tmdb_api_url);
         final String API_KEY = context.getResources().getString(R.string.tmdb_api_key);
@@ -41,7 +41,7 @@ public class TMDB {
         doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
     }
 
-    public static void getRemoteTvShowsTopRated(final Context context, long page){
+    public static void requestRemoteTvShowsTopRated(final Context context, long page){
 
         final String API_URL = context.getResources().getString(R.string.tmdb_api_url);
         final String API_KEY = context.getResources().getString(R.string.tmdb_api_key);
@@ -52,7 +52,7 @@ public class TMDB {
         doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
     }
 
-    public static void getRemoteTvShowSimilars(final Context context, long tvShowID, long page){
+    public static void requestRemoteTvShowSimilars(final Context context, long tvShowID, long page){
 
         final String API_URL = context.getResources().getString(R.string.tmdb_api_url);
         final String API_KEY = context.getResources().getString(R.string.tmdb_api_key);
@@ -63,7 +63,7 @@ public class TMDB {
         doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
     }
 
-    public static void getRemoteTvShowSeason(final Context context, long tvShowID, int seasonNumber){
+    public static void requestRemoteTvShowSeason(final Context context, long tvShowID, int seasonNumber){
 
         final String API_URL = context.getResources().getString(R.string.tmdb_api_url);
         final String API_KEY = context.getResources().getString(R.string.tmdb_api_key);
@@ -74,7 +74,7 @@ public class TMDB {
         doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOW_SEASON);
     }
 
-    public static void getRemoteTvShowEpisode(final Context context, long tvShowID, int seasonNumber, int episodeNumber){
+    public static void requestRemoteTvShowEpisode(final Context context, long tvShowID, int seasonNumber, int episodeNumber){
 
         final String API_URL = context.getResources().getString(R.string.tmdb_api_url);
         final String API_KEY = context.getResources().getString(R.string.tmdb_api_key);
@@ -85,7 +85,7 @@ public class TMDB {
         doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOW_EPISODE);
     }
 
-    public static void getRemoteTvShowCredits(final Context context, long tvShowID){
+    public static void requestRemoteTvShowCredits(final Context context, long tvShowID){
 
         final String API_URL = context.getResources().getString(R.string.tmdb_api_url);
         final String API_KEY = context.getResources().getString(R.string.tmdb_api_key);
@@ -96,7 +96,7 @@ public class TMDB {
         doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOW_CREDITS);
     }
 
-    public static void getRemoteTvShowsSearch(final Context context, String query, long page){
+    public static void requestRemoteTvShowsSearch(final Context context, String query, long page){
 
         final String API_URL = context.getResources().getString(R.string.tmdb_api_url);
         final String API_KEY = context.getResources().getString(R.string.tmdb_api_key);
