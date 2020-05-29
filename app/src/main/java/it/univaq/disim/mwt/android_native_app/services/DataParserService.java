@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -114,7 +115,104 @@ public class DataParserService extends IntentService {
     // TODO: implement all remaining parse methods (json -> object)
 
     private TvShowDetails parseTvShowDetails(String response){
-        return null;
+        TvShowDetails tvShowDetails = null;
+        JSONObject res = null;
+
+        try {
+            res = new JSONObject(response);
+            tvShowDetails = new TvShowDetails();
+
+            tvShowDetails.setTv_show_id(res.optLong("id"));
+            tvShowDetails.setName(res.optString("name"));
+            tvShowDetails.setOverview(res.optString("overview"));
+            tvShowDetails.setPoster_path(res.optString("poster_path"));
+            tvShowDetails.setFirst_air_date(res.optString("first_air_date"));
+            tvShowDetails.setLast_air_date(res.optString("last_air_date"));
+            tvShowDetails.setStatus(res.optString("status"));
+            tvShowDetails.setType(res.optString("type"));
+            tvShowDetails.setVote_average(res.optDouble("vote_average"));
+            tvShowDetails.setVote_count(res.optLong("vote_count"));
+            tvShowDetails.setPopularity(res.optDouble("popularity"));
+            tvShowDetails.setNumber_of_episodes(res.optInt("number_of_episodes"));
+            tvShowDetails.setNumber_of_seasons(res.optInt("number_of_seasons"));
+
+            JSONArray jsoncountries = res.optJSONArray("origin_country");
+
+            if(jsoncountries != null){
+                List<String> countries = new ArrayList<>();
+                for(int i = 0; i < jsoncountries.length(); i++){
+                    countries.add(jsoncountries.getString(i));
+                }
+                tvShowDetails.setOrigin_country(countries);
+            }
+
+            JSONArray jsongenres = res.optJSONArray("genres");
+
+            if(jsongenres != null){
+                List<String> genres = new ArrayList<>();
+                for(int i = 0; i < jsongenres.length(); i++){
+                    genres.add(jsongenres.getJSONObject(i).getString("name"));
+                }
+                tvShowDetails.setGenres(genres);
+            }
+
+            tvShowDetails.setIn_production(res.optBoolean("in_production"));
+
+            JSONArray jsonlanguages = res.optJSONArray("languages");
+
+            if(jsonlanguages != null){
+                List<String> languages = new ArrayList<>();
+                for(int i = 0; i < jsonlanguages.length(); i++){
+                    languages.add(jsonlanguages.getString(i));
+                }
+                tvShowDetails.setLanguages(languages);
+            }
+
+            JSONArray jsonseasons = res.optJSONArray("seasons");
+
+            if(jsonseasons != null){
+                List<Season> seasons = new ArrayList<>();
+                for(int i = 0; i < jsonseasons.length(); i++){
+                    JSONObject jsonseason = jsonseasons.getJSONObject(i);
+                    Season season = new Season();
+
+                    season.setAir_date(jsonseason.optString("air_date"));
+                    season.setEpisode_count(jsonseason.optInt("episode_count"));
+                    season.setTv_show_id(tvShowDetails.getTv_show_id());
+                    season.setSeason_id(jsonseason.optLong("id"));
+                    season.setName(jsonseason.optString("name"));
+                    season.setOverview(jsonseason.optString("overview"));
+                    season.setPoster_path(jsonseason.optString("poster_path"));
+                    season.setSeason_number(jsonseason.optInt("season_number"));
+
+                    seasons.add(season);
+                }
+                tvShowDetails.setSeasons(seasons);
+            }
+
+            if(res.optJSONObject("last_episode_to_air") != null){
+                Episode lastEpisodeToAir = new Episode();
+                lastEpisodeToAir.setAir_date(res.getJSONObject("last_episode_to_air").optString("air_date"));
+                lastEpisodeToAir.setEpisode_number(res.getJSONObject("last_episode_to_air").optInt("episode_number"));
+                lastEpisodeToAir.setSeason_number(res.getJSONObject("last_episode_to_air").optInt("season_number"));
+                lastEpisodeToAir.setName(res.getJSONObject("last_episode_to_air").optString("name"));
+                tvShowDetails.setLast_episode_to_air(lastEpisodeToAir);
+            }
+
+            if(res.optJSONObject("next_episode_to_air") != null){
+                Episode nextEpisodeToAir = new Episode();
+                nextEpisodeToAir.setAir_date(res.getJSONObject("next_episode_to_air").optString("air_date"));
+                nextEpisodeToAir.setEpisode_number(res.getJSONObject("next_episode_to_air").optInt("episode_number"));
+                nextEpisodeToAir.setSeason_number(res.getJSONObject("next_episode_to_air").optInt("season_number"));
+                nextEpisodeToAir.setName(res.getJSONObject("next_episode_to_air").optString("name"));
+                tvShowDetails.setNext_episode_to_air(nextEpisodeToAir);
+            }
+
+        } catch (JSONException e) {
+            tvShowDetails = null;
+            Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+        }
+        return tvShowDetails;
     }
 
     private ArrayList<TvShowPreview> parseTvShowsList(String response){
@@ -122,6 +220,7 @@ public class DataParserService extends IntentService {
 
         JSONObject res = null;
         JSONArray array = null;
+
         try {
             res = new JSONObject(response);
             array = res.optJSONArray("results");
@@ -136,12 +235,13 @@ public class DataParserService extends IntentService {
                 }
 
                 TvShowPreview tvShowPreview = new TvShowPreview(
-                        item.getLong("tv_show_id"),
-                        item.getString("name"),
-                        item.getString("poster_path"));
+                        item.optLong("id"),
+                        item.optString("name"),
+                        item.optString("poster_path"));
 
                 tvShowPreviews.add(tvShowPreview);
             }
+
         } catch (JSONException e) {
             Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
         }
@@ -158,6 +258,39 @@ public class DataParserService extends IntentService {
     }
 
     private ArrayList<TvShowCharacter> parseCredits(String response){
-        return null;
+        ArrayList<TvShowCharacter> tvShowCharacters = new ArrayList<>();
+
+        JSONObject res = null;
+        JSONArray cast = null;
+
+        try {
+            res = new JSONObject(response);
+            cast = res.optJSONArray("cast");
+
+            if(cast == null){
+                return tvShowCharacters;
+            }
+
+            for(int i = 0; i < cast.length(); i++){
+                JSONObject item = cast.getJSONObject(i);
+
+                if(item == null){
+                    continue;
+                }
+
+                TvShowCharacter tvShowCharacter = new TvShowCharacter(
+                        item.optLong("id"),
+                        item.optString("character"),
+                        item.optString("name"),
+                        item.optString("profile_path"));
+
+                tvShowCharacters.add(tvShowCharacter);
+            }
+
+        } catch (JSONException e) {
+            Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+        }
+
+        return tvShowCharacters;
     }
 }
