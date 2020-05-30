@@ -1,5 +1,9 @@
 package it.univaq.disim.mwt.android_native_app;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -10,9 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -72,6 +73,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent = null;
+        switch (item.getItemId()){
+            case R.id.menu_item_search:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+
         return false;
     }
 
