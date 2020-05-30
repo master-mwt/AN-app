@@ -112,7 +112,6 @@ public class DataParserService extends IntentService {
         }
     }
 
-    // TODO: implement all remaining parse methods (json -> object)
 
     private TvShowDetails parseTvShowDetails(String response){
         TvShowDetails tvShowDetails = null;
@@ -178,7 +177,6 @@ public class DataParserService extends IntentService {
 
                     season.setAir_date(jsonseason.optString("air_date"));
                     season.setEpisode_count(jsonseason.optInt("episode_count"));
-                    season.setTv_show_id(tvShowDetails.getTv_show_id());
                     season.setSeason_id(jsonseason.optLong("id"));
                     season.setName(jsonseason.optString("name"));
                     season.setOverview(jsonseason.optString("overview"));
@@ -250,11 +248,71 @@ public class DataParserService extends IntentService {
     }
 
     private Season parseSeason(String response){
-        return null;
+        Season season = null;
+        JSONObject res = null;
+        JSONArray array = null;
+
+        try {
+            res = new JSONObject(response);
+            season = new Season();
+
+            season.setSeason_id(res.optLong("id"));
+            season.setName(res.optString("name"));
+            season.setOverview(res.optString("overview"));
+            season.setPoster_path(res.optString("poster_path"));
+            season.setAir_date(res.optString("air_date"));
+            season.setEpisode_count(res.optInt("episode_count"));
+            season.setSeason_number(res.optInt("season_number"));
+
+            array = res.optJSONArray("episodes");
+
+            if(array != null){
+                List<Episode> episodes = new ArrayList<>();
+
+                for(int i = 0; i < array.length(); i++){
+                    JSONObject jsonEpisode = array.getJSONObject(i);
+                    Episode episode = new Episode(
+                            jsonEpisode.optLong("id"),
+                            jsonEpisode.optString("name"),
+                            jsonEpisode.optString("still_path"));
+
+                    episodes.add(episode);
+                }
+                season.setEpisodes(episodes);
+            }
+
+        } catch (JSONException e) {
+            season = null;
+            Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+        }
+
+        return season;
     }
 
     private Episode parseEpisode(String response){
-        return null;
+        Episode episode = null;
+        JSONObject res = null;
+
+        try {
+            res = new JSONObject(response);
+            episode = new Episode();
+
+            episode.setEpisode_id(res.optLong("id"));
+            episode.setName(res.optString("name"));
+            episode.setOverview(res.optString("overview"));
+            episode.setStill_path(res.optString("still_path"));
+            episode.setAir_date(res.optString("air_date"));
+            episode.setEpisode_number(res.optInt("episode_number"));
+            episode.setSeason_number(res.optInt("season_number"));
+            episode.setVote_average(res.optDouble("vote_average"));
+            episode.setVote_count(res.optLong("vote_count"));
+
+        } catch (JSONException e) {
+            episode = null;
+            Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+        }
+
+        return episode;
     }
 
     private ArrayList<TvShowCharacter> parseCredits(String response){

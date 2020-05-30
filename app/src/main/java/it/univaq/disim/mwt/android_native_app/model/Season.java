@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Season implements Serializable {
-    private long tv_show_id;
     private long season_id;
     private String name;
     private String overview;
@@ -17,19 +16,10 @@ public class Season implements Serializable {
     public Season() {
     }
 
-    public Season(long tv_show_id, long season_id, String name, String poster_path) {
-        this.tv_show_id = tv_show_id;
+    public Season(long season_id, String name, String poster_path) {
         this.season_id = season_id;
         this.name = name;
         this.poster_path = poster_path;
-    }
-
-    public long getTv_show_id() {
-        return tv_show_id;
-    }
-
-    public void setTv_show_id(long tv_show_id) {
-        this.tv_show_id = tv_show_id;
     }
 
     public long getSeason_id() {

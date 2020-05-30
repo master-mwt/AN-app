@@ -3,8 +3,6 @@ package it.univaq.disim.mwt.android_native_app.model;
 import java.io.Serializable;
 
 public class Episode implements Serializable {
-    private long tv_show_id;
-    private long season_id;
     private long episode_id;
     private String name;
     private String overview;
@@ -18,28 +16,10 @@ public class Episode implements Serializable {
     public Episode() {
     }
 
-    public Episode(long tv_show_id, long season_id, long episode_id, String name, String still_path) {
-        this.tv_show_id = tv_show_id;
-        this.season_id = season_id;
+    public Episode(long episode_id, String name, String still_path) {
         this.episode_id = episode_id;
         this.name = name;
         this.still_path = still_path;
-    }
-
-    public long getTv_show_id() {
-        return tv_show_id;
-    }
-
-    public void setTv_show_id(long tv_show_id) {
-        this.tv_show_id = tv_show_id;
-    }
-
-    public long getSeason_id() {
-        return season_id;
-    }
-
-    public void setSeason_id(long season_id) {
-        this.season_id = season_id;
     }
 
     public long getEpisode_id() {
