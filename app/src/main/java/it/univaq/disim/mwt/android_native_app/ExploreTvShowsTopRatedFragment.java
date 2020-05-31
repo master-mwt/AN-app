@@ -71,18 +71,11 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore_tv_shows_top_rated, container, false);
 
-        TvShowPreview tvShowPreview1 = new TvShowPreview();
-        TvShowPreview tvShowPreview2 = new TvShowPreview();
-        TvShowPreview tvShowPreview3 = new TvShowPreview();
-        TvShowPreview tvShowPreview4 = new TvShowPreview();
-        tvShowPreview1.setName("item1");
-        tvShowPreview2.setName("item2");
-        tvShowPreview3.setName("item3");
-        tvShowPreview4.setName("item4");
-        data.add(tvShowPreview1);
-        data.add(tvShowPreview2);
-        data.add(tvShowPreview3);
-        data.add(tvShowPreview4);
+        for (int i = 0; i < 30; i++) {
+            TvShowPreview tvShowPreview = new TvShowPreview();
+            tvShowPreview.setName("item" + i);
+            data.add(tvShowPreview);
+        }
         recyclerViewCardAdapter = new recyclerViewCardAdapter(getContext(), data);
 
         recyclerView = view.findViewById(R.id.explore_tv_shows_top_rated_recycle_view);
