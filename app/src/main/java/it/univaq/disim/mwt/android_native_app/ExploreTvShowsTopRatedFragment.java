@@ -3,10 +3,16 @@ package it.univaq.disim.mwt.android_native_app;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+
+import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 
 
 /**
@@ -23,6 +29,10 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ArrayList<TvShowPreview> data = new ArrayList<>();
+    private recyclerViewCardAdapter recyclerViewCardAdapter;
+    private RecyclerView recyclerView;
 
     public ExploreTvShowsTopRatedFragment() {
         // Required empty public constructor
@@ -59,6 +69,26 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_explore_tv_shows_top_rated, container, false);
+        View view = inflater.inflate(R.layout.fragment_explore_tv_shows_top_rated, container, false);
+
+        TvShowPreview tvShowPreview1 = new TvShowPreview();
+        TvShowPreview tvShowPreview2 = new TvShowPreview();
+        TvShowPreview tvShowPreview3 = new TvShowPreview();
+        TvShowPreview tvShowPreview4 = new TvShowPreview();
+        tvShowPreview1.setName("item1");
+        tvShowPreview2.setName("item2");
+        tvShowPreview3.setName("item3");
+        tvShowPreview4.setName("item4");
+        data.add(tvShowPreview1);
+        data.add(tvShowPreview2);
+        data.add(tvShowPreview3);
+        data.add(tvShowPreview4);
+        recyclerViewCardAdapter = new recyclerViewCardAdapter(getContext(), data);
+
+        recyclerView = view.findViewById(R.id.explore_tv_shows_top_rated_recycle_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerView.setAdapter(recyclerViewCardAdapter);
+
+        return view;
     }
 }
