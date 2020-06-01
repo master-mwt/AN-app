@@ -4,6 +4,7 @@
     <string name="tmdb_api_url">https://api.themoviedb.org/3/</string>
     <string name="tmdb_api_key">609fbad41366e27a4f7a58d8d1760a3b</string>
     <string name="tmdb_api_language">en-US</string>
+    <string name="tmdb_image_baselink">https://image.tmdb.org/t/p/w500</string>
 
     <string name="navigation_view_open">navigation_view_open</string>
     <string name="navigation_view_close">navigation_view_close</string>
