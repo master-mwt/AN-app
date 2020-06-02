@@ -109,6 +109,8 @@ public class ExploreTvShowsPopularFragment extends Fragment {
 
         TMDB.requestRemoteTvShowsPopular(getContext(), page);
 
+        progressBar.setVisibility(View.VISIBLE);
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
