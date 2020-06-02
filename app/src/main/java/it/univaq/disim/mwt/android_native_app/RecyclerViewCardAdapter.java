@@ -48,7 +48,7 @@ public class RecyclerViewCardAdapter extends RecyclerView.Adapter<RecyclerViewCa
 
         String imageUrl = data.get(position).getPoster_path();
 
-        if(imageUrl != null && !"".equals(imageUrl)){
+        if(imageUrl != null && !"".equals(imageUrl) && !"null".equals(imageUrl)){
 
             String requestUrl = context.getString(R.string.tmdb_image_baselink) + imageUrl;
 
