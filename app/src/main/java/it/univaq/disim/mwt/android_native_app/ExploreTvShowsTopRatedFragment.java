@@ -48,7 +48,7 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
             if(intent != null){
                 String action = intent.getAction();
                 switch (action){
-                    case DataParserService.FILTER_PARSE_TV_SHOWS_LIST:
+                    case DataParserService.FILTER_PARSE_TV_SHOWS_TOP_RATED:
                         data.addAll(intent.<TvShowPreview>getParcelableArrayListExtra(DataParserService.EXTRA));
                         recyclerViewCardAdapter.notifyDataSetChanged();
                         break;
@@ -101,7 +101,7 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setAdapter(recyclerViewCardAdapter);
 
-        IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOWS_LIST);
+        IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOWS_TOP_RATED);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
 
         TMDB.requestRemoteTvShowsTopRated(getContext(), page);

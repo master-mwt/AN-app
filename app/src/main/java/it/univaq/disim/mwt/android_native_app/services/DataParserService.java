@@ -28,13 +28,19 @@ public class DataParserService extends IntentService {
     public static final String EXTRA = "EXTRA";
     // actions
     public static final int ACTION_PARSE_TV_SHOW_DETAILS = 0;
-    public static final int ACTION_PARSE_TV_SHOWS_LIST = 1;
-    public static final int ACTION_PARSE_TV_SHOW_SEASON = 2;
-    public static final int ACTION_PARSE_TV_SHOW_EPISODE = 3;
-    public static final int ACTION_PARSE_TV_SHOW_CREDITS = 4;
+    public static final int ACTION_PARSE_TV_SHOWS_POPULAR = 1;
+    public static final int ACTION_PARSE_TV_SHOWS_TOP_RATED = 2;
+    public static final int ACTION_PARSE_TV_SHOWS_SIMILARS = 3;
+    public static final int ACTION_PARSE_TV_SHOWS_SEARCH = 4;
+    public static final int ACTION_PARSE_TV_SHOW_SEASON = 5;
+    public static final int ACTION_PARSE_TV_SHOW_EPISODE = 6;
+    public static final int ACTION_PARSE_TV_SHOW_CREDITS = 7;
     // filters
     public static final String FILTER_PARSE_TV_SHOW_DETAILS = "it.univaq.disim.mwt.android_native_app.FILTER_PARSE_TV_SHOW_DETAILS";
-    public static final String FILTER_PARSE_TV_SHOWS_LIST = "it.univaq.disim.mwt.android_native_app.FILTER_PARSE_TV_SHOWS_LIST";
+    public static final String FILTER_PARSE_TV_SHOWS_POPULAR = "it.univaq.disim.mwt.android_native_app.FILTER_PARSE_TV_SHOWS_POPULAR";
+    public static final String FILTER_PARSE_TV_SHOWS_TOP_RATED = "it.univaq.disim.mwt.android_native_app.FILTER_PARSE_TV_SHOWS_TOP_RATED";
+    public static final String FILTER_PARSE_TV_SHOWS_SIMILARS = "it.univaq.disim.mwt.android_native_app.FILTER_PARSE_TV_SHOWS_SIMILARS";
+    public static final String FILTER_PARSE_TV_SHOWS_SEARCH = "it.univaq.disim.mwt.android_native_app.FILTER_PARSE_TV_SHOWS_SEARCH";
     public static final String FILTER_PARSE_TV_SHOW_SEASON = "it.univaq.disim.mwt.android_native_app.FILTER_PARSE_TV_SHOW_SEASON";
     public static final String FILTER_PARSE_TV_SHOW_EPISODE = "it.univaq.disim.mwt.android_native_app.FILTER_PARSE_TV_SHOW_EPISODE";
     public static final String FILTER_PARSE_TV_SHOW_CREDITS = "it.univaq.disim.mwt.android_native_app.FILTER_PARSE_TV_SHOW_CREDITS";
@@ -63,13 +69,38 @@ public class DataParserService extends IntentService {
 
                     break;
 
-                case DataParserService.ACTION_PARSE_TV_SHOWS_LIST:
+                case DataParserService.ACTION_PARSE_TV_SHOWS_POPULAR:
                     response = intent.getStringExtra(DataParserService.KEY_DATA);
 
-                    ArrayList<TvShowPreview> tvShows = parseTvShowsList(response);
+                    responseIntent = new Intent(FILTER_PARSE_TV_SHOWS_POPULAR);
+                    responseIntent.putParcelableArrayListExtra(EXTRA, parseTvShowsList(response));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(responseIntent);
 
-                    responseIntent = new Intent(FILTER_PARSE_TV_SHOWS_LIST);
-                    responseIntent.putParcelableArrayListExtra(EXTRA, tvShows);
+                    break;
+
+                case DataParserService.ACTION_PARSE_TV_SHOWS_TOP_RATED:
+                    response = intent.getStringExtra(DataParserService.KEY_DATA);
+
+                    responseIntent = new Intent(FILTER_PARSE_TV_SHOWS_TOP_RATED);
+                    responseIntent.putParcelableArrayListExtra(EXTRA, parseTvShowsList(response));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(responseIntent);
+
+                    break;
+
+                case DataParserService.ACTION_PARSE_TV_SHOWS_SIMILARS:
+                    response = intent.getStringExtra(DataParserService.KEY_DATA);
+
+                    responseIntent = new Intent(FILTER_PARSE_TV_SHOWS_SIMILARS);
+                    responseIntent.putParcelableArrayListExtra(EXTRA, parseTvShowsList(response));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(responseIntent);
+
+                    break;
+
+                case DataParserService.ACTION_PARSE_TV_SHOWS_SEARCH:
+                    response = intent.getStringExtra(DataParserService.KEY_DATA);
+
+                    responseIntent = new Intent(FILTER_PARSE_TV_SHOWS_SEARCH);
+                    responseIntent.putParcelableArrayListExtra(EXTRA, parseTvShowsList(response));
                     LocalBroadcastManager.getInstance(this).sendBroadcast(responseIntent);
 
                     break;

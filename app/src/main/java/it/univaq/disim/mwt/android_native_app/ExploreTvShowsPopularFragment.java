@@ -1,11 +1,25 @@
 package it.univaq.disim.mwt.android_native_app;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import it.univaq.disim.mwt.android_native_app.api.TMDB;
+import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
+import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 
 
 /**
@@ -22,6 +36,28 @@ public class ExploreTvShowsPopularFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ArrayList<TvShowPreview> data = new ArrayList<>();
+    private RecyclerViewCardAdapter recyclerViewCardAdapter;
+    private RecyclerView recyclerView;
+    private int page;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent != null){
+                String action = intent.getAction();
+                switch (action){
+                    case DataParserService.FILTER_PARSE_TV_SHOWS_POPULAR:
+                        data.addAll(intent.<TvShowPreview>getParcelableArrayListExtra(DataParserService.EXTRA));
+                        recyclerViewCardAdapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    };
 
     public ExploreTvShowsPopularFragment() {
         // Required empty public constructor
@@ -55,11 +91,47 @@ public class ExploreTvShowsPopularFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        page = 1;
+        data.clear();
+
+        recyclerViewCardAdapter = new RecyclerViewCardAdapter(getContext(), data);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerView.setAdapter(recyclerViewCardAdapter);
+
+        IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOWS_POPULAR);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
+
+        TMDB.requestRemoteTvShowsPopular(getContext(), page);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(!recyclerView.canScrollVertically(1)){
+                    page++;
+                    TMDB.requestRemoteTvShowsPopular(getContext(), page);
+                }
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_explore_tv_shows_popular, container, false);
 
+        recyclerView = view.findViewById(R.id.explore_tv_shows_populars_recycle_view);
+
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 }

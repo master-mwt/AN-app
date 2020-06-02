@@ -38,7 +38,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/popular" + "?api_key=" + API_KEY + "&language=" + LANGUAGE + "&page=" + page;
 
-        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_POPULAR);
     }
 
     public static void requestRemoteTvShowsTopRated(final Context context, long page){
@@ -49,7 +49,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/top_rated" + "?api_key=" + API_KEY + "&language=" + LANGUAGE + "&page=" + page;
 
-        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_TOP_RATED);
     }
 
     public static void requestRemoteTvShowSimilars(final Context context, long tvShowID, long page){
@@ -60,7 +60,7 @@ public class TMDB {
 
         String requestLink = API_URL + "tv/" + tvShowID + "/similar" + "?api_key=" + API_KEY + "&language=" + LANGUAGE + "&page=" + page;
 
-        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_SIMILARS);
     }
 
     public static void requestRemoteTvShowSeason(final Context context, long tvShowID, int seasonNumber){
@@ -104,7 +104,7 @@ public class TMDB {
 
         String requestLink = API_URL + "search/tv" + "?api_key=" + API_KEY + "&query=" + query +  "&page=" + page + "&language=" + LANGUAGE;
 
-        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_LIST);
+        doRequest(context, requestLink, DataParserService.ACTION_PARSE_TV_SHOWS_SEARCH);
     }
 
 
