@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -41,6 +42,7 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
     private RecyclerViewCardAdapter recyclerViewCardAdapter;
     private RecyclerView recyclerView;
     private int page;
+    private ProgressBar progressBar;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -49,6 +51,7 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
                 String action = intent.getAction();
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOWS_TOP_RATED:
+                        progressBar.setVisibility(View.INVISIBLE);
                         data.addAll(intent.<TvShowPreview>getParcelableArrayListExtra(DataParserService.EXTRA));
                         recyclerViewCardAdapter.notifyDataSetChanged();
                         break;
@@ -111,6 +114,7 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if(!recyclerView.canScrollVertically(1)){
+                    progressBar.setVisibility(View.VISIBLE);
                     page++;
                     TMDB.requestRemoteTvShowsTopRated(getContext(), page);
                 }
@@ -125,6 +129,7 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_explore_tv_shows_top_rated, container, false);
 
         recyclerView = view.findViewById(R.id.explore_tv_shows_top_rated_recycle_view);
+        progressBar = view.findViewById(R.id.recycler_view_progress);
 
         return view;
     }
