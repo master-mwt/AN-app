@@ -80,6 +80,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.menu_item_explore:
+                drawerLayout.closeDrawers();
+                break;
+            case R.id.menu_item_collection:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, UserCollectionActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }

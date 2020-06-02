@@ -4,8 +4,8 @@
     <item android:title="MAIN">
         <menu>
             <item android:id="@+id/menu_item_search" android:title="search" android:icon="@drawable/ic_search_black_24dp"></item>
-            <item android:title="explore" android:icon="@drawable/ic_explore_black_24dp"></item>
-            <item android:title="collection" android:icon="@drawable/ic_star_black_24dp" ></item>
+            <item android:id="@+id/menu_item_explore" android:title="explore" android:icon="@drawable/ic_explore_black_24dp"></item>
+            <item android:id="@+id/menu_item_collection" android:title="collection" android:icon="@drawable/ic_star_black_24dp" ></item>
         </menu>
     </item>
     <item android:title="ACCOUNT">
