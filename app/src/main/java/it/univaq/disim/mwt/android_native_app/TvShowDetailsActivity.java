@@ -9,17 +9,27 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.univaq.disim.mwt.android_native_app.api.TMDB;
+import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.model.TvShowDetails;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 import it.univaq.disim.mwt.android_native_app.utils.VolleyRequest;
@@ -27,9 +37,14 @@ import it.univaq.disim.mwt.android_native_app.utils.VolleyRequest;
 public class TvShowDetailsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
     private ProgressBar progressBar;
     private TvShowDetails tvShowDetails;
     private ImageView imageView;
+
+    private TvShowDetailsSeasonFragment tvShowDetailsSeasonFragment;
+    private TvShowDetailsInfoCastFragment tvShowDetailsInfoCastFragment;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -38,9 +53,20 @@ public class TvShowDetailsActivity extends AppCompatActivity {
                 String action = intent.getAction();
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOW_DETAILS:
-                        // progressBar.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
+
                         tvShowDetails = (TvShowDetails) intent.getSerializableExtra(DataParserService.EXTRA);
                         setTvShowImage(tvShowDetails.getPoster_path());
+
+                        tvShowDetailsSeasonFragment = TvShowDetailsSeasonFragment.newInstance((ArrayList<Season>) tvShowDetails.getSeasons());
+                        tvShowDetailsInfoCastFragment = TvShowDetailsInfoCastFragment.newInstance(tvShowDetails);
+
+                        tabLayout.setupWithViewPager(viewPager);
+
+                        TvShowDetailsActivity.ViewPagerAdapter viewPagerAdapter = new TvShowDetailsActivity.ViewPagerAdapter(getSupportFragmentManager(), 0);
+                        viewPagerAdapter.addFragment(tvShowDetailsSeasonFragment, "seasons");
+                        viewPagerAdapter.addFragment(tvShowDetailsInfoCastFragment, "info");
+                        viewPager.setAdapter(viewPagerAdapter);
 
                         break;
                     default:
@@ -64,10 +90,11 @@ public class TvShowDetailsActivity extends AppCompatActivity {
             }
         });
 
-        // recycler view, progressbar and other view obj
+        viewPager = findViewById(R.id.main_viewpager);
+        tabLayout = findViewById(R.id.main_tab_layout);
 
         imageView = findViewById(R.id.tv_show_details_toolbar_image);
-
+        progressBar = findViewById(R.id.tv_show_details_progress);
     }
 
     @Override
@@ -77,7 +104,7 @@ public class TvShowDetailsActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOW_DETAILS);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
 
-        // progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         long tv_show_id = getIntent().getLongExtra("data", -1);
 
@@ -112,6 +139,39 @@ public class TvShowDetailsActivity extends AppCompatActivity {
                     Logger.getLogger(TvShowDetailsActivity.class.getName()).log(Level.SEVERE, (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage() );
                 }
             });
+        }
+    }
+
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> fragmentList = new ArrayList<>();
+        private List<String> fragmentListTitles = new ArrayList<>();
+
+        public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            fragmentList.add(fragment);
+            fragmentListTitles.add(title);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentList.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return fragmentListTitles.get(position);
         }
     }
 }

@@ -1,4 +1,4 @@
-package it.univaq.disim.mwt.android_native_app;
+package it.univaq.disim.mwt.android_native_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.univaq.disim.mwt.android_native_app.R;
+import it.univaq.disim.mwt.android_native_app.TvShowDetailsActivity;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.utils.VolleyRequest;
 

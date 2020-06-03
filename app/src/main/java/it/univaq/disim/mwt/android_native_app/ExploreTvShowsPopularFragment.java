@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import it.univaq.disim.mwt.android_native_app.adapters.RecyclerViewTvShowCardAdapter;
 import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
