@@ -21,7 +21,7 @@ import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 public class SearchActivity extends AppCompatActivity {
 
     private ArrayList<TvShowPreview> data = new ArrayList<>();
-    private RecyclerViewCardAdapter recyclerViewCardAdapter;
+    private RecyclerViewTvShowCardAdapter recyclerViewTvShowCardAdapter;
     private RecyclerView recyclerView;
     private int page;
 
@@ -33,7 +33,7 @@ public class SearchActivity extends AppCompatActivity {
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOWS_SEARCH:
                         data.addAll(intent.<TvShowPreview>getParcelableArrayListExtra(DataParserService.EXTRA));
-                        recyclerViewCardAdapter.notifyDataSetChanged();
+                        recyclerViewTvShowCardAdapter.notifyDataSetChanged();
                         break;
                     default:
                         break;
@@ -57,9 +57,9 @@ public class SearchActivity extends AppCompatActivity {
         page = 1;
         data.clear();
 
-        recyclerViewCardAdapter = new RecyclerViewCardAdapter(this, data);
+        recyclerViewTvShowCardAdapter = new RecyclerViewTvShowCardAdapter(this, data);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        recyclerView.setAdapter(recyclerViewCardAdapter);
+        recyclerView.setAdapter(recyclerViewTvShowCardAdapter);
 
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOWS_SEARCH);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiver, intentFilter);

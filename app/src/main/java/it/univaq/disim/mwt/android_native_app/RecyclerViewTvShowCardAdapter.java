@@ -23,12 +23,12 @@ import java.util.logging.Logger;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.utils.VolleyRequest;
 
-public class RecyclerViewCardAdapter extends RecyclerView.Adapter<RecyclerViewCardAdapter.ViewHolder> {
+public class RecyclerViewTvShowCardAdapter extends RecyclerView.Adapter<RecyclerViewTvShowCardAdapter.ViewHolder> {
 
     private Context context;
     private List<TvShowPreview> data;
 
-    public RecyclerViewCardAdapter(Context context, List<TvShowPreview> data) {
+    public RecyclerViewTvShowCardAdapter(Context context, List<TvShowPreview> data) {
         this.context = context;
         this.data = data;
         if(this.data == null)
@@ -60,7 +60,7 @@ public class RecyclerViewCardAdapter extends RecyclerView.Adapter<RecyclerViewCa
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Logger.getLogger(RecyclerViewCardAdapter.class.getName()).log(Level.SEVERE, (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
+                    Logger.getLogger(RecyclerViewTvShowCardAdapter.class.getName()).log(Level.SEVERE, (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
                 }
             });
         }
@@ -88,7 +88,7 @@ public class RecyclerViewCardAdapter extends RecyclerView.Adapter<RecyclerViewCa
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, TvShowDetailsActivity.class);
-                    intent.putExtra("data", data.get(getBindingAdapterPosition()));
+                    intent.putExtra("data", data.get(getBindingAdapterPosition()).getTv_show_id());
                     context.startActivity(intent);
                 }
             });

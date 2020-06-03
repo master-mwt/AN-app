@@ -39,7 +39,7 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
     private String mParam2;
 
     private ArrayList<TvShowPreview> data = new ArrayList<>();
-    private RecyclerViewCardAdapter recyclerViewCardAdapter;
+    private RecyclerViewTvShowCardAdapter recyclerViewTvShowCardAdapter;
     private RecyclerView recyclerView;
     private int page;
     private ProgressBar progressBar;
@@ -53,7 +53,7 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
                     case DataParserService.FILTER_PARSE_TV_SHOWS_TOP_RATED:
                         progressBar.setVisibility(View.INVISIBLE);
                         data.addAll(intent.<TvShowPreview>getParcelableArrayListExtra(DataParserService.EXTRA));
-                        recyclerViewCardAdapter.notifyDataSetChanged();
+                        recyclerViewTvShowCardAdapter.notifyDataSetChanged();
                         break;
                     default:
                         break;
@@ -100,9 +100,9 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
         page = 1;
         data.clear();
 
-        recyclerViewCardAdapter = new RecyclerViewCardAdapter(getContext(), data);
+        recyclerViewTvShowCardAdapter = new RecyclerViewTvShowCardAdapter(getContext(), data);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        recyclerView.setAdapter(recyclerViewCardAdapter);
+        recyclerView.setAdapter(recyclerViewTvShowCardAdapter);
 
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOWS_TOP_RATED);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
