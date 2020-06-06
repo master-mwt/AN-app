@@ -20,9 +20,9 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:contentScrim="@android:color/white"
-                app:scrimAnimationDuration="500"
+                app:scrimAnimationDuration="300"
                 app:titleEnabled="false"
                 >
 

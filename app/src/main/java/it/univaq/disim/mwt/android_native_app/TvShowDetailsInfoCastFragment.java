@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+//import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -37,7 +37,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
     private TextView overview;
     private TextView originalLanguage;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
+    //private ProgressBar progressBar;
     private TvShowDetails tvShowDetails;
     private ArrayList<TvShowCharacter> data = new ArrayList<>();
     private RecyclerViewTvShowCharacterCardAdapter recyclerViewTvShowCharacterCardAdapter;
@@ -49,7 +49,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
                 String action = intent.getAction();
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOW_CREDITS:
-                        progressBar.setVisibility(View.INVISIBLE);
+                        //progressBar.setVisibility(View.INVISIBLE);
                         data.addAll(intent.<TvShowCharacter>getParcelableArrayListExtra(DataParserService.EXTRA));
                         recyclerViewTvShowCharacterCardAdapter.notifyDataSetChanged();
                         break;
@@ -99,7 +99,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
 
         TMDB.requestRemoteTvShowCredits(getContext(), tvShowDetails.getTv_show_id());
 
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.cast_recycle_view);
 
-        progressBar = view.findViewById(R.id.cast_recycler_view_progress);
+        //progressBar = view.findViewById(R.id.cast_recycler_view_progress);
 
         // Inflate the layout for this fragment
         return view;
