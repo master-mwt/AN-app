@@ -15,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.google.android.material.card.MaterialCardView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -90,7 +91,8 @@ public class RecyclerViewSeasonCardAdapter extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, SeasonActivity.class);
-                    intent.putExtra("data", data.get(getBindingAdapterPosition()));
+                    intent.putExtra("seasons", (Serializable) data);
+                    intent.putExtra("chosen_season", data.get(getBindingAdapterPosition()));
                     context.startActivity(intent);
                 }
             });

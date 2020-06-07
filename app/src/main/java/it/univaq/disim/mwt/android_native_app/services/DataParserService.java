@@ -214,6 +214,8 @@ public class DataParserService extends IntentService {
                     season.setPoster_path(jsonseason.optString("poster_path"));
                     season.setSeason_number(jsonseason.optInt("season_number"));
 
+                    season.setTv_show_id(tvShowDetails.getTv_show_id());
+
                     seasons.add(season);
                 }
                 tvShowDetails.setSeasons(seasons);

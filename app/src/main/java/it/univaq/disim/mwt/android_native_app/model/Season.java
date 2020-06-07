@@ -1,5 +1,7 @@
 package it.univaq.disim.mwt.android_native_app.model;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class Season implements Serializable {
     private int episode_count;
     private int season_number;
     private List<Episode> episodes;
+    private long tv_show_id;
 
     public Season() {
     }
@@ -84,5 +87,21 @@ public class Season implements Serializable {
 
     public void setEpisodes(List<Episode> episodes) {
         this.episodes = episodes;
+    }
+
+    public long getTv_show_id() {
+        return tv_show_id;
+    }
+
+    public void setTv_show_id(long tv_show_id) {
+        this.tv_show_id = tv_show_id;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj instanceof Season){
+            return this.season_id == ((Season) obj).getSeason_id();
+        }
+        return false;
     }
 }
