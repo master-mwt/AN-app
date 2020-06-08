@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SeasonActivity"></activity>
+
         <!-- ACTIVITIES -->
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -22,8 +22,13 @@
         </activity>
         <activity android:name=".SearchActivity" />
         <activity android:name=".TvShowDetailsActivity" />
-        <activity android:name=".UserCollectionActivity" /> <!-- SERVICES -->
+        <activity android:name=".UserCollectionActivity" />
+        <activity android:name=".SeasonActivity" />
+        <activity android:name=".EpisodeActivity" />
+
+        <!-- SERVICES -->
         <service android:name=".services.DataParserService" />
+
     </application>
 
 </manifest>

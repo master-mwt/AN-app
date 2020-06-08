@@ -12,6 +12,7 @@ public class Episode implements Serializable {
     private int season_number;
     private double vote_average;
     private long vote_count;
+    private long tv_show_id;
 
     public Episode() {
     }
@@ -92,5 +93,13 @@ public class Episode implements Serializable {
 
     public void setVote_count(long vote_count) {
         this.vote_count = vote_count;
+    }
+
+    public long getTv_show_id() {
+        return tv_show_id;
+    }
+
+    public void setTv_show_id(long tv_show_id) {
+        this.tv_show_id = tv_show_id;
     }
 }

@@ -52,6 +52,11 @@ public class SeasonFragment extends Fragment {
                         seasonDetailed = (Season) intent.getSerializableExtra(DataParserService.EXTRA);
                         if(seasonDetailed.equals(season)){
                             data.clear();
+
+                            for(Episode episode : seasonDetailed.getEpisodes()){
+                                episode.setTv_show_id(season.getTv_show_id());
+                            }
+
                             data.addAll(seasonDetailed.getEpisodes());
                             recyclerViewEpisodeAdapter.notifyDataSetChanged();
                         }

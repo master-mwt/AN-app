@@ -308,6 +308,8 @@ public class DataParserService extends IntentService {
                             jsonEpisode.optLong("id"),
                             jsonEpisode.optString("name"),
                             jsonEpisode.optString("still_path"));
+                    episode.setEpisode_number(jsonEpisode.optInt("episode_number"));
+                    episode.setSeason_number(jsonEpisode.optInt("season_number"));
 
                     episodes.add(episode);
                 }
