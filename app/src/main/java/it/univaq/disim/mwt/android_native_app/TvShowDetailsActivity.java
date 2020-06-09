@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -21,6 +23,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -34,9 +37,11 @@ import it.univaq.disim.mwt.android_native_app.model.TvShowDetails;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 import it.univaq.disim.mwt.android_native_app.utils.VolleyRequest;
 
-public class TvShowDetailsActivity extends AppCompatActivity {
+public class TvShowDetailsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ProgressBar progressBar;
@@ -90,6 +95,11 @@ public class TvShowDetailsActivity extends AppCompatActivity {
             }
         });
 
+        drawerLayout = findViewById(R.id.main_drawer_layout);
+        navigationView = findViewById(R.id.main_navigation_view);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
         viewPager = findViewById(R.id.main_viewpager);
         tabLayout = findViewById(R.id.main_tab_layout);
 
@@ -142,6 +152,36 @@ public class TvShowDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent = null;
+        switch (item.getItemId()){
+            case R.id.menu_item_search:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_explore:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_collection:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, UserCollectionActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 

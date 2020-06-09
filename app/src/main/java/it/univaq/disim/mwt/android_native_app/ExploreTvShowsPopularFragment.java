@@ -23,27 +23,14 @@ import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ExploreTvShowsPopularFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ExploreTvShowsPopularFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private ArrayList<TvShowPreview> data = new ArrayList<>();
     private RecyclerViewTvShowCardAdapter recyclerViewTvShowCardAdapter;
     private RecyclerView recyclerView;
     private int page;
     private ProgressBar progressBar;
+    private boolean retrievedAlready;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -55,6 +42,7 @@ public class ExploreTvShowsPopularFragment extends Fragment {
                         progressBar.setVisibility(View.INVISIBLE);
                         data.addAll(intent.<TvShowPreview>getParcelableArrayListExtra(DataParserService.EXTRA));
                         recyclerViewTvShowCardAdapter.notifyDataSetChanged();
+                        retrievedAlready = true;
                         break;
                     default:
                         break;
@@ -67,31 +55,9 @@ public class ExploreTvShowsPopularFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ExploreTvShowsPopularFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ExploreTvShowsPopularFragment newInstance(String param1, String param2) {
-        ExploreTvShowsPopularFragment fragment = new ExploreTvShowsPopularFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -100,6 +66,7 @@ public class ExploreTvShowsPopularFragment extends Fragment {
 
         page = 1;
         data.clear();
+        retrievedAlready = false;
 
         recyclerViewTvShowCardAdapter = new RecyclerViewTvShowCardAdapter(getContext(), data);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -107,10 +74,6 @@ public class ExploreTvShowsPopularFragment extends Fragment {
 
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOWS_POPULAR);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
-
-        TMDB.requestRemoteTvShowsPopular(getContext(), page);
-
-        progressBar.setVisibility(View.VISIBLE);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -123,6 +86,15 @@ public class ExploreTvShowsPopularFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!retrievedAlready){
+            TMDB.requestRemoteTvShowsPopular(getContext(), page);
+            progressBar.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

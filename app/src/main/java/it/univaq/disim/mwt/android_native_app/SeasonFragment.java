@@ -48,10 +48,14 @@ public class SeasonFragment extends Fragment {
                 String action = intent.getAction();
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOW_SEASON:
-                        //progressBar.setVisibility(View.INVISIBLE);
                         seasonDetailed = (Season) intent.getSerializableExtra(DataParserService.EXTRA);
-                        if(seasonDetailed.equals(season)){
+                        if(season.equals(seasonDetailed)){
+                            //progressBar.setVisibility(View.INVISIBLE);
+
                             data.clear();
+
+                            seasonName.setText(seasonDetailed.getName());
+                            seasonOverview.setText(seasonDetailed.getOverview());
 
                             for(Episode episode : seasonDetailed.getEpisodes()){
                                 episode.setTv_show_id(season.getTv_show_id());
@@ -104,11 +108,14 @@ public class SeasonFragment extends Fragment {
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
 
         if(season.getTv_show_id() != 0 && seasonDetailed == null){
-            seasonName.setText(season.getName());
-            seasonOverview.setText(season.getOverview());
             TMDB.requestRemoteTvShowSeason(getContext(), season.getTv_show_id(), season.getSeason_number());
 
             //progressBar.setVisibility(View.VISIBLE);
+        }
+
+        if(seasonDetailed != null){
+            seasonName.setText(seasonDetailed.getName());
+            seasonOverview.setText(seasonDetailed.getOverview());
         }
     }
 

@@ -1,5 +1,7 @@
 package it.univaq.disim.mwt.android_native_app.model;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class Episode implements Serializable {
@@ -101,5 +103,13 @@ public class Episode implements Serializable {
 
     public void setTv_show_id(long tv_show_id) {
         this.tv_show_id = tv_show_id;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj instanceof Episode){
+            return this.episode_id == ((Episode) obj).getEpisode_id();
+        }
+        return false;
     }
 }

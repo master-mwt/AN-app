@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +64,8 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, EpisodeActivity.class);
-                    intent.putExtra("data", data.get(getBindingAdapterPosition()));
+                    intent.putExtra("episodes", (Serializable) data);
+                    intent.putExtra("chosen_episode", data.get(getBindingAdapterPosition()));
                     context.startActivity(intent);
                 }
             });

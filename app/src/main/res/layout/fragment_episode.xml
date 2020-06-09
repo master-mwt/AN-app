@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SeasonFragment">
-    
+    tools:context=".EpisodeFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,22 +23,17 @@
                 >
 
                 <TextView
-                    android:id="@+id/season_name"
+                    android:id="@+id/episode_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Season name" />
-
+                    android:layout_height="wrap_content" />
                 <TextView
-                    android:id="@+id/season_overview"
+                    android:id="@+id/episode_overview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Overview" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/episodes_recycle_view"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/episode_air_date"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

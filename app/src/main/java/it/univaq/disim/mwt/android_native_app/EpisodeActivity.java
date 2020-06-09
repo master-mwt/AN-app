@@ -1,77 +1,150 @@
 package it.univaq.disim.mwt.android_native_app;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.MenuItem;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import it.univaq.disim.mwt.android_native_app.api.TMDB;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import it.univaq.disim.mwt.android_native_app.model.Episode;
-import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 
-public class EpisodeActivity extends AppCompatActivity {
+import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
-    private Episode episode;
-    private Episode episodeDetailed;
-    private TextView episodeName;
-    private TextView episodeOverview;
-    private TextView episodeAirDate;
+public class EpisodeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(intent != null){
-                String action = intent.getAction();
-                switch (action){
-                    case DataParserService.FILTER_PARSE_TV_SHOW_EPISODE:
-                        episodeDetailed = (Episode) intent.getSerializableExtra(DataParserService.EXTRA);
-
-                        episodeName.setText(episodeDetailed.getName());
-                        episodeOverview.setText(episodeDetailed.getOverview());
-                        episodeAirDate.setText(episodeDetailed.getAir_date());
-
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-    };
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private Episode chosenEpisode;
+    private List<Episode> episodes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_episode);
 
-        episode = (Episode) getIntent().getSerializableExtra("data");
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
-        episodeName = findViewById(R.id.episode_name);
+        drawerLayout = findViewById(R.id.main_drawer_layout);
+        navigationView = findViewById(R.id.main_navigation_view);
 
-        episodeOverview = findViewById(R.id.episode_overview);
+        navigationView.setNavigationItemSelectedListener(this);
 
-        episodeAirDate = findViewById(R.id.episode_air_date);
+        viewPager = findViewById(R.id.main_viewpager);
+        tabLayout = findViewById(R.id.main_tab_layout);
+
+        episodes = (List<Episode>) getIntent().getSerializableExtra("episodes");
+        chosenEpisode = (Episode) getIntent().getSerializableExtra("chosen_episode");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOW_EPISODE);
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiver, intentFilter);
+        EpisodeActivity.ViewPagerAdapter viewPagerAdapter = new EpisodeActivity.ViewPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        int index = 0;
 
-        if(episode.getTv_show_id() != 0 && episodeDetailed == null){
-            TMDB.requestRemoteTvShowEpisode(getApplicationContext(), episode.getTv_show_id(), episode.getSeason_number(), episode.getEpisode_number());
+        for(int i = 0; i < episodes.size(); i++){
+            Episode episode = episodes.get(i);
+            if(episode.equals(chosenEpisode)){
+                index = i;
+            }
+
+            EpisodeFragment fragment = EpisodeFragment.newInstance(episode);
+            viewPagerAdapter.addFragment(fragment, "episode " + episode.getEpisode_number());
         }
+
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setAdapter(viewPagerAdapter);
+
+        tabLayout.getTabAt(index).select();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent = null;
+        switch (item.getItemId()){
+            case R.id.menu_item_search:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_explore:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_collection:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, UserCollectionActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> fragmentList = new ArrayList<>();
+        private List<String> fragmentListTitles = new ArrayList<>();
+
+        public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            fragmentList.add(fragment);
+            fragmentListTitles.add(title);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentList.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return fragmentListTitles.get(position);
+        }
     }
 }
