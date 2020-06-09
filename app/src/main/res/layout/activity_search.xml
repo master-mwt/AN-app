@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
-
+    tools:context=".SearchActivity"
+    android:id="@+id/main_drawer_layout">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -56,5 +55,14 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/main_navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:menu="@menu/main_navigation_view_menu"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/main_navigation_view_menu_header"
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>

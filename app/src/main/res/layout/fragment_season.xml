@@ -25,14 +25,12 @@
                 <TextView
                     android:id="@+id/season_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Season name" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/season_overview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Overview" />
+                    android:layout_height="wrap_content" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/episodes_recycle_view"

@@ -28,20 +28,17 @@
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Name" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/overview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Overview" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/original_language"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Original language" />
+                    android:layout_height="wrap_content" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/cast_recycle_view"
