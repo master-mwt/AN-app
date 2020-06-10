@@ -15,6 +15,7 @@ public class Season implements Serializable {
     private int season_number;
     private List<Episode> episodes;
     private long tv_show_id;
+    private boolean watched;
 
     public Season() {
     }
@@ -95,6 +96,14 @@ public class Season implements Serializable {
 
     public void setTv_show_id(long tv_show_id) {
         this.tv_show_id = tv_show_id;
+    }
+
+    public boolean isWatched() {
+        return watched;
+    }
+
+    public void setWatched(boolean watched) {
+        this.watched = watched;
     }
 
     @Override

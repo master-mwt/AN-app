@@ -3,7 +3,13 @@ package it.univaq.disim.mwt.android_native_app.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "tv_show_collection")
 public class TvShowPreview implements Parcelable {
+
+    @PrimaryKey(autoGenerate = true)
     private long _id;
     private long tv_show_id;
     private String name;

@@ -15,6 +15,7 @@ public class Episode implements Serializable {
     private double vote_average;
     private long vote_count;
     private long tv_show_id;
+    private boolean watched;
 
     public Episode() {
     }
@@ -103,6 +104,14 @@ public class Episode implements Serializable {
 
     public void setTv_show_id(long tv_show_id) {
         this.tv_show_id = tv_show_id;
+    }
+
+    public boolean isWatched() {
+        return watched;
+    }
+
+    public void setWatched(boolean watched) {
+        this.watched = watched;
     }
 
     @Override
