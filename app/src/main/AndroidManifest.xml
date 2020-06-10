@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <!-- ACTIVITIES -->
-        <activity android:name=".MainActivity">
+        <activity android:name=".ExploreActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

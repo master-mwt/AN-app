@@ -114,12 +114,12 @@ public class TvShowDetailsActivity extends AppCompatActivity implements Navigati
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOW_DETAILS);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
 
-        progressBar.setVisibility(View.VISIBLE);
-
         long tv_show_id = getIntent().getLongExtra("data", -1);
 
         if(tv_show_id != -1){
             TMDB.requestRemoteTvShowDetails(this, tv_show_id);
+            // TODO: ProgressBar in xml (keep progressBar ?)
+            progressBar.setVisibility(View.VISIBLE);
         } else {
             finish();
         }
@@ -163,7 +163,7 @@ public class TvShowDetailsActivity extends AppCompatActivity implements Navigati
                 break;
             case R.id.menu_item_explore:
                 drawerLayout.closeDrawers();
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, ExploreActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_collection:

@@ -96,7 +96,7 @@ public class SeasonActivity extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.menu_item_explore:
                 drawerLayout.closeDrawers();
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, ExploreActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_collection:

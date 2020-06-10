@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -40,6 +41,7 @@ public class SeasonFragment extends Fragment {
     private TextView seasonOverview;
     private RecyclerView recyclerView;
     private RecyclerViewEpisodeAdapter recyclerViewEpisodeAdapter;
+    private ProgressBar progressBar;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -50,7 +52,7 @@ public class SeasonFragment extends Fragment {
                     case DataParserService.FILTER_PARSE_TV_SHOW_SEASON:
                         seasonDetailed = (Season) intent.getSerializableExtra(DataParserService.EXTRA);
                         if(season.equals(seasonDetailed)){
-                            //progressBar.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
 
                             data.clear();
 
@@ -110,7 +112,7 @@ public class SeasonFragment extends Fragment {
         if(season.getTv_show_id() != 0 && seasonDetailed == null){
             TMDB.requestRemoteTvShowSeason(getContext(), season.getTv_show_id(), season.getSeason_number());
 
-            //progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         if(seasonDetailed != null){
@@ -136,6 +138,8 @@ public class SeasonFragment extends Fragment {
         seasonOverview = view.findViewById(R.id.season_overview);
 
         recyclerView = view.findViewById(R.id.episodes_recycle_view);
+
+        progressBar = view.findViewById(R.id.season_progress);
 
         // Inflate the layout for this fragment
         return view;

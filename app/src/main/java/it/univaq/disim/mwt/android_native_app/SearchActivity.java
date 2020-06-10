@@ -88,6 +88,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOWS_SEARCH);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiver, intentFilter);
 
+        // TODO: Search
+
         TMDB.requestRemoteTvShowsSearch(getApplicationContext(), "breaking" , page);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -117,7 +119,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.menu_item_explore:
                 drawerLayout.closeDrawers();
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, ExploreActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_collection:

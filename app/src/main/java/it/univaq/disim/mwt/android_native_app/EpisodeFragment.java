@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -31,6 +32,7 @@ public class EpisodeFragment extends Fragment {
     private TextView episodeName;
     private TextView episodeOverview;
     private TextView episodeAirDate;
+    private ProgressBar progressBar;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -42,7 +44,7 @@ public class EpisodeFragment extends Fragment {
                         episodeDetailed = (Episode) intent.getSerializableExtra(DataParserService.EXTRA);
 
                         if(episode.equals(episodeDetailed)){
-                            //progressBar.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
 
                             episodeName.setText(episodeDetailed.getName());
                             episodeOverview.setText(episodeDetailed.getOverview());
@@ -85,7 +87,7 @@ public class EpisodeFragment extends Fragment {
         if(episode.getTv_show_id() != 0 && episodeDetailed == null){
             TMDB.requestRemoteTvShowEpisode(getContext(), episode.getTv_show_id(), episode.getSeason_number(), episode.getEpisode_number());
 
-            //progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         if(episodeDetailed != null){
@@ -112,6 +114,8 @@ public class EpisodeFragment extends Fragment {
         episodeOverview = view.findViewById(R.id.episode_overview);
 
         episodeAirDate = view.findViewById(R.id.episode_air_date);
+
+        progressBar = view.findViewById(R.id.episode_progress);
 
         // Inflate the layout for this fragment
         return view;

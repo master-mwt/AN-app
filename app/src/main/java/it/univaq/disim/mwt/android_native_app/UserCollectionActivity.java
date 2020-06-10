@@ -56,6 +56,8 @@ public class UserCollectionActivity extends AppCompatActivity implements Navigat
     protected void onStart() {
         super.onStart();
 
+        // TODO: empty collection message handling and collection itself
+
         if(collection.isEmpty()){
             recyclerView.setVisibility(View.INVISIBLE);
             emptyList.setVisibility(View.VISIBLE);
@@ -76,7 +78,7 @@ public class UserCollectionActivity extends AppCompatActivity implements Navigat
                 break;
             case R.id.menu_item_explore:
                 drawerLayout.closeDrawers();
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, ExploreActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_collection:
