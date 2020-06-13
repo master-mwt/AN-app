@@ -1,20 +1,37 @@
 package it.univaq.disim.mwt.android_native_app.model;
 
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Entity(tableName = "seasons")
 public class Season implements Serializable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private long _id;
     private long season_id;
-    private String name;
-    private String overview;
-    private String poster_path;
-    private String air_date;
-    private int episode_count;
-    private int season_number;
-    private List<Episode> episodes;
     private long tv_show_id;
+
+    @Ignore
+    private String name;
+    @Ignore
+    private String overview;
+    @Ignore
+    private String poster_path;
+    @Ignore
+    private String air_date;
+    @Ignore
+    private int episode_count;
+    @Ignore
+    private int season_number;
+    @Ignore
+    private List<Episode> episodes;
+    @Ignore
     private boolean watched;
 
     public Season() {
@@ -26,12 +43,28 @@ public class Season implements Serializable {
         this.poster_path = poster_path;
     }
 
+    public long get_id() {
+        return _id;
+    }
+
+    public void set_id(long _id) {
+        this._id = _id;
+    }
+
     public long getSeason_id() {
         return season_id;
     }
 
     public void setSeason_id(long season_id) {
         this.season_id = season_id;
+    }
+
+    public long getTv_show_id() {
+        return tv_show_id;
+    }
+
+    public void setTv_show_id(long tv_show_id) {
+        this.tv_show_id = tv_show_id;
     }
 
     public String getName() {
@@ -88,14 +121,6 @@ public class Season implements Serializable {
 
     public void setEpisodes(List<Episode> episodes) {
         this.episodes = episodes;
-    }
-
-    public long getTv_show_id() {
-        return tv_show_id;
-    }
-
-    public void setTv_show_id(long tv_show_id) {
-        this.tv_show_id = tv_show_id;
     }
 
     public boolean isWatched() {

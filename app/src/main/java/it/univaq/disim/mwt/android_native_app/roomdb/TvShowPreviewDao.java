@@ -5,11 +5,13 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
 
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
+import it.univaq.disim.mwt.android_native_app.model.TvShowPreviewWithSeasons;
 
 @Dao
 public interface TvShowPreviewDao {
@@ -26,15 +28,19 @@ public interface TvShowPreviewDao {
     @Delete
     public void delete(TvShowPreview tvShowPreview);
 
-    @Query("DELETE FROM tv_show_collection")
+    @Query("DELETE FROM tv_shows")
     public void deleteAll();
 
-    @Query("SELECT * from tv_show_collection ORDER BY name ASC")
+    @Query("SELECT * FROM tv_shows ORDER BY name ASC")
     public List<TvShowPreview> findAll();
 
-    @Query("SELECT * FROM tv_show_collection WHERE _id = :id")
+    @Query("SELECT * FROM tv_shows WHERE id = :id")
     public TvShowPreview findByID(long id);
 
-    @Query("SELECT * FROM tv_show_collection WHERE tv_show_id = :tv_show_id")
+    @Query("SELECT * FROM tv_shows WHERE tv_show_id = :tv_show_id")
     public TvShowPreview findByTvShowId(long tv_show_id);
+
+    @Transaction
+    @Query("SELECT * FROM tv_shows")
+    public List<TvShowPreviewWithSeasons> getTvShowPreviewWithSeasons();
 }

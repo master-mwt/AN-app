@@ -1,20 +1,39 @@
 package it.univaq.disim.mwt.android_native_app.model;
 
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
+@Entity(tableName = "episodes")
 public class Episode implements Serializable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private long _id;
     private long episode_id;
-    private String name;
-    private String overview;
-    private String still_path;
-    private String air_date;
-    private int episode_number;
-    private int season_number;
-    private double vote_average;
-    private long vote_count;
     private long tv_show_id;
+    private long season_id;
+
+    @Ignore
+    private String name;
+    @Ignore
+    private String overview;
+    @Ignore
+    private String still_path;
+    @Ignore
+    private String air_date;
+    @Ignore
+    private int episode_number;
+    @Ignore
+    private int season_number;
+    @Ignore
+    private double vote_average;
+    @Ignore
+    private long vote_count;
+    @Ignore
     private boolean watched;
 
     public Episode() {
@@ -26,12 +45,36 @@ public class Episode implements Serializable {
         this.still_path = still_path;
     }
 
+    public long get_id() {
+        return _id;
+    }
+
+    public void set_id(long _id) {
+        this._id = _id;
+    }
+
     public long getEpisode_id() {
         return episode_id;
     }
 
     public void setEpisode_id(long episode_id) {
         this.episode_id = episode_id;
+    }
+
+    public long getSeason_id() {
+        return season_id;
+    }
+
+    public void setSeason_id(long season_id) {
+        this.season_id = season_id;
+    }
+
+    public long getTv_show_id() {
+        return tv_show_id;
+    }
+
+    public void setTv_show_id(long tv_show_id) {
+        this.tv_show_id = tv_show_id;
     }
 
     public String getName() {
@@ -96,14 +139,6 @@ public class Episode implements Serializable {
 
     public void setVote_count(long vote_count) {
         this.vote_count = vote_count;
-    }
-
-    public long getTv_show_id() {
-        return tv_show_id;
-    }
-
-    public void setTv_show_id(long tv_show_id) {
-        this.tv_show_id = tv_show_id;
     }
 
     public boolean isWatched() {

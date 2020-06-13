@@ -3,7 +3,6 @@ package it.univaq.disim.mwt.android_native_app.model;
 import java.io.Serializable;
 import java.util.List;
 
-// TODO: POJO -> RoomDB entities: decide which classes become RoomDB entities [only TvShowPreview (?)]
 public class TvShowDetails implements Serializable {
     private long tv_show_id;
     private String name;
