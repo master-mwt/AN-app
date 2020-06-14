@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "tv_shows")
@@ -17,6 +18,7 @@ public class TvShowPreview implements Parcelable {
     private String name;
     private String poster_path;
 
+    @Ignore
     public static final Creator<TvShowPreview> CREATOR = new Creator<TvShowPreview>() {
         @Override
         public TvShowPreview createFromParcel(Parcel source) {
@@ -32,12 +34,14 @@ public class TvShowPreview implements Parcelable {
     public TvShowPreview() {
     }
 
+    @Ignore
     public TvShowPreview(long tv_show_id, String name, String poster_path) {
         this.tv_show_id = tv_show_id;
         this.name = name;
         this.poster_path = poster_path;
     }
 
+    @Ignore
     public TvShowPreview(Parcel source) {
         _id = source.readLong();
         tv_show_id = source.readLong();

@@ -35,9 +35,12 @@ public interface EpisodeDao {
     @Query("SELECT * FROM episodes WHERE id = :id")
     public Episode findByID(long id);
 
+    @Query("SELECT * FROM episodes WHERE episode_id = :episode_id")
+    public Episode findByEpisodeId(long episode_id);
+
     @Query("SELECT * FROM episodes WHERE season_id = :season_id")
-    public Episode findBySeasonId(long season_id);
+    public List<Episode> findBySeasonId(long season_id);
 
     @Query("SELECT * FROM episodes WHERE tv_show_id = :tv_show_id")
-    public Episode findByTvShowId(long tv_show_id);
+    public List<Episode> findByTvShowId(long tv_show_id);
 }

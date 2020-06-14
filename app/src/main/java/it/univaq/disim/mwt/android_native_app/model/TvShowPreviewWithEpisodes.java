@@ -5,9 +5,9 @@ import androidx.room.Relation;
 
 import java.util.List;
 
-public class TvShowPreviewWithSeasons {
+public class TvShowPreviewWithEpisodes {
     @Embedded
     public TvShowPreview tvShowPreview;
     @Relation(parentColumn = "tv_show_id", entityColumn = "tv_show_id")
-    public List<Season> seasons;
+    public List<Episode> episodes;
 }

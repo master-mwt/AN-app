@@ -39,6 +39,7 @@ public class Episode implements Serializable {
     public Episode() {
     }
 
+    @Ignore
     public Episode(long episode_id, String name, String still_path) {
         this.episode_id = episode_id;
         this.name = name;

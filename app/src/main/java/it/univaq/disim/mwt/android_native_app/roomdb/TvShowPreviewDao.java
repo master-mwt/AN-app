@@ -11,7 +11,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
-import it.univaq.disim.mwt.android_native_app.model.TvShowPreviewWithSeasons;
+import it.univaq.disim.mwt.android_native_app.model.TvShowPreviewWithEpisodes;
 
 @Dao
 public interface TvShowPreviewDao {
@@ -42,5 +42,5 @@ public interface TvShowPreviewDao {
 
     @Transaction
     @Query("SELECT * FROM tv_shows")
-    public List<TvShowPreviewWithSeasons> getTvShowPreviewWithSeasons();
+    public List<TvShowPreviewWithEpisodes> getTvShowPreviewWithEpisodes();
 }

@@ -20,6 +20,7 @@ import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.model.TvShowCharacter;
 import it.univaq.disim.mwt.android_native_app.model.TvShowDetails;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
+import it.univaq.disim.mwt.android_native_app.roomdb.AppRoomDatabase;
 
 public class DataParserService extends IntentService {
 
@@ -239,6 +240,10 @@ public class DataParserService extends IntentService {
                 tvShowDetails.setNext_episode_to_air(nextEpisodeToAir);
             }
 
+            if(AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findByTvShowId(tvShowDetails.getTv_show_id()) != null){
+                tvShowDetails.setIn_collection(true);
+            }
+
         } catch (JSONException e) {
             tvShowDetails = null;
             Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
@@ -301,6 +306,7 @@ public class DataParserService extends IntentService {
 
             if(array != null){
                 List<Episode> episodes = new ArrayList<>();
+                List<Episode> dbEpisodes = AppRoomDatabase.getInstance(this).getEpisodeDao().findBySeasonId(season.getSeason_id());
 
                 for(int i = 0; i < array.length(); i++){
                     JSONObject jsonEpisode = array.getJSONObject(i);
@@ -312,9 +318,18 @@ public class DataParserService extends IntentService {
                     episode.setSeason_number(jsonEpisode.optInt("season_number"));
                     episode.setSeason_id(season.getSeason_id());
 
+                    if(dbEpisodes != null && dbEpisodes.contains(episode)){
+                        episode.set_id(dbEpisodes.get(dbEpisodes.indexOf(episode)).get_id());
+                        episode.setWatched(true);
+                    }
+
                     episodes.add(episode);
                 }
                 season.setEpisodes(episodes);
+
+                if((dbEpisodes != null) && (dbEpisodes.size() == season.getEpisode_count())){
+                    season.setWatched(true);
+                }
             }
 
         } catch (JSONException e) {
@@ -342,6 +357,12 @@ public class DataParserService extends IntentService {
             episode.setSeason_number(res.optInt("season_number"));
             episode.setVote_average(res.optDouble("vote_average"));
             episode.setVote_count(res.optLong("vote_count"));
+
+            Episode dbEpisode = AppRoomDatabase.getInstance(this).getEpisodeDao().findByEpisodeId(episode.getEpisode_id());
+            if(dbEpisode != null){
+                episode.set_id(dbEpisode.get_id());
+                episode.setWatched(true);
+            }
 
         } catch (JSONException e) {
             episode = null;

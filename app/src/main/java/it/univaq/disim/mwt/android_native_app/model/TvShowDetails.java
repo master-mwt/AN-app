@@ -25,6 +25,7 @@ public class TvShowDetails implements Serializable {
     private List<Season> seasons;
     private Episode last_episode_to_air;
     private Episode next_episode_to_air;
+    private boolean in_collection;
 
     public long getTv_show_id() {
         return tv_show_id;
@@ -192,5 +193,13 @@ public class TvShowDetails implements Serializable {
 
     public void setNext_episode_to_air(Episode next_episode_to_air) {
         this.next_episode_to_air = next_episode_to_air;
+    }
+
+    public boolean isIn_collection() {
+        return in_collection;
+    }
+
+    public void setIn_collection(boolean in_collection) {
+        this.in_collection = in_collection;
     }
 }

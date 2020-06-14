@@ -1,37 +1,20 @@
 package it.univaq.disim.mwt.android_native_app.model;
 
 import androidx.annotation.Nullable;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(tableName = "seasons")
 public class Season implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private long _id;
     private long season_id;
     private long tv_show_id;
-
-    @Ignore
     private String name;
-    @Ignore
     private String overview;
-    @Ignore
     private String poster_path;
-    @Ignore
     private String air_date;
-    @Ignore
     private int episode_count;
-    @Ignore
     private int season_number;
-    @Ignore
     private List<Episode> episodes;
-    @Ignore
     private boolean watched;
 
     public Season() {
@@ -41,14 +24,6 @@ public class Season implements Serializable {
         this.season_id = season_id;
         this.name = name;
         this.poster_path = poster_path;
-    }
-
-    public long get_id() {
-        return _id;
-    }
-
-    public void set_id(long _id) {
-        this._id = _id;
     }
 
     public long getSeason_id() {
