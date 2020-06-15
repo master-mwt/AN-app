@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -33,6 +34,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private NavigationView navigationView;
     private ArrayList<TvShowPreview> data = new ArrayList<>();
     private RecyclerViewTvShowCardAdapter recyclerViewTvShowCardAdapter;
+    private NestedScrollView nestedScrollView;
     private RecyclerView recyclerView;
     private SearchView searchView;
     private int page;
@@ -45,7 +47,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 String action = intent.getAction();
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOWS_SEARCH:
-                        data.clear();
                         data.addAll(intent.<TvShowPreview>getParcelableArrayListExtra(DataParserService.EXTRA));
                         recyclerViewTvShowCardAdapter.notifyDataSetChanged();
                         break;
@@ -77,6 +78,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         navigationView.setNavigationItemSelectedListener(this);
 
         recyclerView = findViewById(R.id.search_tv_shows_recycle_view);
+
+        nestedScrollView = findViewById(R.id.nested_scroll_view_search);
     }
 
     @Override
@@ -97,9 +100,14 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             @Override
             public boolean onQueryTextSubmit(String query) {
                 page = 1;
-                System.out.println("search listener " + page);
+                data.clear();
                 TMDB.requestRemoteTvShowsSearch(getApplicationContext(), query , page);
                 scroll_query = query;
+
+                // nestedScrollView.scrollTo(0, 0);
+                nestedScrollView.fullScroll(View.FOCUS_UP);
+                nestedScrollView.smoothScrollTo(0, 0);
+
                 return true;
             }
 
@@ -109,14 +117,16 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             }
         });
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(!recyclerView.canScrollVertically(1)){
-                    page++;
-                    System.out.println("scroll listener" + page);
-                    TMDB.requestRemoteTvShowsSearch(getApplicationContext(), scroll_query , page);
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if(v.getChildAt(v.getChildCount() - 1) != null) {
+                    if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                            scrollY > oldScrollY) {
+                        //code to fetch more data for endless scrolling
+                        page++;
+                        TMDB.requestRemoteTvShowsSearch(getApplicationContext(), scroll_query , page);
+                    }
                 }
             }
         });
