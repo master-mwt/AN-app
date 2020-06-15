@@ -10,6 +10,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -33,7 +34,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private ArrayList<TvShowPreview> data = new ArrayList<>();
     private RecyclerViewTvShowCardAdapter recyclerViewTvShowCardAdapter;
     private RecyclerView recyclerView;
+    private SearchView searchView;
     private int page;
+    private String scroll_query;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -42,6 +45,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 String action = intent.getAction();
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOWS_SEARCH:
+                        data.clear();
                         data.addAll(intent.<TvShowPreview>getParcelableArrayListExtra(DataParserService.EXTRA));
                         recyclerViewTvShowCardAdapter.notifyDataSetChanged();
                         break;
@@ -68,6 +72,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         drawerLayout = findViewById(R.id.main_drawer_layout);
         navigationView = findViewById(R.id.main_navigation_view);
+        searchView = findViewById(R.id.search_searchview);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -88,9 +93,21 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOWS_SEARCH);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiver, intentFilter);
 
-        // TODO: Search
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                page = 1;
+                System.out.println("search listener " + page);
+                TMDB.requestRemoteTvShowsSearch(getApplicationContext(), query , page);
+                scroll_query = query;
+                return true;
+            }
 
-        TMDB.requestRemoteTvShowsSearch(getApplicationContext(), "breaking" , page);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -98,7 +115,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 super.onScrollStateChanged(recyclerView, newState);
                 if(!recyclerView.canScrollVertically(1)){
                     page++;
-                    TMDB.requestRemoteTvShowsSearch(getApplicationContext(), "breaking" , page);
+                    System.out.println("scroll listener" + page);
+                    TMDB.requestRemoteTvShowsSearch(getApplicationContext(), scroll_query , page);
                 }
             }
         });
