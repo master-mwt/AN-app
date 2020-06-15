@@ -1,6 +1,9 @@
 package it.univaq.disim.mwt.android_native_app;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -17,7 +22,9 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.univaq.disim.mwt.android_native_app.adapters.RecyclerViewTvShowCardAdapter;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
+import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 
 public class UserCollectionActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -25,8 +32,41 @@ public class UserCollectionActivity extends AppCompatActivity implements Navigat
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private RecyclerView recyclerView;
+    private RecyclerViewTvShowCardAdapter recyclerViewTvShowCardAdapter;
     private TextView emptyList;
     private List<TvShowPreview> collection = new ArrayList<>();
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent != null){
+                String action = intent.getAction();
+                switch (action){
+                    case UserCollectionService.FILTER_GET_USER_COLLECTION:
+                        ArrayList<TvShowPreview> collectionList = intent.<TvShowPreview>getParcelableArrayListExtra(UserCollectionService.EXTRA);
+
+                        if(collectionList != null){
+                            collection.clear();
+                            collection.addAll(collectionList);
+                            recyclerViewTvShowCardAdapter.notifyDataSetChanged();
+                        }
+
+                        // TODO: Empty collection message
+                        if(collection.isEmpty()){
+                            recyclerView.setVisibility(View.INVISIBLE);
+                            emptyList.setVisibility(View.VISIBLE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            emptyList.setVisibility(View.INVISIBLE);
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +90,23 @@ public class UserCollectionActivity extends AppCompatActivity implements Navigat
         recyclerView = findViewById(R.id.collection_tv_shows_recycle_view);
 
         emptyList = findViewById(R.id.empty_list);
+
+        recyclerViewTvShowCardAdapter = new RecyclerViewTvShowCardAdapter(this, collection);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setAdapter(recyclerViewTvShowCardAdapter);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(UserCollectionService.FILTER_GET_USER_COLLECTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
+    }
 
-        // TODO: empty collection message handling and collection itself
-
-        if(collection.isEmpty()){
-            recyclerView.setVisibility(View.INVISIBLE);
-            emptyList.setVisibility(View.VISIBLE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyList.setVisibility(View.INVISIBLE);
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 
     @Override
