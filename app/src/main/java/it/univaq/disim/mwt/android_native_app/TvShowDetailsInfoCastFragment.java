@@ -16,20 +16,19 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 import it.univaq.disim.mwt.android_native_app.adapters.RecyclerViewTvShowCharacterCardAdapter;
 import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.TvShowCharacter;
 import it.univaq.disim.mwt.android_native_app.model.TvShowDetails;
+import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
+import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TvShowDetailsInfoCastFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TvShowDetailsInfoCastFragment extends Fragment {
     private static final String ARG_TV_SHOW_DETAILS = "tv_show_details";
 
@@ -38,6 +37,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
     private TextView originalLanguage;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private MaterialButton collectionButton;
     private TvShowDetails tvShowDetails;
     private ArrayList<TvShowCharacter> data = new ArrayList<>();
     private RecyclerViewTvShowCharacterCardAdapter recyclerViewTvShowCharacterCardAdapter;
@@ -88,6 +88,44 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
         overview.setText(tvShowDetails.getOverview());
         originalLanguage.setText(tvShowDetails.getOriginal_language());
 
+        if(tvShowDetails.isIn_collection()){
+            collectionButton.setText("Remove from collection");
+        } else {
+            collectionButton.setText("Add to collection");
+        }
+
+        collectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(tvShowDetails.isIn_collection()){
+                    TvShowPreview data = new TvShowPreview();
+                    data.setTv_show_id(tvShowDetails.getTv_show_id());
+
+                    Intent intent = new Intent(getContext(), UserCollectionService.class);
+                    intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DELETE_TV_SHOW_FROM_COLLECTION);
+                    intent.putExtra(UserCollectionService.KEY_DATA, data);
+                    Objects.requireNonNull(getContext()).startService(intent);
+
+                    tvShowDetails.setIn_collection(false);
+                    collectionButton.setText("Add to collection");
+                } else {
+                    TvShowPreview data = new TvShowPreview();
+                    data.setTv_show_id(tvShowDetails.getTv_show_id());
+                    data.setName(tvShowDetails.getName());
+                    data.setPoster_path(tvShowDetails.getPoster_path());
+
+                    Intent intent = new Intent(getContext(), UserCollectionService.class);
+                    intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_SAVE_TV_SHOW_TO_COLLECTION);
+                    intent.putExtra(UserCollectionService.KEY_DATA, data);
+                    Objects.requireNonNull(getContext()).startService(intent);
+
+                    tvShowDetails.setIn_collection(true);
+                    collectionButton.setText("Remove from collection");
+                }
+            }
+        });
+
         data.clear();
 
         recyclerViewTvShowCharacterCardAdapter = new RecyclerViewTvShowCharacterCardAdapter(getContext(), data);
@@ -122,6 +160,8 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
         recyclerView = view.findViewById(R.id.cast_recycle_view);
 
         progressBar = view.findViewById(R.id.cast_recycler_view_progress);
+
+        collectionButton = view.findViewById(R.id.collection_button);
 
         // Inflate the layout for this fragment
         return view;

@@ -14,16 +14,15 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.material.button.MaterialButton;
+
+import java.util.Objects;
+
 import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.Episode;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
+import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EpisodeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EpisodeFragment extends Fragment {
     private static final String ARG_EPISODE = "arg_episode";
 
@@ -33,6 +32,8 @@ public class EpisodeFragment extends Fragment {
     private TextView episodeOverview;
     private TextView episodeAirDate;
     private ProgressBar progressBar;
+    private MaterialButton markEpisodeButton;
+    private boolean isTvShowInCollection;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -44,12 +45,49 @@ public class EpisodeFragment extends Fragment {
                         episodeDetailed = (Episode) intent.getSerializableExtra(DataParserService.EXTRA);
 
                         if(episode.equals(episodeDetailed)){
+                            episodeDetailed.setTv_show_id(episode.getTv_show_id());
+                            episodeDetailed.setSeason_id(episode.getSeason_id());
                             progressBar.setVisibility(View.INVISIBLE);
 
                             episodeName.setText(episodeDetailed.getName());
                             episodeOverview.setText(episodeDetailed.getOverview());
                             episodeAirDate.setText(episodeDetailed.getAir_date());
+
+                            if(episodeDetailed.isWatched()){
+                                markEpisodeButton.setText("Mark as unseen");
+                            } else {
+                                markEpisodeButton.setText("Mark as seen");
+                            }
+
                         }
+                        break;
+
+                    case UserCollectionService.FILTER_IS_TV_SHOW_IN_COLLECTION:
+
+                        isTvShowInCollection = intent.getBooleanExtra(UserCollectionService.EXTRA, false);
+
+                        if(isTvShowInCollection){
+                            markEpisodeButton.setEnabled(true);
+                            markEpisodeButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(episodeDetailed.isWatched()){
+                                        // TODO: Mark as seen episode
+                                        markEpisodeButton.setText("Mark as seen");
+                                    } else {
+
+                                        Intent intent = new Intent(getContext(), UserCollectionService.class);
+                                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_SAVE_EPISODE_TO_COLLECTION);
+                                        intent.putExtra(UserCollectionService.KEY_DATA, episodeDetailed);
+                                        Objects.requireNonNull(getContext()).startService(intent);
+
+                                        episodeDetailed.setWatched(true);
+                                        markEpisodeButton.setText("Mark as unseen");
+                                    }
+                                }
+                            });
+                        }
+
                         break;
                     default:
                         break;
@@ -82,10 +120,16 @@ public class EpisodeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOW_EPISODE);
+        intentFilter.addAction(UserCollectionService.FILTER_IS_TV_SHOW_IN_COLLECTION);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
 
         if(episode.getTv_show_id() != 0 && episodeDetailed == null){
             TMDB.requestRemoteTvShowEpisode(getContext(), episode.getTv_show_id(), episode.getSeason_number(), episode.getEpisode_number());
+
+            Intent intent = new Intent(getContext(), UserCollectionService.class);
+            intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_IS_TV_SHOW_IN_COLLECTION);
+            intent.putExtra(UserCollectionService.KEY_DATA, episode.getTv_show_id());
+            Objects.requireNonNull(getContext()).startService(intent);
 
             progressBar.setVisibility(View.VISIBLE);
         }
@@ -94,6 +138,16 @@ public class EpisodeFragment extends Fragment {
             episodeName.setText(episodeDetailed.getName());
             episodeOverview.setText(episodeDetailed.getOverview());
             episodeAirDate.setText(episodeDetailed.getAir_date());
+
+            if(episodeDetailed.isWatched()){
+                markEpisodeButton.setText("Mark as unseen");
+            } else {
+                markEpisodeButton.setText("Mark as seen");
+            }
+
+            if(isTvShowInCollection){
+                markEpisodeButton.setEnabled(true);
+            }
         }
     }
 
@@ -116,6 +170,8 @@ public class EpisodeFragment extends Fragment {
         episodeAirDate = view.findViewById(R.id.episode_air_date);
 
         progressBar = view.findViewById(R.id.episode_progress);
+
+        markEpisodeButton = view.findViewById(R.id.mark_episode_button);
 
         // Inflate the layout for this fragment
         return view;

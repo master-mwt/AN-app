@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,7 +43,6 @@ public class TvShowDetailsActivity extends AppCompatActivity implements Navigati
     private NavigationView navigationView;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private ProgressBar progressBar;
     private TvShowDetails tvShowDetails;
     private ImageView imageView;
 
@@ -58,8 +56,6 @@ public class TvShowDetailsActivity extends AppCompatActivity implements Navigati
                 String action = intent.getAction();
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOW_DETAILS:
-                        progressBar.setVisibility(View.INVISIBLE);
-
                         tvShowDetails = (TvShowDetails) intent.getSerializableExtra(DataParserService.EXTRA);
                         setTvShowImage(tvShowDetails.getPoster_path());
 
@@ -104,7 +100,6 @@ public class TvShowDetailsActivity extends AppCompatActivity implements Navigati
         tabLayout = findViewById(R.id.main_tab_layout);
 
         imageView = findViewById(R.id.tv_show_details_toolbar_image);
-        progressBar = findViewById(R.id.tv_show_details_progress);
     }
 
     @Override
@@ -118,8 +113,6 @@ public class TvShowDetailsActivity extends AppCompatActivity implements Navigati
 
         if(tv_show_id != -1){
             TMDB.requestRemoteTvShowDetails(this, tv_show_id);
-            // TODO: ProgressBar in xml (keep progressBar ?)
-            progressBar.setVisibility(View.VISIBLE);
         } else {
             finish();
         }

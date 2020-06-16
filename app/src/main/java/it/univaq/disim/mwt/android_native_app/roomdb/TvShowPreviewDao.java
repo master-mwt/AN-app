@@ -1,7 +1,6 @@
 package it.univaq.disim.mwt.android_native_app.roomdb;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -25,8 +24,8 @@ public interface TvShowPreviewDao {
     @Update
     public void update(TvShowPreview... tvShowPreviews);
 
-    @Delete
-    public void delete(TvShowPreview tvShowPreview);
+    @Query("DELETE FROM tv_shows WHERE tv_show_id = :tv_show_id")
+    public void delete(long tv_show_id);
 
     @Query("DELETE FROM tv_shows")
     public void deleteAll();

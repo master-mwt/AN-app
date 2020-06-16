@@ -21,8 +21,11 @@ public class UserCollectionService extends IntentService {
     public static final int ACTION_GET_USER_COLLECTION = 0;
     public static final int ACTION_SAVE_TV_SHOW_TO_COLLECTION = 1;
     public static final int ACTION_SAVE_EPISODE_TO_COLLECTION = 2;
+    public static final int ACTION_DELETE_TV_SHOW_FROM_COLLECTION = 3;
+    public static final int ACTION_IS_TV_SHOW_IN_COLLECTION = 4;
     // filters
     public static final String FILTER_GET_USER_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_GET_USER_COLLECTION";
+    public static final String FILTER_IS_TV_SHOW_IN_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_IS_TV_SHOW_IN_COLLECTION";
 
 
     public UserCollectionService() {
@@ -34,6 +37,8 @@ public class UserCollectionService extends IntentService {
         if (intent != null) {
             int action = intent.getIntExtra(UserCollectionService.KEY_ACTION, -1);
             Intent responseIntent = null;
+            TvShowPreview tvShowPreview = null;
+
             switch (action){
                 case UserCollectionService.ACTION_GET_USER_COLLECTION:
                     responseIntent = new Intent(FILTER_GET_USER_COLLECTION);
@@ -42,13 +47,28 @@ public class UserCollectionService extends IntentService {
 
                     break;
                 case UserCollectionService.ACTION_SAVE_TV_SHOW_TO_COLLECTION:
-                    TvShowPreview tvShowPreview = intent.getParcelableExtra(UserCollectionService.KEY_DATA);
+                    tvShowPreview = intent.getParcelableExtra(UserCollectionService.KEY_DATA);
                     saveTvShowToCollection(tvShowPreview);
+
+                    break;
+                case UserCollectionService.ACTION_DELETE_TV_SHOW_FROM_COLLECTION:
+                    tvShowPreview = intent.getParcelableExtra(UserCollectionService.KEY_DATA);
+                    deleteTvShowFromCollection(tvShowPreview);
 
                     break;
                 case UserCollectionService.ACTION_SAVE_EPISODE_TO_COLLECTION:
                     Episode episode = (Episode) intent.getSerializableExtra(UserCollectionService.KEY_DATA);
                     saveEpisodeToCollection(episode);
+
+                    break;
+                case UserCollectionService.ACTION_IS_TV_SHOW_IN_COLLECTION:
+                    long tv_show_id = intent.getLongExtra(UserCollectionService.KEY_DATA, -1);
+
+                    if(tv_show_id != -1){
+                        responseIntent = new Intent(FILTER_IS_TV_SHOW_IN_COLLECTION);
+                        responseIntent.putExtra(UserCollectionService.EXTRA, isTvShowInCollection(tv_show_id));
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(responseIntent);
+                    }
 
                     break;
                 default:
@@ -65,7 +85,16 @@ public class UserCollectionService extends IntentService {
         AppRoomDatabase.getInstance(this).getTvShowPreviewDao().save(tvShowPreview);
     }
 
+    private void deleteTvShowFromCollection(TvShowPreview tvShowPreview){
+        AppRoomDatabase.getInstance(this).getTvShowPreviewDao().delete(tvShowPreview.getTv_show_id());
+        // TODO: delete episodes (cascade)!!
+    }
+
     private void saveEpisodeToCollection(Episode episode){
         AppRoomDatabase.getInstance(this).getEpisodeDao().save(episode);
+    }
+
+    private boolean isTvShowInCollection(long tv_show_id){
+        return (AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findByTvShowId(tv_show_id) != null);
     }
 }

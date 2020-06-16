@@ -101,6 +101,10 @@ public class UserCollectionActivity extends AppCompatActivity implements Navigat
         super.onResume();
         IntentFilter intentFilter = new IntentFilter(UserCollectionService.FILTER_GET_USER_COLLECTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
+
+        Intent intent = new Intent(this, UserCollectionService.class);
+        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_GET_USER_COLLECTION);
+        startService(intent);
     }
 
     @Override
