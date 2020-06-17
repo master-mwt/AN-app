@@ -72,7 +72,13 @@ public class EpisodeFragment extends Fragment {
                                 @Override
                                 public void onClick(View v) {
                                     if(episodeDetailed.isWatched()){
-                                        // TODO: Mark as seen episode
+
+                                        Intent intent = new Intent(getContext(), UserCollectionService.class);
+                                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DELETE_EPISODE_FROM_COLLECTION);
+                                        intent.putExtra(UserCollectionService.KEY_DATA, episodeDetailed);
+                                        Objects.requireNonNull(getContext()).startService(intent);
+
+                                        episodeDetailed.setWatched(false);
                                         markEpisodeButton.setText("Mark as seen");
                                     } else {
 

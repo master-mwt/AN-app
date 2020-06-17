@@ -18,19 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.univaq.disim.mwt.android_native_app.adapters.RecyclerViewEpisodeAdapter;
 import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.Episode;
 import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
+import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SeasonFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SeasonFragment extends Fragment {
     private static final String ARG_SEASON = "arg_season";
 
@@ -42,6 +38,7 @@ public class SeasonFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerViewEpisodeAdapter recyclerViewEpisodeAdapter;
     private ProgressBar progressBar;
+    private boolean isTvShowInCollection;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -65,6 +62,17 @@ public class SeasonFragment extends Fragment {
 
                             data.addAll(seasonDetailed.getEpisodes());
                             recyclerViewEpisodeAdapter.notifyDataSetChanged();
+                        }
+                        break;
+                    case UserCollectionService.FILTER_IS_TV_SHOW_IN_COLLECTION:
+                        if(seasonDetailed == null){
+                            isTvShowInCollection = intent.getBooleanExtra(UserCollectionService.EXTRA, false);
+
+                            recyclerViewEpisodeAdapter = new RecyclerViewEpisodeAdapter(getContext(), data, isTvShowInCollection);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            recyclerView.setAdapter(recyclerViewEpisodeAdapter);
+
+                            TMDB.requestRemoteTvShowSeason(getContext(), season.getTv_show_id(), season.getSeason_number());
                         }
                         break;
                     default:
@@ -97,9 +105,10 @@ public class SeasonFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        recyclerViewEpisodeAdapter = new RecyclerViewEpisodeAdapter(getContext(), data);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(recyclerViewEpisodeAdapter);
+        if(recyclerViewEpisodeAdapter != null){
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(recyclerViewEpisodeAdapter);
+        }
     }
 
     @Override
@@ -107,10 +116,15 @@ public class SeasonFragment extends Fragment {
         super.onResume();
 
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOW_SEASON);
+        intentFilter.addAction(UserCollectionService.FILTER_IS_TV_SHOW_IN_COLLECTION);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
 
         if(season.getTv_show_id() != 0 && seasonDetailed == null){
-            TMDB.requestRemoteTvShowSeason(getContext(), season.getTv_show_id(), season.getSeason_number());
+
+            Intent intent = new Intent(getContext(), UserCollectionService.class);
+            intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_IS_TV_SHOW_IN_COLLECTION);
+            intent.putExtra(UserCollectionService.KEY_DATA, season.getTv_show_id());
+            Objects.requireNonNull(getContext()).startService(intent);
 
             progressBar.setVisibility(View.VISIBLE);
         }

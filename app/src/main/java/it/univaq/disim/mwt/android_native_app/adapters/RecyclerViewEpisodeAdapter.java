@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 import java.io.Serializable;
@@ -24,12 +25,15 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private Context context;
     private List<Episode> data;
+    private boolean isTvShowInCollection;
+    // TODO: mark as seen/unseen episode
 
-    public RecyclerViewEpisodeAdapter(Context context, List<Episode> data) {
+    public RecyclerViewEpisodeAdapter(Context context, List<Episode> data, boolean isTvShowInCollection) {
         this.context = context;
         this.data = data;
         if(this.data == null)
             this.data = new ArrayList<>();
+        this.isTvShowInCollection = isTvShowInCollection;
     }
 
     @NonNull
@@ -42,8 +46,11 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.title.setText(data.get(position).getName());
+        if(this.isTvShowInCollection){
+            holder.markEpisodeButtonInEpisodeList.setEnabled(true);
+        }
     }
-
+    
     @Override
     public int getItemCount() {
         return data.size();
@@ -53,12 +60,14 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
 
         TextView title;
         MaterialCardView materialCardView;
+        MaterialButton markEpisodeButtonInEpisodeList;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.episode_title);
             materialCardView = itemView.findViewById(R.id.episode_card);
+            markEpisodeButtonInEpisodeList = itemView.findViewById(R.id.mark_episode_button_in_episode_list);
 
             materialCardView.setOnClickListener(new View.OnClickListener() {
                 @Override

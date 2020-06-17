@@ -25,7 +25,7 @@ public interface TvShowPreviewDao {
     public void update(TvShowPreview... tvShowPreviews);
 
     @Query("DELETE FROM tv_shows WHERE tv_show_id = :tv_show_id")
-    public void delete(long tv_show_id);
+    public void deleteByTvShowID(long tv_show_id);
 
     @Query("DELETE FROM tv_shows")
     public void deleteAll();

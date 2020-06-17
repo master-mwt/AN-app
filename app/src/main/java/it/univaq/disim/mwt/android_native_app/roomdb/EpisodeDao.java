@@ -1,7 +1,6 @@
 package it.univaq.disim.mwt.android_native_app.roomdb;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -23,8 +22,11 @@ public interface EpisodeDao {
     @Update
     public void update(Episode... episodes);
 
-    @Delete
-    public void delete(Episode episode);
+    @Query("DELETE FROM episodes WHERE episode_id = :episode_id")
+    public void deleteByEpisodeID(long episode_id);
+
+    @Query("DELETE FROM episodes WHERE tv_show_id = :tv_show_id")
+    public void deleteByTvShowID(long tv_show_id);
 
     @Query("DELETE FROM episodes")
     public void deleteAll();
