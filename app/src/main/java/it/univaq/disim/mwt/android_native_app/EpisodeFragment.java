@@ -42,9 +42,10 @@ public class EpisodeFragment extends Fragment {
                 String action = intent.getAction();
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOW_EPISODE:
-                        episodeDetailed = (Episode) intent.getSerializableExtra(DataParserService.EXTRA);
+                        if(episodeDetailed == null && episode.equals(intent.getSerializableExtra(DataParserService.EXTRA))){
 
-                        if(episode.equals(episodeDetailed)){
+                            episodeDetailed = (Episode) intent.getSerializableExtra(DataParserService.EXTRA);
+
                             episodeDetailed.setTv_show_id(episode.getTv_show_id());
                             episodeDetailed.setSeason_id(episode.getSeason_id());
                             progressBar.setVisibility(View.INVISIBLE);
@@ -63,35 +64,38 @@ public class EpisodeFragment extends Fragment {
                         break;
 
                     case UserCollectionService.FILTER_IS_TV_SHOW_IN_COLLECTION:
+                        if(episodeDetailed == null){
+                            TMDB.requestRemoteTvShowEpisode(getContext(), episode.getTv_show_id(), episode.getSeason_number(), episode.getEpisode_number());
 
-                        isTvShowInCollection = intent.getBooleanExtra(UserCollectionService.EXTRA, false);
+                            isTvShowInCollection = intent.getBooleanExtra(UserCollectionService.EXTRA, false);
 
-                        if(isTvShowInCollection){
-                            markEpisodeButton.setEnabled(true);
-                            markEpisodeButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(episodeDetailed.isWatched()){
+                            if(isTvShowInCollection){
+                                markEpisodeButton.setEnabled(true);
+                                markEpisodeButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if(episodeDetailed.isWatched()){
 
-                                        Intent intent = new Intent(getContext(), UserCollectionService.class);
-                                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DELETE_EPISODE_FROM_COLLECTION);
-                                        intent.putExtra(UserCollectionService.KEY_DATA, episodeDetailed);
-                                        Objects.requireNonNull(getContext()).startService(intent);
+                                            Intent intent = new Intent(getContext(), UserCollectionService.class);
+                                            intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DELETE_EPISODE_FROM_COLLECTION);
+                                            intent.putExtra(UserCollectionService.KEY_DATA, episodeDetailed);
+                                            Objects.requireNonNull(getContext()).startService(intent);
 
-                                        episodeDetailed.setWatched(false);
-                                        markEpisodeButton.setText("Mark as seen");
-                                    } else {
+                                            episodeDetailed.setWatched(false);
+                                            markEpisodeButton.setText("Mark as seen");
+                                        } else {
 
-                                        Intent intent = new Intent(getContext(), UserCollectionService.class);
-                                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_SAVE_EPISODE_TO_COLLECTION);
-                                        intent.putExtra(UserCollectionService.KEY_DATA, episodeDetailed);
-                                        Objects.requireNonNull(getContext()).startService(intent);
+                                            Intent intent = new Intent(getContext(), UserCollectionService.class);
+                                            intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_SAVE_EPISODE_TO_COLLECTION);
+                                            intent.putExtra(UserCollectionService.KEY_DATA, episodeDetailed);
+                                            Objects.requireNonNull(getContext()).startService(intent);
 
-                                        episodeDetailed.setWatched(true);
-                                        markEpisodeButton.setText("Mark as unseen");
+                                            episodeDetailed.setWatched(true);
+                                            markEpisodeButton.setText("Mark as unseen");
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
 
                         break;
@@ -130,7 +134,6 @@ public class EpisodeFragment extends Fragment {
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
 
         if(episode.getTv_show_id() != 0 && episodeDetailed == null){
-            TMDB.requestRemoteTvShowEpisode(getContext(), episode.getTv_show_id(), episode.getSeason_number(), episode.getEpisode_number());
 
             Intent intent = new Intent(getContext(), UserCollectionService.class);
             intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_IS_TV_SHOW_IN_COLLECTION);

@@ -20,13 +20,13 @@ import java.util.List;
 import it.univaq.disim.mwt.android_native_app.EpisodeActivity;
 import it.univaq.disim.mwt.android_native_app.R;
 import it.univaq.disim.mwt.android_native_app.model.Episode;
+import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 
 public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerViewEpisodeAdapter.ViewHolder> {
 
     private Context context;
     private List<Episode> data;
     private boolean isTvShowInCollection;
-    // TODO: mark as seen/unseen episode
 
     public RecyclerViewEpisodeAdapter(Context context, List<Episode> data, boolean isTvShowInCollection) {
         this.context = context;
@@ -48,6 +48,9 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
         holder.title.setText(data.get(position).getName());
         if(this.isTvShowInCollection){
             holder.markEpisodeButtonInEpisodeList.setEnabled(true);
+            if(data.get(position).isWatched()){
+                holder.markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorMarked, context.getTheme()));
+            }
         }
     }
     
@@ -76,6 +79,35 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
                     intent.putExtra("episodes", (Serializable) data);
                     intent.putExtra("chosen_episode", data.get(getBindingAdapterPosition()));
                     context.startActivity(intent);
+                }
+            });
+
+            markEpisodeButtonInEpisodeList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Episode episode = data.get(getBindingAdapterPosition());
+
+                    if(episode.isWatched()){
+
+                        Intent intent = new Intent(context, UserCollectionService.class);
+                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DELETE_EPISODE_FROM_COLLECTION);
+                        intent.putExtra(UserCollectionService.KEY_DATA, episode);
+                        context.startService(intent);
+
+                        episode.setWatched(false);
+                        markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark, context.getTheme()));
+                        notifyDataSetChanged();
+                    } else {
+
+                        Intent intent = new Intent(context, UserCollectionService.class);
+                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_SAVE_EPISODE_TO_COLLECTION);
+                        intent.putExtra(UserCollectionService.KEY_DATA, episode);
+                        context.startService(intent);
+
+                        episode.setWatched(true);
+                        markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorMarked, context.getTheme()));
+                        notifyDataSetChanged();
+                    }
                 }
             });
         }

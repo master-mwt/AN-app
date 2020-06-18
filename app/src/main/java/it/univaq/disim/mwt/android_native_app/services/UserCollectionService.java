@@ -9,6 +9,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import java.util.ArrayList;
 
 import it.univaq.disim.mwt.android_native_app.model.Episode;
+import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.roomdb.AppRoomDatabase;
 
@@ -23,11 +24,12 @@ public class UserCollectionService extends IntentService {
     public static final int ACTION_DELETE_TV_SHOW_FROM_COLLECTION = 2;
     public static final int ACTION_SAVE_EPISODE_TO_COLLECTION = 3;
     public static final int ACTION_DELETE_EPISODE_FROM_COLLECTION = 4;
-    public static final int ACTION_IS_TV_SHOW_IN_COLLECTION = 5;
+    public static final int ACTION_GET_EPISODES_BY_SEASON = 5;
+    public static final int ACTION_IS_TV_SHOW_IN_COLLECTION = 6;
     // filters
     public static final String FILTER_GET_USER_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_GET_USER_COLLECTION";
     public static final String FILTER_IS_TV_SHOW_IN_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_IS_TV_SHOW_IN_COLLECTION";
-
+    public static final String FILTER_GET_EPISODES_BY_SEASON = "it.univaq.disim.mwt.android_native_app.FILTER_GET_EPISODES_BY_SEASON";
 
     public UserCollectionService() {
         super("UserCollectionService");
@@ -39,6 +41,7 @@ public class UserCollectionService extends IntentService {
             int action = intent.getIntExtra(UserCollectionService.KEY_ACTION, -1);
             Intent responseIntent = null;
             TvShowPreview tvShowPreview = null;
+            Season season = null;
             Episode episode = null;
 
             switch (action){
@@ -66,6 +69,14 @@ public class UserCollectionService extends IntentService {
                 case UserCollectionService.ACTION_DELETE_EPISODE_FROM_COLLECTION:
                     episode = (Episode) intent.getSerializableExtra(UserCollectionService.KEY_DATA);
                     deleteEpisodeFromCollection(episode);
+
+                    break;
+                case UserCollectionService.ACTION_GET_EPISODES_BY_SEASON:
+                    season = (Season) intent.getSerializableExtra(UserCollectionService.KEY_DATA);
+
+                    responseIntent = new Intent(FILTER_GET_EPISODES_BY_SEASON);
+                    responseIntent.putExtra(UserCollectionService.EXTRA, getEpisodesBySeason(season));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(responseIntent);
 
                     break;
                 case UserCollectionService.ACTION_IS_TV_SHOW_IN_COLLECTION:
@@ -108,6 +119,10 @@ public class UserCollectionService extends IntentService {
 
     private void deleteEpisodeFromCollection(Episode episode){
         AppRoomDatabase.getInstance(this).getEpisodeDao().deleteByEpisodeID(episode.getEpisode_id());
+    }
+
+    private ArrayList<Episode> getEpisodesBySeason(Season season){
+        return new ArrayList<>(AppRoomDatabase.getInstance(this).getEpisodeDao().findBySeasonId(season.getSeason_id()));
     }
 
     private boolean isTvShowInCollection(long tv_show_id){

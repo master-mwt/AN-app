@@ -27,6 +27,7 @@ import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 
+// TODO: resolve bug see/unsee episode in two different season fragments
 public class SeasonFragment extends Fragment {
     private static final String ARG_SEASON = "arg_season";
 
@@ -47,8 +48,9 @@ public class SeasonFragment extends Fragment {
                 String action = intent.getAction();
                 switch (action){
                     case DataParserService.FILTER_PARSE_TV_SHOW_SEASON:
-                        seasonDetailed = (Season) intent.getSerializableExtra(DataParserService.EXTRA);
-                        if(season.equals(seasonDetailed)){
+                        if(seasonDetailed == null && season.equals(intent.getSerializableExtra(DataParserService.EXTRA))){
+                            seasonDetailed = (Season) intent.getSerializableExtra(DataParserService.EXTRA);
+
                             progressBar.setVisibility(View.INVISIBLE);
 
                             data.clear();
@@ -73,6 +75,23 @@ public class SeasonFragment extends Fragment {
                             recyclerView.setAdapter(recyclerViewEpisodeAdapter);
 
                             TMDB.requestRemoteTvShowSeason(getContext(), season.getTv_show_id(), season.getSeason_number());
+                        }
+                        break;
+                    case UserCollectionService.FILTER_GET_EPISODES_BY_SEASON:
+                        if(isTvShowInCollection && (season.equals(seasonDetailed))){
+                            ArrayList<Episode> episodes = (ArrayList<Episode>) intent.getSerializableExtra(UserCollectionService.EXTRA);
+                            boolean dirty = false;
+                            if(episodes != null){
+                                for(Episode e : episodes){
+                                    if(data.contains(e)){
+                                        data.get(data.indexOf(e)).setWatched(true);
+                                        dirty = true;
+                                    }
+                                }
+                                if(dirty){
+                                    recyclerViewEpisodeAdapter.notifyDataSetChanged();
+                                }
+                            }
                         }
                         break;
                     default:
@@ -117,6 +136,7 @@ public class SeasonFragment extends Fragment {
 
         IntentFilter intentFilter = new IntentFilter(DataParserService.FILTER_PARSE_TV_SHOW_SEASON);
         intentFilter.addAction(UserCollectionService.FILTER_IS_TV_SHOW_IN_COLLECTION);
+        intentFilter.addAction(UserCollectionService.FILTER_GET_EPISODES_BY_SEASON);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
 
         if(season.getTv_show_id() != 0 && seasonDetailed == null){
@@ -129,9 +149,14 @@ public class SeasonFragment extends Fragment {
             progressBar.setVisibility(View.VISIBLE);
         }
 
-        if(seasonDetailed != null){
+        if(seasonDetailed != null && isTvShowInCollection){
             seasonName.setText(seasonDetailed.getName());
             seasonOverview.setText(seasonDetailed.getOverview());
+
+            Intent intent = new Intent(getContext(), UserCollectionService.class);
+            intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_GET_EPISODES_BY_SEASON);
+            intent.putExtra(UserCollectionService.KEY_DATA, seasonDetailed);
+            Objects.requireNonNull(getContext()).startService(intent);
         }
     }
 
