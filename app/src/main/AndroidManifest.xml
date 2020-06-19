@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.univaq.disim.mwt.android_native_app">
-
     <!-- PERMISSIONS -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -26,7 +25,8 @@
         <activity android:name=".UserCollectionActivity" />
         <activity android:name=".SeasonActivity" />
         <activity android:name=".EpisodeActivity" />
-
+        <activity android:name=".SettingsActivity" />
+        
         <!-- SERVICES -->
         <service android:name=".services.DataParserService" />
         <service android:name=".services.UserCollectionService" />

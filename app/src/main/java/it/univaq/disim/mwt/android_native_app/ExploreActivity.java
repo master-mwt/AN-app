@@ -37,7 +37,7 @@ public class ExploreActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_explore);
 
         toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
