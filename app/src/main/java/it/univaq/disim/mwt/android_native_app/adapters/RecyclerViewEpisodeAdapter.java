@@ -44,13 +44,44 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.title.setText(data.get(position).getName());
         if(this.isTvShowInCollection){
             holder.markEpisodeButtonInEpisodeList.setEnabled(true);
             if(data.get(position).isWatched()){
+                System.out.println("watched: " + data.get(position).getName());
                 holder.markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorMarked, context.getTheme()));
+            } else {
+                holder.markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark, context.getTheme()));
             }
+            holder.markEpisodeButtonInEpisodeList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Episode episode = data.get(position);
+
+                    if(episode.isWatched()){
+
+                        Intent intent = new Intent(context, UserCollectionService.class);
+                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DELETE_EPISODE_FROM_COLLECTION);
+                        intent.putExtra(UserCollectionService.KEY_DATA, episode);
+                        context.startService(intent);
+
+                        episode.setWatched(false);
+                        holder.markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark, context.getTheme()));
+                        notifyDataSetChanged();
+                    } else {
+
+                        Intent intent = new Intent(context, UserCollectionService.class);
+                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_SAVE_EPISODE_TO_COLLECTION);
+                        intent.putExtra(UserCollectionService.KEY_DATA, episode);
+                        context.startService(intent);
+
+                        episode.setWatched(true);
+                        holder.markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorMarked, context.getTheme()));
+                        notifyDataSetChanged();
+                    }
+                }
+            });
         }
     }
     
@@ -79,35 +110,6 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
                     intent.putExtra("episodes", (Serializable) data);
                     intent.putExtra("chosen_episode", data.get(getBindingAdapterPosition()));
                     context.startActivity(intent);
-                }
-            });
-
-            markEpisodeButtonInEpisodeList.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Episode episode = data.get(getBindingAdapterPosition());
-
-                    if(episode.isWatched()){
-
-                        Intent intent = new Intent(context, UserCollectionService.class);
-                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DELETE_EPISODE_FROM_COLLECTION);
-                        intent.putExtra(UserCollectionService.KEY_DATA, episode);
-                        context.startService(intent);
-
-                        episode.setWatched(false);
-                        markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark, context.getTheme()));
-                        notifyDataSetChanged();
-                    } else {
-
-                        Intent intent = new Intent(context, UserCollectionService.class);
-                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_SAVE_EPISODE_TO_COLLECTION);
-                        intent.putExtra(UserCollectionService.KEY_DATA, episode);
-                        context.startService(intent);
-
-                        episode.setWatched(true);
-                        markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorMarked, context.getTheme()));
-                        notifyDataSetChanged();
-                    }
                 }
             });
         }

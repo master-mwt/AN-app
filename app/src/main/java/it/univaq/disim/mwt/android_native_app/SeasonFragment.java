@@ -27,7 +27,6 @@ import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 
-// TODO: resolve bug see/unsee episode in two different season fragments
 public class SeasonFragment extends Fragment {
     private static final String ARG_SEASON = "arg_season";
 
@@ -120,16 +119,7 @@ public class SeasonFragment extends Fragment {
             season = (Season) getArguments().getSerializable(ARG_SEASON);
         }
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if(recyclerViewEpisodeAdapter != null){
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setAdapter(recyclerViewEpisodeAdapter);
-        }
-    }
-
+    
     @Override
     public void onResume() {
         super.onResume();
@@ -149,14 +139,21 @@ public class SeasonFragment extends Fragment {
             progressBar.setVisibility(View.VISIBLE);
         }
 
-        if(seasonDetailed != null && isTvShowInCollection){
+        if(seasonDetailed != null){
             seasonName.setText(seasonDetailed.getName());
             seasonOverview.setText(seasonDetailed.getOverview());
 
-            Intent intent = new Intent(getContext(), UserCollectionService.class);
-            intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_GET_EPISODES_BY_SEASON);
-            intent.putExtra(UserCollectionService.KEY_DATA, seasonDetailed);
-            Objects.requireNonNull(getContext()).startService(intent);
+            if(recyclerViewEpisodeAdapter != null){
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                recyclerView.setAdapter(recyclerViewEpisodeAdapter);
+            }
+
+            if(isTvShowInCollection){
+                Intent intent = new Intent(getContext(), UserCollectionService.class);
+                intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_GET_EPISODES_BY_SEASON);
+                intent.putExtra(UserCollectionService.KEY_DATA, seasonDetailed);
+                Objects.requireNonNull(getContext()).startService(intent);
+            }
         }
     }
 

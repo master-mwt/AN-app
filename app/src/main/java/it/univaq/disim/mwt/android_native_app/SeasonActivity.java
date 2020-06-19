@@ -34,6 +34,7 @@ public class SeasonActivity extends AppCompatActivity implements NavigationView.
     private TabLayout tabLayout;
     private Season chosenSeason;
     private List<Season> seasons;
+    private Integer tabIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,20 @@ public class SeasonActivity extends AppCompatActivity implements NavigationView.
 
         tabLayout.getTabAt(index).select();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(tabIndex != null){
+            tabLayout.getTabAt(tabIndex).select();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        tabIndex = tabLayout.getSelectedTabPosition();
     }
 
     @Override
