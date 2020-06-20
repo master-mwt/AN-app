@@ -49,7 +49,6 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
         if(this.isTvShowInCollection){
             holder.markEpisodeButtonInEpisodeList.setEnabled(true);
             if(data.get(position).isWatched()){
-                System.out.println("watched: " + data.get(position).getName());
                 holder.markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorMarked, context.getTheme()));
             } else {
                 holder.markEpisodeButtonInEpisodeList.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark, context.getTheme()));

@@ -6,15 +6,21 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 @Entity(tableName = "episodes")
 public class Episode implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
+    @Expose
     private long _id;
+    @Expose
     private long episode_id;
+    @Expose
     private long tv_show_id;
+    @Expose
     private long season_id;
 
     @Ignore

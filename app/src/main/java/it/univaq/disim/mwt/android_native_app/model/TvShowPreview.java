@@ -8,14 +8,20 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
+
 @Entity(tableName = "tv_shows")
 public class TvShowPreview implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
+    @Expose
     private long _id;
+    @Expose
     private long tv_show_id;
+    @Expose
     private String name;
+    @Expose
     private String poster_path;
 
     @Ignore
