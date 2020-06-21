@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "642801119201",
+    "firebase_url": "https://android-native-app-bb0fe.firebaseio.com",
+    "project_id": "android-native-app-bb0fe",
+    "storage_bucket": "android-native-app-bb0fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642801119201:android:d0e8aadb235b0992e7aca0",
+        "android_client_info": {
+          "package_name": "it.univaq.disim.mwt.android_native_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642801119201-u1rk4hhe2ikkmi3esuniumulshru37vk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5k89K_JJfW6IGyUR3ZmXKmZLZ0Y-2npQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642801119201-u1rk4hhe2ikkmi3esuniumulshru37vk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
