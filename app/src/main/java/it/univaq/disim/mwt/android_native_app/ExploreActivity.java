@@ -95,6 +95,11 @@ public class ExploreActivity extends AppCompatActivity implements NavigationView
                 intent = new Intent(this, AuthActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.menu_item_info:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, InfoActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
