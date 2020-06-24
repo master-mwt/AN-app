@@ -31,4 +31,13 @@ public class JSONDealer {
         Type listEpisodeType = new TypeToken<List<Episode>>(){}.getType();
         return gson.fromJson(JSONepisodes, listEpisodeType);
     }
+
+    public static String dataContainerObjectToJSON(DataContainerObject container){
+        return gson.toJson(container);
+    }
+
+    public static DataContainerObject dataContainerObjectFromJSON(String JSONcontainer){
+        Type dataContainerType = new TypeToken<DataContainerObject>(){}.getType();
+        return gson.fromJson(JSONcontainer, dataContainerType);
+    }
 }

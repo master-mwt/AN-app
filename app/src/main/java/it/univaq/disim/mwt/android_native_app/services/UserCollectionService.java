@@ -2,16 +2,21 @@ package it.univaq.disim.mwt.android_native_app.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.net.Uri;
 
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import it.univaq.disim.mwt.android_native_app.model.Episode;
 import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.roomdb.AppRoomDatabase;
+import it.univaq.disim.mwt.android_native_app.utils.DataContainerObject;
+import it.univaq.disim.mwt.android_native_app.utils.FileHandler;
+import it.univaq.disim.mwt.android_native_app.utils.JSONDealer;
 
 public class UserCollectionService extends IntentService {
 
@@ -26,6 +31,8 @@ public class UserCollectionService extends IntentService {
     public static final int ACTION_DELETE_EPISODE_FROM_COLLECTION = 4;
     public static final int ACTION_GET_EPISODES_BY_SEASON = 5;
     public static final int ACTION_IS_TV_SHOW_IN_COLLECTION = 6;
+    public static final int ACTION_DB_EXPORT = 7;
+    public static final int ACTION_DB_IMPORT = 8;
     // filters
     public static final String FILTER_GET_USER_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_GET_USER_COLLECTION";
     public static final String FILTER_IS_TV_SHOW_IN_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_IS_TV_SHOW_IN_COLLECTION";
@@ -89,6 +96,14 @@ public class UserCollectionService extends IntentService {
                     }
 
                     break;
+                case UserCollectionService.ACTION_DB_EXPORT:
+                    exportDBToJSON((Uri) intent.getParcelableExtra(UserCollectionService.KEY_DATA));
+
+                    break;
+                case UserCollectionService.ACTION_DB_IMPORT:
+                    importDBFromJSON((Uri) intent.getParcelableExtra(UserCollectionService.KEY_DATA));
+
+                    break;
                 default:
                     break;
             }
@@ -127,5 +142,31 @@ public class UserCollectionService extends IntentService {
 
     private boolean isTvShowInCollection(long tv_show_id){
         return (AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findByTvShowId(tv_show_id) != null);
+    }
+
+    private void exportDBToJSON(Uri filePath){
+        List<TvShowPreview> tvShowPreviews = AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findAll();
+        List<Episode> episodes = AppRoomDatabase.getInstance(this).getEpisodeDao().findAll();
+
+        DataContainerObject dataContainer = new DataContainerObject(tvShowPreviews, episodes);
+        String jsonContainer = JSONDealer.dataContainerObjectToJSON(dataContainer);
+
+        FileHandler.write(this, filePath, jsonContainer);
+    }
+    
+    private void importDBFromJSON(Uri filePath){
+        String jsonContent = FileHandler.read(this, filePath);
+
+        final DataContainerObject dataContainer = JSONDealer.dataContainerObjectFromJSON(jsonContent);
+
+        AppRoomDatabase.getInstance(this).runInTransaction(new Runnable() {
+            @Override
+            public void run() {
+                AppRoomDatabase.getInstance(getApplicationContext()).getTvShowPreviewDao().deleteAll();
+                AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().deleteAll();
+                AppRoomDatabase.getInstance(getApplicationContext()).getTvShowPreviewDao().save(dataContainer.tvShowPreviews);
+                AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().save(dataContainer.episodes);
+            }
+        });
     }
 }
