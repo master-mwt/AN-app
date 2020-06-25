@@ -4,12 +4,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class FirestoreDB {
@@ -25,30 +25,25 @@ public class FirestoreDB {
         this.db = FirebaseFirestore.getInstance();
     }
 
-    public Map<String, Object> getData(String userEmail){
-        final Map<String, Object>[] map = new Map[]{ null };
-
-        db.collection("data")
+    public Task<DocumentSnapshot> getData(String userEmail){
+        return db.collection("data")
                 .document(userEmail)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot result = task.getResult();
-                            map[0] = result != null ? result.getData() : null;
-                        } else {
-                            Log.w(FirestoreDB.class.getName(), task.getException());
-                        }
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(FirestoreDB.class.getName(), e);
                     }
                 });
-        return map[0];
     }
 
     public void putData(String userEmail, String jsonData){
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("data", jsonData);
+
         db.collection("data")
                 .document(userEmail)
-                .set(jsonData)
+                .set(dataMap)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "642801119201-u1fqp984if69bi513ulvjh9hvv9dbvms.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.univaq.disim.mwt.android_native_app",
+            "certificate_hash": "3358363c8a3d9961351daf4903851fcd2849e0e3"
+          }
+        },
+        {
           "client_id": "642801119201-u1rk4hhe2ikkmi3esuniumulshru37vk.apps.googleusercontent.com",
           "client_type": 3
         }

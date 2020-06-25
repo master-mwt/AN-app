@@ -31,4 +31,30 @@
         app:layout_constraintTop_toTopOf="@+id/export_button"
         app:layout_constraintVertical_bias="0.023" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/export_firestore_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:text="Export to Firestore"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/import_button"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/import_firestore_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:text="Import from Firestore"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/export_firestore_button"
+        app:layout_constraintVertical_bias="0.023" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

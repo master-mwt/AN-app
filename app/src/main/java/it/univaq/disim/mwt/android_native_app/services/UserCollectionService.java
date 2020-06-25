@@ -4,8 +4,13 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +21,7 @@ import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.roomdb.AppRoomDatabase;
 import it.univaq.disim.mwt.android_native_app.utils.DataContainerObject;
 import it.univaq.disim.mwt.android_native_app.utils.FileHandler;
+import it.univaq.disim.mwt.android_native_app.utils.FirestoreDB;
 import it.univaq.disim.mwt.android_native_app.utils.JSONDealer;
 
 public class UserCollectionService extends IntentService {
@@ -33,6 +39,8 @@ public class UserCollectionService extends IntentService {
     public static final int ACTION_IS_TV_SHOW_IN_COLLECTION = 6;
     public static final int ACTION_DB_EXPORT = 7;
     public static final int ACTION_DB_IMPORT = 8;
+    public static final int ACTION_DB_FIRESTORE_EXPORT = 9;
+    public static final int ACTION_DB_FIRESTORE_IMPORT = 10;
     // filters
     public static final String FILTER_GET_USER_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_GET_USER_COLLECTION";
     public static final String FILTER_IS_TV_SHOW_IN_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_IS_TV_SHOW_IN_COLLECTION";
@@ -104,6 +112,14 @@ public class UserCollectionService extends IntentService {
                     importDBFromJSON((Uri) intent.getParcelableExtra(UserCollectionService.KEY_DATA));
 
                     break;
+                case UserCollectionService.ACTION_DB_FIRESTORE_EXPORT:
+                    exportDBToFirestore(intent.getStringExtra(UserCollectionService.KEY_DATA));
+
+                    break;
+                case UserCollectionService.ACTION_DB_FIRESTORE_IMPORT:
+                    importDBFromFirestore(intent.getStringExtra(UserCollectionService.KEY_DATA));
+
+                    break;
                 default:
                     break;
             }
@@ -114,11 +130,11 @@ public class UserCollectionService extends IntentService {
         return new ArrayList<>(AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findAll());
     }
 
-    private void saveTvShowToCollection(TvShowPreview tvShowPreview){
+    private void saveTvShowToCollection(@NonNull TvShowPreview tvShowPreview){
         AppRoomDatabase.getInstance(this).getTvShowPreviewDao().save(tvShowPreview);
     }
 
-    private void deleteTvShowFromCollection(final TvShowPreview tvShowPreview){
+    private void deleteTvShowFromCollection(@NonNull final TvShowPreview tvShowPreview){
         AppRoomDatabase.getInstance(this).runInTransaction(new Runnable() {
             @Override
             public void run() {
@@ -128,23 +144,23 @@ public class UserCollectionService extends IntentService {
         });
     }
 
-    private void saveEpisodeToCollection(Episode episode){
+    private void saveEpisodeToCollection(@NonNull Episode episode){
         AppRoomDatabase.getInstance(this).getEpisodeDao().save(episode);
     }
 
-    private void deleteEpisodeFromCollection(Episode episode){
+    private void deleteEpisodeFromCollection(@NonNull Episode episode){
         AppRoomDatabase.getInstance(this).getEpisodeDao().deleteByEpisodeID(episode.getEpisode_id());
     }
 
-    private ArrayList<Episode> getEpisodesBySeason(Season season){
+    private ArrayList<Episode> getEpisodesBySeason(@NonNull Season season){
         return new ArrayList<>(AppRoomDatabase.getInstance(this).getEpisodeDao().findBySeasonId(season.getSeason_id()));
     }
 
-    private boolean isTvShowInCollection(long tv_show_id){
+    private boolean isTvShowInCollection(@NonNull long tv_show_id){
         return (AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findByTvShowId(tv_show_id) != null);
     }
 
-    private void exportDBToJSON(Uri filePath){
+    private void exportDBToJSON(@NonNull Uri filePath){
         List<TvShowPreview> tvShowPreviews = AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findAll();
         List<Episode> episodes = AppRoomDatabase.getInstance(this).getEpisodeDao().findAll();
 
@@ -154,7 +170,7 @@ public class UserCollectionService extends IntentService {
         FileHandler.write(this, filePath, jsonContainer);
     }
     
-    private void importDBFromJSON(Uri filePath){
+    private void importDBFromJSON(@NonNull Uri filePath){
         String jsonContent = FileHandler.read(this, filePath);
 
         final DataContainerObject dataContainer = JSONDealer.dataContainerObjectFromJSON(jsonContent);
@@ -166,6 +182,44 @@ public class UserCollectionService extends IntentService {
                 AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().deleteAll();
                 AppRoomDatabase.getInstance(getApplicationContext()).getTvShowPreviewDao().save(dataContainer.tvShowPreviews);
                 AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().save(dataContainer.episodes);
+            }
+        });
+    }
+
+    private void exportDBToFirestore(@NonNull String userEmail){
+        List<TvShowPreview> tvShowPreviews = AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findAll();
+        List<Episode> episodes = AppRoomDatabase.getInstance(this).getEpisodeDao().findAll();
+
+        DataContainerObject dataContainer = new DataContainerObject(tvShowPreviews, episodes);
+        String jsonContainer = JSONDealer.dataContainerObjectToJSON(dataContainer);
+
+        FirestoreDB.getInstance().putData(userEmail, jsonContainer);
+    }
+
+    private void importDBFromFirestore(@NonNull String userEmail){
+        FirestoreDB.getInstance().getData(userEmail).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful() && task.getResult() != null && task.getResult().getData() != null){
+                    String jsonContent = (String) task.getResult().getData().get("data");
+
+                    final DataContainerObject dataContainer = JSONDealer.dataContainerObjectFromJSON(jsonContent);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AppRoomDatabase.getInstance(getApplicationContext()).runInTransaction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AppRoomDatabase.getInstance(getApplicationContext()).getTvShowPreviewDao().deleteAll();
+                                    AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().deleteAll();
+                                    AppRoomDatabase.getInstance(getApplicationContext()).getTvShowPreviewDao().save(dataContainer.tvShowPreviews);
+                                    AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().save(dataContainer.episodes);
+                                }
+                            });
+                        }
+                    }).start();
+                }
             }
         });
     }
