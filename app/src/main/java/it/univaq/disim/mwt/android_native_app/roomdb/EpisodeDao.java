@@ -25,6 +25,9 @@ public interface EpisodeDao {
     @Query("DELETE FROM episodes WHERE episode_id = :episode_id")
     public void deleteByEpisodeID(long episode_id);
 
+    @Query("DELETE FROM episodes WHERE season_id = :season_id")
+    public void deleteBySeasonID(long season_id);
+
     @Query("DELETE FROM episodes WHERE tv_show_id = :tv_show_id")
     public void deleteByTvShowID(long tv_show_id);
 

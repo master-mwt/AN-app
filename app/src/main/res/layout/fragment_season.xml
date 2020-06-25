@@ -33,6 +33,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mark_all"
+                    android:text="Mark all as seen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/episodes_recycle_view"
                     android:layout_width="match_parent"

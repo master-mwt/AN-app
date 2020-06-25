@@ -16,6 +16,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +41,7 @@ public class SeasonFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerViewEpisodeAdapter recyclerViewEpisodeAdapter;
     private ProgressBar progressBar;
+    private MaterialButton markAllButton;
     private boolean isTvShowInCollection;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -49,6 +53,7 @@ public class SeasonFragment extends Fragment {
                     case DataParserService.FILTER_PARSE_TV_SHOW_SEASON:
                         if(seasonDetailed == null && season.equals(intent.getSerializableExtra(DataParserService.EXTRA))){
                             seasonDetailed = (Season) intent.getSerializableExtra(DataParserService.EXTRA);
+                            season.setSeason_id(seasonDetailed.getSeason_id());
 
                             progressBar.setVisibility(View.INVISIBLE);
 
@@ -59,10 +64,16 @@ public class SeasonFragment extends Fragment {
 
                             for(Episode episode : seasonDetailed.getEpisodes()){
                                 episode.setTv_show_id(season.getTv_show_id());
+                                episode.setSeason_id(season.getSeason_id());
                             }
 
                             data.addAll(seasonDetailed.getEpisodes());
                             recyclerViewEpisodeAdapter.notifyDataSetChanged();
+
+                            Intent i = new Intent(getContext(), UserCollectionService.class);
+                            i.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_GET_EPISODES_BY_SEASON);
+                            i.putExtra(UserCollectionService.KEY_DATA, seasonDetailed);
+                            Objects.requireNonNull(getContext()).startService(i);
                         }
                         break;
                     case UserCollectionService.FILTER_IS_TV_SHOW_IN_COLLECTION:
@@ -78,7 +89,7 @@ public class SeasonFragment extends Fragment {
                         break;
                     case UserCollectionService.FILTER_GET_EPISODES_BY_SEASON:
                         if(isTvShowInCollection && (season.equals(seasonDetailed))){
-                            ArrayList<Episode> episodes = (ArrayList<Episode>) intent.getSerializableExtra(UserCollectionService.EXTRA);
+                            final ArrayList<Episode> episodes = (ArrayList<Episode>) intent.getSerializableExtra(UserCollectionService.EXTRA);
                             boolean dirty = false;
                             if(episodes != null){
                                 for(Episode e : episodes){
@@ -91,6 +102,70 @@ public class SeasonFragment extends Fragment {
                                     recyclerViewEpisodeAdapter.notifyDataSetChanged();
                                 }
                             }
+                            recyclerViewEpisodeAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                                @Override
+                                public void onChanged() {
+                                    boolean allWatched = true;
+                                    for(Episode e : data){
+                                        if(!e.isWatched()){
+                                            allWatched = false;
+                                            break;
+                                        }
+                                    }
+                                    if(allWatched){
+                                        markAllButton.setText("Mark all as unseen");
+                                    } else {
+                                        markAllButton.setText("Mark all as seen");
+                                    }
+                                    super.onChanged();
+                                }
+                            });
+
+                            markAllButton.setEnabled(true);
+
+                            if(episodes.size() == data.size()){
+                                markAllButton.setText("Mark all as unseen");
+                            } else {
+                                markAllButton.setText("Mark all as seen");
+                            }
+
+                            markAllButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    boolean allWatched = true;
+                                    for(Episode e : data){
+                                        if(!e.isWatched()){
+                                            allWatched = false;
+                                            break;
+                                        }
+                                    }
+                                    if(allWatched){
+                                        for(Episode e : data){
+                                            e.setWatched(false);
+                                        }
+                                        recyclerViewEpisodeAdapter.notifyDataSetChanged();
+
+                                        Intent intent = new Intent(getContext(), UserCollectionService.class);
+                                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_MARK_SEASON_AS_UNSEEN);
+                                        intent.putExtra(UserCollectionService.KEY_DATA, seasonDetailed);
+                                        Objects.requireNonNull(getContext()).startService(intent);
+
+                                        markAllButton.setText("Mark all as seen");
+                                    } else {
+                                        for(Episode e : data){
+                                            e.setWatched(true);
+                                        }
+                                        recyclerViewEpisodeAdapter.notifyDataSetChanged();
+
+                                        Intent intent = new Intent(getContext(), UserCollectionService.class);
+                                        intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_MARK_SEASON_AS_SEEN);
+                                        intent.putExtra(UserCollectionService.KEY_DATA, (Serializable) data);
+                                        Objects.requireNonNull(getContext()).startService(intent);
+
+                                        markAllButton.setText("Mark all as unseen");
+                                    }
+                                }
+                            });
                         }
                         break;
                     default:
@@ -176,6 +251,8 @@ public class SeasonFragment extends Fragment {
         recyclerView = view.findViewById(R.id.episodes_recycle_view);
 
         progressBar = view.findViewById(R.id.season_progress);
+
+        markAllButton = view.findViewById(R.id.mark_all);
 
         // Inflate the layout for this fragment
         return view;

@@ -41,6 +41,8 @@ public class UserCollectionService extends IntentService {
     public static final int ACTION_DB_IMPORT = 8;
     public static final int ACTION_DB_FIRESTORE_EXPORT = 9;
     public static final int ACTION_DB_FIRESTORE_IMPORT = 10;
+    public static final int ACTION_MARK_SEASON_AS_UNSEEN = 11;
+    public static final int ACTION_MARK_SEASON_AS_SEEN = 12;
     // filters
     public static final String FILTER_GET_USER_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_GET_USER_COLLECTION";
     public static final String FILTER_IS_TV_SHOW_IN_COLLECTION = "it.univaq.disim.mwt.android_native_app.FILTER_IS_TV_SHOW_IN_COLLECTION";
@@ -104,6 +106,16 @@ public class UserCollectionService extends IntentService {
                     }
 
                     break;
+                case UserCollectionService.ACTION_MARK_SEASON_AS_UNSEEN:
+                    season = (Season) intent.getSerializableExtra(UserCollectionService.KEY_DATA);
+                    markSeasonAsUnseen(season);
+
+                    break;
+                case UserCollectionService.ACTION_MARK_SEASON_AS_SEEN:
+                    List<Episode> episodes = (List<Episode>) intent.getSerializableExtra(UserCollectionService.KEY_DATA);
+                    markSeasonAsSeen(episodes);
+
+                    break;
                 case UserCollectionService.ACTION_DB_EXPORT:
                     exportDBToJSON((Uri) intent.getParcelableExtra(UserCollectionService.KEY_DATA));
 
@@ -158,6 +170,23 @@ public class UserCollectionService extends IntentService {
 
     private boolean isTvShowInCollection(@NonNull long tv_show_id){
         return (AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findByTvShowId(tv_show_id) != null);
+    }
+
+    private void markSeasonAsUnseen(@NonNull Season season){
+        AppRoomDatabase.getInstance(this).getEpisodeDao().deleteBySeasonID(season.getSeason_id());
+    }
+
+    private void markSeasonAsSeen(@NonNull List<Episode> episodes){
+        List<Episode> episodesAlreadySaved = AppRoomDatabase.getInstance(this).getEpisodeDao().findBySeasonId(episodes.get(0).getSeason_id());
+        List<Episode> episodesNotSavedYet = new ArrayList<>();
+
+        for(Episode e : episodes){
+            if(!episodesAlreadySaved.contains(e)){
+                episodesNotSavedYet.add(e);
+            }
+        }
+
+        AppRoomDatabase.getInstance(this).getEpisodeDao().save(episodesNotSavedYet);
     }
 
     private void exportDBToJSON(@NonNull Uri filePath){
