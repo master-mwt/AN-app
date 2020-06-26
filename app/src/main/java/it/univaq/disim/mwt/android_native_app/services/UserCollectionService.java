@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -23,6 +24,7 @@ import it.univaq.disim.mwt.android_native_app.utils.DataContainerObject;
 import it.univaq.disim.mwt.android_native_app.utils.FileHandler;
 import it.univaq.disim.mwt.android_native_app.utils.FirestoreDB;
 import it.univaq.disim.mwt.android_native_app.utils.JSONDealer;
+import it.univaq.disim.mwt.android_native_app.utils.Notification;
 
 public class UserCollectionService extends IntentService {
 
@@ -193,16 +195,32 @@ public class UserCollectionService extends IntentService {
         List<TvShowPreview> tvShowPreviews = AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findAll();
         List<Episode> episodes = AppRoomDatabase.getInstance(this).getEpisodeDao().findAll();
 
+        if( (tvShowPreviews == null || tvShowPreviews.isEmpty()) && (episodes == null || episodes.isEmpty()) ){
+            Notification.backupStatusNotification(this, "Export error", "Could not export empty database");
+            return;
+        }
+
         DataContainerObject dataContainer = new DataContainerObject(tvShowPreviews, episodes);
         String jsonContainer = JSONDealer.dataContainerObjectToJSON(dataContainer);
 
+        if(jsonContainer == null){
+            Notification.backupStatusNotification(this, "Export error", "An error occurred while exporting DB on file");
+            return;
+        }
+
         FileHandler.write(this, filePath, jsonContainer);
+        Notification.backupStatusNotification(this, "Export complete", "DB Exported on file with success");
     }
     
     private void importDBFromJSON(@NonNull Uri filePath){
         String jsonContent = FileHandler.read(this, filePath);
 
         final DataContainerObject dataContainer = JSONDealer.dataContainerObjectFromJSON(jsonContent);
+
+        if(dataContainer == null){
+            Notification.backupStatusNotification(this, "Import error", "An error occurred while importing DB from file");
+            return;
+        }
 
         AppRoomDatabase.getInstance(this).runInTransaction(new Runnable() {
             @Override
@@ -213,16 +231,28 @@ public class UserCollectionService extends IntentService {
                 AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().save(dataContainer.episodes);
             }
         });
+        Notification.backupStatusNotification(this, "Import complete", "DB Imported from file with success");
     }
 
     private void exportDBToFirestore(@NonNull String userEmail){
         List<TvShowPreview> tvShowPreviews = AppRoomDatabase.getInstance(this).getTvShowPreviewDao().findAll();
         List<Episode> episodes = AppRoomDatabase.getInstance(this).getEpisodeDao().findAll();
 
+        if( (tvShowPreviews == null || tvShowPreviews.isEmpty()) && (episodes == null || episodes.isEmpty()) ){
+            Notification.backupStatusNotification(this, "Export error", "Could not export empty database");
+            return;
+        }
+
         DataContainerObject dataContainer = new DataContainerObject(tvShowPreviews, episodes);
         String jsonContainer = JSONDealer.dataContainerObjectToJSON(dataContainer);
 
+        if(jsonContainer == null){
+            Notification.backupStatusNotification(this, "Export error", "An error occurred while exporting DB on Firestore");
+            return;
+        }
+
         FirestoreDB.getInstance().putData(userEmail, jsonContainer);
+        Notification.backupStatusNotification(this, "Export complete", "DB Exported on Firestore with success");
     }
 
     private void importDBFromFirestore(@NonNull String userEmail){
@@ -246,9 +276,18 @@ public class UserCollectionService extends IntentService {
                                     AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().save(dataContainer.episodes);
                                 }
                             });
+                            Notification.backupStatusNotification(getApplicationContext(), "Import complete", "DB Imported from Firestore with success");
                         }
                     }).start();
+                } else {
+                    Notification.backupStatusNotification(getApplicationContext(), "Import error", "An error occurred while importing DB from Firestore");
                 }
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Notification.backupStatusNotification(getApplicationContext(), "Import error", "Firestore import DB error: " + e.getMessage());
             }
         });
     }
