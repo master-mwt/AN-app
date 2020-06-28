@@ -62,7 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
                     intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DB_FIRESTORE_EXPORT);
                     intent.putExtra(UserCollectionService.KEY_DATA, mAuth.getCurrentUser().getEmail());
                     startService(intent);
-                    Toast.makeText(getApplicationContext(), "exporting to Firestore", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_content_backup_firestore_export), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -76,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
                     intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DB_FIRESTORE_IMPORT);
                     intent.putExtra(UserCollectionService.KEY_DATA, mAuth.getCurrentUser().getEmail());
                     startService(intent);
-                    Toast.makeText(getApplicationContext(), "importing from Firestore", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_content_backup_firestore_import), Toast.LENGTH_SHORT).show();
                 }
             }
         });

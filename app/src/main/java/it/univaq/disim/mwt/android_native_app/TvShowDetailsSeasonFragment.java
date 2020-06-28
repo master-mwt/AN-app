@@ -14,12 +14,6 @@ import java.util.ArrayList;
 import it.univaq.disim.mwt.android_native_app.adapters.RecyclerViewSeasonCardAdapter;
 import it.univaq.disim.mwt.android_native_app.model.Season;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TvShowDetailsSeasonFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TvShowDetailsSeasonFragment extends Fragment {
     private static final String ARG_SEASONS = "seasons";
 

@@ -89,9 +89,9 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
         originalLanguage.setText(tvShowDetails.getOriginal_language());
 
         if(tvShowDetails.isIn_collection()){
-            collectionButton.setText("Remove from collection");
+            collectionButton.setText(getString(R.string.tvshow_details_button_remove_from_collection));
         } else {
-            collectionButton.setText("Add to collection");
+            collectionButton.setText(getString(R.string.tvshow_details_button_add_to_collection));
         }
 
         collectionButton.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +108,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
                     Objects.requireNonNull(getContext()).startService(intent);
 
                     tvShowDetails.setIn_collection(false);
-                    collectionButton.setText("Add to collection");
+                    collectionButton.setText(getString(R.string.tvshow_details_button_add_to_collection));
                 } else {
                     TvShowPreview data = new TvShowPreview();
                     data.setTv_show_id(tvShowDetails.getTv_show_id());
@@ -121,7 +121,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
                     Objects.requireNonNull(getContext()).startService(intent);
 
                     tvShowDetails.setIn_collection(true);
-                    collectionButton.setText("Remove from collection");
+                    collectionButton.setText(getString(R.string.tvshow_details_button_remove_from_collection));
                 }
             }
         });

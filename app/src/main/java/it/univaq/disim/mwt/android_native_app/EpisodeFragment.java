@@ -55,9 +55,9 @@ public class EpisodeFragment extends Fragment {
                             episodeAirDate.setText(episodeDetailed.getAir_date());
 
                             if(episodeDetailed.isWatched()){
-                                markEpisodeButton.setText("Mark as unseen");
+                                markEpisodeButton.setText(getString(R.string.episode_button_mark_as_unseen));
                             } else {
-                                markEpisodeButton.setText("Mark as seen");
+                                markEpisodeButton.setText(getString(R.string.episode_button_mark_as_seen));
                             }
 
                         }
@@ -82,7 +82,7 @@ public class EpisodeFragment extends Fragment {
                                             Objects.requireNonNull(getContext()).startService(intent);
 
                                             episodeDetailed.setWatched(false);
-                                            markEpisodeButton.setText("Mark as seen");
+                                            markEpisodeButton.setText(getString(R.string.episode_button_mark_as_seen));
                                         } else {
 
                                             Intent intent = new Intent(getContext(), UserCollectionService.class);
@@ -91,7 +91,7 @@ public class EpisodeFragment extends Fragment {
                                             Objects.requireNonNull(getContext()).startService(intent);
 
                                             episodeDetailed.setWatched(true);
-                                            markEpisodeButton.setText("Mark as unseen");
+                                            markEpisodeButton.setText(getString(R.string.episode_button_mark_as_unseen));
                                         }
                                     }
                                 });
@@ -149,9 +149,9 @@ public class EpisodeFragment extends Fragment {
             episodeAirDate.setText(episodeDetailed.getAir_date());
 
             if(episodeDetailed.isWatched()){
-                markEpisodeButton.setText("Mark as unseen");
+                markEpisodeButton.setText(getString(R.string.episode_button_mark_as_unseen));
             } else {
-                markEpisodeButton.setText("Mark as seen");
+                markEpisodeButton.setText(getString(R.string.episode_button_mark_as_seen));
             }
 
             if(isTvShowInCollection){

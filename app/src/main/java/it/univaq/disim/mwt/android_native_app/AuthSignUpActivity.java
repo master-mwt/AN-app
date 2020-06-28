@@ -1,7 +1,9 @@
 package it.univaq.disim.mwt.android_native_app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +22,6 @@ public class AuthSignUpActivity extends AppCompatActivity {
     private TextInputEditText email;
     private TextInputEditText password;
     private MaterialButton signUpButton;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -55,10 +57,7 @@ public class AuthSignUpActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if(currentUser != null){
-            System.out.println("Logged in user email: " + currentUser.getEmail());
             signUpButton.setEnabled(false);
-        } else {
-            System.out.println("User not logged in");
         }
     }
 
@@ -68,12 +67,15 @@ public class AuthSignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    System.out.println("Sign up success: "  + user.getEmail());
                     onBackPressed();
                 } else {
                     // If sign in fails, display a message to the user.
-                    System.out.println("Sign up failed: " + task.getException().getMessage());
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if(imm.isAcceptingText()) {
+                        // verify if the soft keyboard is open
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    }
+                    Snackbar.make(findViewById(R.id.auth_sign_up_coordinator_layout), getString(R.string.snackbar_sign_up_error) + task.getException().getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             }
         });

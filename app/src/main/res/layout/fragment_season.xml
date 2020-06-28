@@ -35,7 +35,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/mark_all"
-                    android:text="Mark all as seen"
+                    android:text="@string/season_mark_all_as_seen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false" />

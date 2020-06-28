@@ -113,9 +113,9 @@ public class SeasonFragment extends Fragment {
                                         }
                                     }
                                     if(allWatched){
-                                        markAllButton.setText("Mark all as unseen");
+                                        markAllButton.setText(getString(R.string.season_mark_all_as_unseen));
                                     } else {
-                                        markAllButton.setText("Mark all as seen");
+                                        markAllButton.setText(getString(R.string.season_mark_all_as_seen));
                                     }
                                     super.onChanged();
                                 }
@@ -124,9 +124,9 @@ public class SeasonFragment extends Fragment {
                             markAllButton.setEnabled(true);
 
                             if(episodes.size() == data.size()){
-                                markAllButton.setText("Mark all as unseen");
+                                markAllButton.setText(getString(R.string.season_mark_all_as_unseen));
                             } else {
-                                markAllButton.setText("Mark all as seen");
+                                markAllButton.setText(getString(R.string.season_mark_all_as_seen));
                             }
 
                             markAllButton.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +150,7 @@ public class SeasonFragment extends Fragment {
                                         intent.putExtra(UserCollectionService.KEY_DATA, seasonDetailed);
                                         Objects.requireNonNull(getContext()).startService(intent);
 
-                                        markAllButton.setText("Mark all as seen");
+                                        markAllButton.setText(getString(R.string.season_mark_all_as_seen));
                                     } else {
                                         for(Episode e : data){
                                             e.setWatched(true);
@@ -162,7 +162,7 @@ public class SeasonFragment extends Fragment {
                                         intent.putExtra(UserCollectionService.KEY_DATA, (Serializable) data);
                                         Objects.requireNonNull(getContext()).startService(intent);
 
-                                        markAllButton.setText("Mark all as unseen");
+                                        markAllButton.setText(getString(R.string.season_mark_all_as_unseen));
                                     }
                                 }
                             });

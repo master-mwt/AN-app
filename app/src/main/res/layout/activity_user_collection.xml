@@ -50,7 +50,7 @@
                     android:id="@+id/empty_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Empty Collection"
+                    android:text="@string/empty_collection_message"
                     app:layout_constraintBottom_toTopOf="@+id/collection_tv_shows_recycle_view"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

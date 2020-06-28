@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import it.univaq.disim.mwt.android_native_app.R;
 import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 
 public class FileHandler {
@@ -33,7 +34,7 @@ public class FileHandler {
     public static void saveBackup(Activity activity){
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.setType("application/json");
-        intent.putExtra(Intent.EXTRA_TITLE, "backup.json");
+        intent.putExtra(Intent.EXTRA_TITLE, activity.getString(R.string.backup_database_filename));
         intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         activity.startActivityForResult(intent, REQUEST_SAVE_BACKUP_CODE);
     }
@@ -49,7 +50,7 @@ public class FileHandler {
                     intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DB_IMPORT);
                     intent.putExtra(UserCollectionService.KEY_DATA, data.getData());
                     context.startService(intent);
-                    Toast.makeText(context, "importing backup", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.toast_content_backup_import), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case REQUEST_SAVE_BACKUP_CODE:
@@ -59,7 +60,7 @@ public class FileHandler {
                     intent.putExtra(UserCollectionService.KEY_ACTION, UserCollectionService.ACTION_DB_EXPORT);
                     intent.putExtra(UserCollectionService.KEY_DATA, data.getData());
                     context.startService(intent);
-                    Toast.makeText(context, "exporting backup", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.toast_content_backup_export), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

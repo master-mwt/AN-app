@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import it.univaq.disim.mwt.android_native_app.R;
 import it.univaq.disim.mwt.android_native_app.utils.StoragePermission;
 
 public class StoragePermissionDeniedDialogFragment extends DialogFragment {
@@ -16,15 +17,15 @@ public class StoragePermissionDeniedDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("If you reject the permission you cannot use this service, please turn on the permission")
-                .setPositiveButton("Turn on", new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.storage_permission_denied_dialog_message))
+                .setPositiveButton(getString(R.string.storage_permission_denied_dialog_positive_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         StoragePermission.requestStoragePermission(getActivity());
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.storage_permission_denied_dialog_negative_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO: It is all right to finish ?

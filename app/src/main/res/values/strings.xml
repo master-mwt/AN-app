@@ -1,19 +1,76 @@
 <resources>
     <!-- TODO: language ita -->
     <string name="app_name">android-native-app</string>
+    <string name="navigation_view_open">navigation_view_open</string>
+    <string name="navigation_view_close">navigation_view_close</string>
+
+    <!-- TMDB -->
     <string name="tmdb_api_url">https://api.themoviedb.org/3/</string>
     <string name="tmdb_api_key">609fbad41366e27a4f7a58d8d1760a3b</string>
     <string name="tmdb_api_language">en-US</string>
     <string name="tmdb_image_baselink">https://image.tmdb.org/t/p/w500</string>
 
-    <string name="navigation_view_open">navigation_view_open</string>
-    <string name="navigation_view_close">navigation_view_close</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- GOOGLE MAPS -->
     <string name="google_maps_api_key">AIzaSyA5k89K_JJfW6IGyUR3ZmXKmZLZ0Y-2npQ</string>
 
+    <!-- ROOM DATABASE NAME -->
+    <string name="room_database_name">AppDB.db</string>
+
+    <!-- BACKUP FILENAME -->
+    <string name="backup_database_filename">backup.json</string>
+
+    <!-- NOTIFICATION CHANNEL -->
     <string name="channel_id">database_backup_status</string>
     <string name="channel_name">Database backup status</string>
     <string name="channel_description">Notifications about the status of database backups</string>
+
+    <!-- DIALOGS TEXT -->
+    <string name="position_permission_denied_dialog_message">If you reject the permission you cannot use this service, please turn on the permission</string>
+    <string name="position_permission_denied_dialog_positive_button">Turn on</string>
+    <string name="position_permission_denied_dialog_negative_button">Cancel</string>
+    <string name="storage_permission_denied_dialog_message">If you reject the permission you cannot use this service, please turn on the permission</string>
+    <string name="storage_permission_denied_dialog_positive_button">Turn on</string>
+    <string name="storage_permission_denied_dialog_negative_button">Cancel</string>
+
+    <!-- APPLICATION TEXT (buttons, messages, titles, text input hints) -->
+    <string name="backup_notification_title_export_error">Export error</string>
+    <string name="backup_notification_title_export_complete">Export complete</string>
+    <string name="backup_notification_content_export_error_empty_database">Could not export empty database</string>
+    <string name="backup_notification_content_export_error">An error occurred while exporting DB on file</string>
+    <string name="backup_notification_content_export_complete">DB Exported on file with success</string>
+    <string name="backup_notification_title_import_error">Import error</string>
+    <string name="backup_notification_title_import_complete">Import complete</string>
+    <string name="backup_notification_content_import_error">An error occurred while importing DB from file</string>
+    <string name="backup_notification_content_import_complete">DB Imported from file with success</string>
+    <string name="firestore_backup_notification_content_export_error">An error occurred while exporting DB on Firestore</string>
+    <string name="firestore_backup_notification_content_export_complete">DB Exported on Firestore with success</string>
+    <string name="firestore_backup_notification_content_import_complete">DB Imported from Firestore with success</string>
+    <string name="firestore_backup_notification_content_import_error">An error occurred while importing DB from Firestore</string>
+    <string name="toast_content_backup_import">importing backup</string>
+    <string name="toast_content_backup_export">exporting backup</string>
+    <string name="episode_button_mark_as_unseen">Mark as unseen</string>
+    <string name="episode_button_mark_as_seen">Mark as seen</string>
+    <string name="fragment_episode_initial_title">"episode "</string>
+    <string name="fragment_tvshows_popular_title">popular</string>
+    <string name="fragment_tvshows_top_rated_title">top rated</string>
+    <string name="season_mark_all_as_unseen">Mark all as unseen</string>
+    <string name="season_mark_all_as_seen">Mark all as seen</string>
+    <string name="toast_content_backup_firestore_export">exporting to Firestore</string>
+    <string name="toast_content_backup_firestore_import">importing from Firestore</string>
+    <string name="fragment_tvshow_details_season_title">seasons</string>
+    <string name="fragment_tvshow_details_info_cast_title">info</string>
+    <string name="tvshow_details_button_remove_from_collection">Remove from collection</string>
+    <string name="tvshow_details_button_add_to_collection">Add to collection</string>
+    <string name="sign_in_button">Sign in</string>
+    <string name="sign_up_button">Sign up</string>
+    <string name="email_hint_textinput">Email</string>
+    <string name="password_hint_textinput">Password</string>
+    <string name="logout_button">Logout</string>
+    <string name="settings_import_db_button">Import db</string>
+    <string name="settings_export_to_firestore_button">Export to Firestore</string>
+    <string name="settings_export_db_button">Export db</string>
+    <string name="settings_import_from_firestore_button">Import from Firestore</string>
+    <string name="empty_collection_message">Empty Collection</string>
+    <string name="snackbar_sign_in_error">"sign in error: "</string>
+    <string name="snackbar_sign_up_error">"sign up failed: "</string>
 </resources>

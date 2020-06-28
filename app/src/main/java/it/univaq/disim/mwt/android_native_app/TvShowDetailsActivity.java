@@ -65,8 +65,8 @@ public class TvShowDetailsActivity extends AppCompatActivity implements Navigati
                         tabLayout.setupWithViewPager(viewPager);
 
                         TvShowDetailsActivity.ViewPagerAdapter viewPagerAdapter = new TvShowDetailsActivity.ViewPagerAdapter(getSupportFragmentManager(), 0);
-                        viewPagerAdapter.addFragment(tvShowDetailsSeasonFragment, "seasons");
-                        viewPagerAdapter.addFragment(tvShowDetailsInfoCastFragment, "info");
+                        viewPagerAdapter.addFragment(tvShowDetailsSeasonFragment, getString(R.string.fragment_tvshow_details_season_title));
+                        viewPagerAdapter.addFragment(tvShowDetailsInfoCastFragment, getString(R.string.fragment_tvshow_details_info_cast_title));
                         viewPager.setAdapter(viewPagerAdapter);
 
                         break;

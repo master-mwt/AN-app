@@ -75,7 +75,7 @@ public class EpisodeActivity extends AppCompatActivity implements NavigationView
             }
 
             EpisodeFragment fragment = EpisodeFragment.newInstance(episode);
-            viewPagerAdapter.addFragment(fragment, "episode " + episode.getEpisode_number());
+            viewPagerAdapter.addFragment(fragment, getString(R.string.fragment_episode_initial_title) + episode.getEpisode_number());
         }
 
         tabLayout.setupWithViewPager(viewPager);

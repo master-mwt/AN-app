@@ -68,8 +68,8 @@ public class ExploreActivity extends AppCompatActivity implements NavigationView
         tabLayout.setupWithViewPager(viewPager);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        viewPagerAdapter.addFragment(exploreTvShowsPopularFragment, "popular");
-        viewPagerAdapter.addFragment(exploreTvShowsTopRatedFragment, "top rated");
+        viewPagerAdapter.addFragment(exploreTvShowsPopularFragment, getString(R.string.fragment_tvshows_popular_title));
+        viewPagerAdapter.addFragment(exploreTvShowsTopRatedFragment, getString(R.string.fragment_tvshows_top_rated_title));
         viewPager.setAdapter(viewPagerAdapter);
 
         //tabLayout.getTabAt(0).setIcon(R.drawable.ic_explore_black_24dp);

@@ -3,6 +3,7 @@ package it.univaq.disim.mwt.android_native_app.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.univaq.disim.mwt.android_native_app.R;
 import it.univaq.disim.mwt.android_native_app.model.Episode;
 import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
@@ -196,7 +198,7 @@ public class UserCollectionService extends IntentService {
         List<Episode> episodes = AppRoomDatabase.getInstance(this).getEpisodeDao().findAll();
 
         if( (tvShowPreviews == null || tvShowPreviews.isEmpty()) && (episodes == null || episodes.isEmpty()) ){
-            Notification.backupStatusNotification(this, "Export error", "Could not export empty database");
+            Notification.backupStatusNotification(this, getString(R.string.backup_notification_title_export_error), getString(R.string.backup_notification_content_export_error_empty_database));
             return;
         }
 
@@ -204,12 +206,12 @@ public class UserCollectionService extends IntentService {
         String jsonContainer = JSONDealer.dataContainerObjectToJSON(dataContainer);
 
         if(jsonContainer == null){
-            Notification.backupStatusNotification(this, "Export error", "An error occurred while exporting DB on file");
+            Notification.backupStatusNotification(this, getString(R.string.backup_notification_title_export_error), getString(R.string.backup_notification_content_export_error));
             return;
         }
 
         FileHandler.write(this, filePath, jsonContainer);
-        Notification.backupStatusNotification(this, "Export complete", "DB Exported on file with success");
+        Notification.backupStatusNotification(this, getString(R.string.backup_notification_title_export_complete), getString(R.string.backup_notification_content_export_complete));
     }
     
     private void importDBFromJSON(@NonNull Uri filePath){
@@ -218,7 +220,7 @@ public class UserCollectionService extends IntentService {
         final DataContainerObject dataContainer = JSONDealer.dataContainerObjectFromJSON(jsonContent);
 
         if(dataContainer == null){
-            Notification.backupStatusNotification(this, "Import error", "An error occurred while importing DB from file");
+            Notification.backupStatusNotification(this, getString(R.string.backup_notification_title_import_error), getString(R.string.backup_notification_content_import_error));
             return;
         }
 
@@ -231,7 +233,7 @@ public class UserCollectionService extends IntentService {
                 AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().save(dataContainer.episodes);
             }
         });
-        Notification.backupStatusNotification(this, "Import complete", "DB Imported from file with success");
+        Notification.backupStatusNotification(this, getString(R.string.backup_notification_title_import_complete), getString(R.string.backup_notification_content_import_complete));
     }
 
     private void exportDBToFirestore(@NonNull String userEmail){
@@ -239,7 +241,7 @@ public class UserCollectionService extends IntentService {
         List<Episode> episodes = AppRoomDatabase.getInstance(this).getEpisodeDao().findAll();
 
         if( (tvShowPreviews == null || tvShowPreviews.isEmpty()) && (episodes == null || episodes.isEmpty()) ){
-            Notification.backupStatusNotification(this, "Export error", "Could not export empty database");
+            Notification.backupStatusNotification(this, getString(R.string.backup_notification_title_export_error), getString(R.string.backup_notification_content_export_error_empty_database));
             return;
         }
 
@@ -247,12 +249,12 @@ public class UserCollectionService extends IntentService {
         String jsonContainer = JSONDealer.dataContainerObjectToJSON(dataContainer);
 
         if(jsonContainer == null){
-            Notification.backupStatusNotification(this, "Export error", "An error occurred while exporting DB on Firestore");
+            Notification.backupStatusNotification(this, getString(R.string.backup_notification_title_export_error), getString(R.string.firestore_backup_notification_content_export_error));
             return;
         }
 
         FirestoreDB.getInstance().putData(userEmail, jsonContainer);
-        Notification.backupStatusNotification(this, "Export complete", "DB Exported on Firestore with success");
+        Notification.backupStatusNotification(this, getString(R.string.backup_notification_title_export_complete), getString(R.string.firestore_backup_notification_content_export_complete));
     }
 
     private void importDBFromFirestore(@NonNull String userEmail){
@@ -276,18 +278,19 @@ public class UserCollectionService extends IntentService {
                                     AppRoomDatabase.getInstance(getApplicationContext()).getEpisodeDao().save(dataContainer.episodes);
                                 }
                             });
-                            Notification.backupStatusNotification(getApplicationContext(), "Import complete", "DB Imported from Firestore with success");
+                            Notification.backupStatusNotification(getApplicationContext(), getString(R.string.backup_notification_title_import_complete), getString(R.string.firestore_backup_notification_content_import_complete));
                         }
                     }).start();
                 } else {
-                    Notification.backupStatusNotification(getApplicationContext(), "Import error", "An error occurred while importing DB from Firestore");
+                    Notification.backupStatusNotification(getApplicationContext(), getString(R.string.backup_notification_title_import_error), getString(R.string.firestore_backup_notification_content_import_error));
                 }
             }
         })
         .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Notification.backupStatusNotification(getApplicationContext(), "Import error", "Firestore import DB error: " + e.getMessage());
+                Notification.backupStatusNotification(getApplicationContext(), getString(R.string.backup_notification_title_import_error), getString(R.string.firestore_backup_notification_content_import_error));
+                Log.w(UserCollectionService.class.getName(), e.getMessage());
             }
         });
     }

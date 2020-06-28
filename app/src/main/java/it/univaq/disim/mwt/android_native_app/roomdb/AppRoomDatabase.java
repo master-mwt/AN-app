@@ -6,6 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import it.univaq.disim.mwt.android_native_app.R;
 import it.univaq.disim.mwt.android_native_app.model.Episode;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 
@@ -15,7 +16,7 @@ public abstract class AppRoomDatabase extends RoomDatabase {
 
     public static synchronized AppRoomDatabase getInstance(Context context){
         return (instance == null) ?
-                instance = Room.databaseBuilder(context, AppRoomDatabase.class, "AppDB.db").build() :
+                instance = Room.databaseBuilder(context, AppRoomDatabase.class, context.getString(R.string.room_database_name)).build() :
                 instance;
     }
 
