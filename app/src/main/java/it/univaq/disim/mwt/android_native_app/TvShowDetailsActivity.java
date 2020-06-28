@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,8 +28,6 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.Season;
@@ -139,7 +138,7 @@ public class TvShowDetailsActivity extends AppCompatActivity implements Navigati
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Logger.getLogger(TvShowDetailsActivity.class.getName()).log(Level.SEVERE, (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage() );
+                    Log.w(TvShowDetailsActivity.class.getName(), (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
                 }
             });
         }

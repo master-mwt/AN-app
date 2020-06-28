@@ -2,6 +2,7 @@ package it.univaq.disim.mwt.android_native_app.api;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -9,9 +10,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import it.univaq.disim.mwt.android_native_app.R;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
@@ -134,7 +132,6 @@ public class TMDB {
     }
 
     private static void handleResponseError(VolleyError error){
-        // TODO: better Volley error handling (?)
-        Logger.getLogger(TMDB.class.getName()).log(Level.SEVERE, (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
+        Log.w(TMDB.class.getName(), (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
     }
 }

@@ -2,6 +2,7 @@ package it.univaq.disim.mwt.android_native_app.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -12,8 +13,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import it.univaq.disim.mwt.android_native_app.model.Episode;
 import it.univaq.disim.mwt.android_native_app.model.Season;
@@ -246,7 +245,7 @@ public class DataParserService extends IntentService {
 
         } catch (JSONException e) {
             tvShowDetails = null;
-            Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+            Log.w(DataParserService.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
         }
         return tvShowDetails;
     }
@@ -279,7 +278,7 @@ public class DataParserService extends IntentService {
             }
 
         } catch (JSONException e) {
-            Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+            Log.w(DataParserService.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
         }
 
         return tvShowPreviews;
@@ -334,7 +333,7 @@ public class DataParserService extends IntentService {
 
         } catch (JSONException e) {
             season = null;
-            Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+            Log.w(DataParserService.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
         }
 
         return season;
@@ -366,7 +365,7 @@ public class DataParserService extends IntentService {
 
         } catch (JSONException e) {
             episode = null;
-            Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+            Log.w(DataParserService.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
         }
 
         return episode;
@@ -403,7 +402,7 @@ public class DataParserService extends IntentService {
             }
 
         } catch (JSONException e) {
-            Logger.getLogger(DataParserService.class.getName()).log(Level.SEVERE, (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+            Log.w(DataParserService.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
         }
 
         return tvShowCharacters;

@@ -2,6 +2,7 @@ package it.univaq.disim.mwt.android_native_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,6 @@ import com.google.android.material.card.MaterialCardView;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import it.univaq.disim.mwt.android_native_app.R;
 import it.univaq.disim.mwt.android_native_app.SeasonActivity;
@@ -63,7 +62,7 @@ public class RecyclerViewSeasonCardAdapter extends RecyclerView.Adapter<Recycler
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Logger.getLogger(RecyclerViewSeasonCardAdapter.class.getName()).log(Level.SEVERE, (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
+                    Log.w(RecyclerViewSeasonCardAdapter.class.getName(), (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
                 }
             });
         }

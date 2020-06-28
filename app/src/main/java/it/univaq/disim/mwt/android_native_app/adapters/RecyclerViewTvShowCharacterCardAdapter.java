@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.android_native_app.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,6 @@ import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import it.univaq.disim.mwt.android_native_app.R;
 import it.univaq.disim.mwt.android_native_app.model.TvShowCharacter;
@@ -59,7 +58,7 @@ public class RecyclerViewTvShowCharacterCardAdapter extends RecyclerView.Adapter
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Logger.getLogger(RecyclerViewTvShowCharacterCardAdapter.class.getName()).log(Level.SEVERE, (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
+                    Log.w(RecyclerViewTvShowCharacterCardAdapter.class.getName(), (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
                 }
             });
         }

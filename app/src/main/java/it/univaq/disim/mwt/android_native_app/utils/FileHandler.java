@@ -77,13 +77,13 @@ public class FileHandler {
             bufferedWriter.write(text);
             bufferedWriter.flush();
         } catch(IOException e){
-            Log.d(FileHandler.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+            Log.w(FileHandler.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
         } finally {
             if(bufferedWriter != null){
                 try {
                     bufferedWriter.close();
                 } catch (IOException e) {
-                    Log.d(FileHandler.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+                    Log.w(FileHandler.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
                 }
             }
         }
@@ -104,13 +104,13 @@ public class FileHandler {
             }
 
         } catch(IOException e){
-            Log.d(FileHandler.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+            Log.w(FileHandler.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
         } finally {
             if(bufferedReader != null){
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
-                    Log.d(FileHandler.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
+                    Log.w(FileHandler.class.getName(), (e.getCause() != null) ? e.getCause().getMessage() : e.getMessage());
                 }
             }
         }
