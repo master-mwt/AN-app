@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -133,6 +135,14 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        View headerView = navigationView.getHeaderView(0);
+        TextView userName = headerView.findViewById(R.id.drawer_header_user_name);
+        userName.setText((FirebaseAuth.getInstance().getCurrentUser() != null) ? FirebaseAuth.getInstance().getCurrentUser().getEmail(): "guest");
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
@@ -153,6 +163,21 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             case R.id.menu_item_collection:
                 drawerLayout.closeDrawers();
                 intent = new Intent(this, UserCollectionActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_auth:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, AuthActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_info:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, InfoActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_settings:
+                drawerLayout.closeDrawers();
+                intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
             default:

@@ -3,6 +3,8 @@ package it.univaq.disim.mwt.android_native_app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +79,14 @@ public class ExploreActivity extends AppCompatActivity implements NavigationView
 
         /* Create notification channel as soon as app starts */
         Notification.createNotificationChannel(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View headerView = navigationView.getHeaderView(0);
+        TextView userName = headerView.findViewById(R.id.drawer_header_user_name);
+        userName.setText((FirebaseAuth.getInstance().getCurrentUser() != null) ? FirebaseAuth.getInstance().getCurrentUser().getEmail(): "guest");
     }
 
     @Override

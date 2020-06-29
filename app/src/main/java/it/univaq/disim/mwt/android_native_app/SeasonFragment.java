@@ -89,18 +89,16 @@ public class SeasonFragment extends Fragment {
                         break;
                     case UserCollectionService.FILTER_GET_EPISODES_BY_SEASON:
                         if(isTvShowInCollection && (season.equals(seasonDetailed))){
-                            final ArrayList<Episode> episodes = (ArrayList<Episode>) intent.getSerializableExtra(UserCollectionService.EXTRA);
-                            boolean dirty = false;
+                            ArrayList<Episode> episodes = (ArrayList<Episode>) intent.getSerializableExtra(UserCollectionService.EXTRA);
                             if(episodes != null){
-                                for(Episode e : episodes){
-                                    if(data.contains(e)){
+                                for(Episode e : data){
+                                    if(episodes.contains(e)){
                                         data.get(data.indexOf(e)).setWatched(true);
-                                        dirty = true;
+                                    } else {
+                                        data.get(data.indexOf(e)).setWatched(false);
                                     }
                                 }
-                                if(dirty){
-                                    recyclerViewEpisodeAdapter.notifyDataSetChanged();
-                                }
+                                recyclerViewEpisodeAdapter.notifyDataSetChanged();
                             }
                             recyclerViewEpisodeAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                                 @Override
