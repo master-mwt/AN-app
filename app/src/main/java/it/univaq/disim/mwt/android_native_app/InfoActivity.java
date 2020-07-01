@@ -34,8 +34,6 @@ import it.univaq.disim.mwt.android_native_app.utils.LocationPermission;
 public class InfoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     // TODO: Change variables name (logo, app description fields (?))
-    private TextView textView1;
-    private TextView textView2;
     private GoogleMap map;
     private Marker marker;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -44,12 +42,6 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-
-        textView1 = findViewById(R.id.textView2);
-        textView1.setText("logo app");
-
-        textView2 = findViewById(R.id.textView3);
-        textView2.setText("Descrizione");
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if(supportMapFragment != null){

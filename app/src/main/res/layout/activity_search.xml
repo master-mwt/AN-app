@@ -21,7 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:title="search"
-                app:menu="@menu/tv_shows_search_toolbar_menu"
                 android:background="@android:color/white"
                 app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
                 />

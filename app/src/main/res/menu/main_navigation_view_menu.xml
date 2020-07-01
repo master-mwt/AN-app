@@ -11,9 +11,6 @@
     <item android:title="ACCOUNT">
         <menu>
             <item android:id="@+id/menu_item_auth" android:title="auth" android:icon="@drawable/ic_person_black_24dp"></item>
-            <!--<item android:title="login" android:icon="@drawable/ic_person_black_24dp"></item>
-            <item android:title="register" android:icon="@drawable/ic_person_add_black_24dp"></item>-->
-            <item android:title="logout" android:icon="@drawable/ic_power_settings_new_black_24dp"></item>
         </menu>
     </item>
     <item android:title="OTHER">
