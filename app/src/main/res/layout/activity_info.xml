@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/textView1"
-        android:text="Trakd is a modern and minimal tv-shows tracker application powered by TMBD API"
+        android:text="@string/trakd_description"
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

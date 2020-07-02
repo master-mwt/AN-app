@@ -3,10 +3,11 @@ package it.univaq.disim.mwt.android_native_app;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.widget.TextView;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -34,6 +35,7 @@ import it.univaq.disim.mwt.android_native_app.utils.LocationPermission;
 public class InfoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     // TODO: Change variables name (logo, app description fields (?))
+    private Toolbar toolbar;
     private GoogleMap map;
     private Marker marker;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -42,6 +44,15 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+        toolbar = findViewById(R.id.info_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if(supportMapFragment != null){
@@ -57,7 +68,7 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng position = new LatLng(42.36779, 13.352897);
 
         MarkerOptions options = new MarkerOptions();
-        options.title("Università degli Studi dell'Aquila");
+        options.title(getString(R.string.university_of_laquila));
         options.position(position);
         marker = map.addMarker(options);
 
@@ -140,6 +151,7 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void showPermissionNotGrantedDialog(){
         PositionPermissionDeniedDialogFragment fragment = new PositionPermissionDeniedDialogFragment();
+        fragment.setCancelable(false);
         fragment.show(getSupportFragmentManager(), "position_denied_dialog");
     }
 }

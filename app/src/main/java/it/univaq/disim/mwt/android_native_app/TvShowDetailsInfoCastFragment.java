@@ -28,6 +28,7 @@ import it.univaq.disim.mwt.android_native_app.model.TvShowDetails;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
+import it.univaq.disim.mwt.android_native_app.utils.Network;
 
 public class TvShowDetailsInfoCastFragment extends Fragment {
     private static final String ARG_TV_SHOW_DETAILS = "tv_show_details";
@@ -83,6 +84,9 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        /* Check network connection */
+        Network.checkAvailability(getContext(), getFragmentManager());
 
         name.setText(tvShowDetails.getName());
         overview.setText(tvShowDetails.getOverview());

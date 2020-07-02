@@ -29,6 +29,7 @@ import it.univaq.disim.mwt.android_native_app.model.Episode;
 import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
+import it.univaq.disim.mwt.android_native_app.utils.Network;
 
 public class SeasonFragment extends Fragment {
     private static final String ARG_SEASON = "arg_season";
@@ -83,6 +84,9 @@ public class SeasonFragment extends Fragment {
                             recyclerViewEpisodeAdapter = new RecyclerViewEpisodeAdapter(getContext(), data, isTvShowInCollection);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                             recyclerView.setAdapter(recyclerViewEpisodeAdapter);
+
+                            /* Check network connection */
+                            Network.checkAvailability(getContext(), getFragmentManager());
 
                             TMDB.requestRemoteTvShowSeason(getContext(), season.getTv_show_id(), season.getSeason_number());
                         }

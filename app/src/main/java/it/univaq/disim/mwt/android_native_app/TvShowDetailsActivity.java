@@ -35,6 +35,7 @@ import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.model.TvShowDetails;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
+import it.univaq.disim.mwt.android_native_app.utils.Network;
 import it.univaq.disim.mwt.android_native_app.utils.VolleyRequest;
 
 public class TvShowDetailsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -113,6 +114,10 @@ public class TvShowDetailsActivity extends AppCompatActivity implements Navigati
         long tv_show_id = getIntent().getLongExtra("data", -1);
 
         if(tv_show_id != -1){
+
+            /* Check network connection */
+            Network.checkAvailability(this, getSupportFragmentManager());
+
             TMDB.requestRemoteTvShowDetails(this, tv_show_id);
         } else {
             finish();

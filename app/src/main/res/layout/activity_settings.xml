@@ -28,8 +28,7 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <TextView
-            android:id="@+id/textView1"
-            android:text="You can import/export your collection to json local backup file.\nIf you have an account, you can also synchronize your collection using the remote import-from-firestore/export-to-firestore function "
+            android:text="@string/settings_description"
             android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

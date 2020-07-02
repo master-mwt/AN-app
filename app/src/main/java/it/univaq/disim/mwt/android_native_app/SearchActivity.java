@@ -28,6 +28,7 @@ import it.univaq.disim.mwt.android_native_app.adapters.RecyclerViewTvShowCardAda
 import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
+import it.univaq.disim.mwt.android_native_app.utils.Network;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -103,6 +104,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             public boolean onQueryTextSubmit(String query) {
                 page = 1;
                 data.clear();
+
+                /* Check network connection */
+                Network.checkAvailability(getApplicationContext(), getSupportFragmentManager());
+
                 TMDB.requestRemoteTvShowsSearch(getApplicationContext(), query , page);
                 scroll_query = query;
 
@@ -127,6 +132,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                             scrollY > oldScrollY) {
                         //code to fetch more data for endless scrolling
                         page++;
+
+                        /* Check network connection */
+                        Network.checkAvailability(getApplicationContext(), getSupportFragmentManager());
+
                         TMDB.requestRemoteTvShowsSearch(getApplicationContext(), scroll_query , page);
                     }
                 }

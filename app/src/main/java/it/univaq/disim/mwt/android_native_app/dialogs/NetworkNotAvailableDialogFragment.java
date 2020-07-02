@@ -2,6 +2,7 @@ package it.univaq.disim.mwt.android_native_app.dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,26 +11,22 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import it.univaq.disim.mwt.android_native_app.R;
-import it.univaq.disim.mwt.android_native_app.utils.LocationPermission;
 
-public class PositionPermissionDeniedDialogFragment extends DialogFragment {
+public class NetworkNotAvailableDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getString(R.string.position_permission_denied_dialog_message))
-                .setPositiveButton(getString(R.string.position_permission_denied_dialog_positive_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        LocationPermission.requestLocationPermission(getActivity());
-                    }
-                })
-                .setNegativeButton(getString(R.string.position_permission_denied_dialog_negative_button), new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.network_not_available_message))
+                .setNegativeButton(getString(R.string.network_not_available_negative_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         getActivity().finish();
+
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        startActivity(intent);
                     }
                 })
                 .setCancelable(false);

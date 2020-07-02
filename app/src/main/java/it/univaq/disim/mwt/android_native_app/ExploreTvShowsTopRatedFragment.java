@@ -22,6 +22,7 @@ import it.univaq.disim.mwt.android_native_app.adapters.RecyclerViewTvShowCardAda
 import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.TvShowPreview;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
+import it.univaq.disim.mwt.android_native_app.utils.Network;
 
 public class ExploreTvShowsTopRatedFragment extends Fragment {
     private ArrayList<TvShowPreview> data = new ArrayList<>();
@@ -91,6 +92,10 @@ public class ExploreTvShowsTopRatedFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(!retrievedAlready){
+
+            /* Check network connection */
+            Network.checkAvailability(getContext(), getFragmentManager());
+
             TMDB.requestRemoteTvShowsTopRated(getContext(), page);
             progressBar.setVisibility(View.VISIBLE);
         }

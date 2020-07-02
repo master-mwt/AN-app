@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class AuthSignUpActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
     private TextInputEditText email;
     private TextInputEditText password;
     private MaterialButton signUpButton;
@@ -28,6 +30,15 @@ public class AuthSignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth_sign_up);
+
+        toolbar = findViewById(R.id.auth_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();

@@ -22,6 +22,7 @@ import it.univaq.disim.mwt.android_native_app.api.TMDB;
 import it.univaq.disim.mwt.android_native_app.model.Episode;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
+import it.univaq.disim.mwt.android_native_app.utils.Network;
 
 public class EpisodeFragment extends Fragment {
     private static final String ARG_EPISODE = "arg_episode";
@@ -65,6 +66,10 @@ public class EpisodeFragment extends Fragment {
 
                     case UserCollectionService.FILTER_IS_TV_SHOW_IN_COLLECTION:
                         if(episodeDetailed == null){
+
+                            /* Check network connection */
+                            Network.checkAvailability(getContext(), getFragmentManager());
+
                             TMDB.requestRemoteTvShowEpisode(getContext(), episode.getTv_show_id(), episode.getSeason_number(), episode.getEpisode_number());
 
                             isTvShowInCollection = intent.getBooleanExtra(UserCollectionService.EXTRA, false);

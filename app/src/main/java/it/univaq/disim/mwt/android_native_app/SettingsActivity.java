@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +20,7 @@ import it.univaq.disim.mwt.android_native_app.utils.StoragePermission;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
     private MaterialButton exportDBButton;
     private MaterialButton importDBButton;
     private MaterialButton exportDBToFirestoreButton;
@@ -29,6 +31,15 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        toolbar = findViewById(R.id.settings_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -114,6 +125,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showPermissionNotGrantedDialog(){
         StoragePermissionDeniedDialogFragment dialog = new StoragePermissionDeniedDialogFragment();
+        dialog.setCancelable(false);
         dialog.show(getSupportFragmentManager(), "storage_denied_dialog");
     }
 }

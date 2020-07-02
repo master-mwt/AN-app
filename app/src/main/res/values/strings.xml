@@ -73,4 +73,11 @@
     <string name="empty_collection_message">Empty Collection</string>
     <string name="snackbar_sign_in_error">"sign in error: "</string>
     <string name="snackbar_sign_up_error">"sign up failed: "</string>
+    <string name="network_not_available_message">No connection available! This app needs a fully functional network connection to work properly</string>
+    <string name="network_not_available_positive_button">Check again</string>
+    <string name="network_not_available_negative_button">Exit app</string>
+    <string name="university_of_laquila">Università degli Studi dell\'Aquila</string>
+    <string name="trakd_description">Trakd is a modern and minimal tv-shows tracker application powered by TMBD API</string>
+    <string name="settings_description">You can import/export your collection to json local backup file.\nIf you have an account, you can also synchronize your collection using the remote import-from-firestore/export-to-firestore function</string>
+    <string name="guest">guest</string>
 </resources>

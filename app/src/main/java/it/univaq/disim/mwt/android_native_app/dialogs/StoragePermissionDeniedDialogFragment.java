@@ -21,16 +21,15 @@ public class StoragePermissionDeniedDialogFragment extends DialogFragment {
                 .setPositiveButton(getString(R.string.storage_permission_denied_dialog_positive_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        StoragePermission.requestStoragePermission(getActivity());
                         dialog.dismiss();
+                        StoragePermission.requestStoragePermission(getActivity());
                     }
                 })
                 .setNegativeButton(getString(R.string.storage_permission_denied_dialog_negative_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // TODO: It is all right to finish ?
-                        getActivity().finish();
                         dialog.dismiss();
+                        getActivity().finish();
                     }
                 })
                 .setCancelable(false);
