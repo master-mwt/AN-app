@@ -45,7 +45,7 @@ public class RecyclerViewEpisodeAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        holder.title.setText(data.get(position).getName());
+        holder.title.setText((data.get(position).getName().length() > 30) ? data.get(position).getName().substring(0, 27) + "..." : data.get(position).getName());
         if(this.isTvShowInCollection){
             holder.markEpisodeButtonInEpisodeList.setEnabled(true);
             if(data.get(position).isWatched()){
