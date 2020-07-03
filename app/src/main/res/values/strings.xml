@@ -79,5 +79,6 @@
     <string name="university_of_laquila">Università degli Studi dell\'Aquila</string>
     <string name="trakd_description">Trakd is a modern and minimal tv-shows tracker application powered by TMBD API</string>
     <string name="settings_description">You can import/export your collection to json local backup file.\nIf you have an account, you can also synchronize your collection using the remote import-from-firestore/export-to-firestore function</string>
+    <string name="auth_description">Create an account or sign-in with an existent one to access remote import-from-firestore/export-to-firestore synchronization functions</string>
     <string name="guest">guest</string>
 </resources>

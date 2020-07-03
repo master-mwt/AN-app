@@ -37,7 +37,7 @@ public class SeasonFragment extends Fragment {
     private Season season;
     private Season seasonDetailed;
     private List<Episode> data = new ArrayList<>();
-    private TextView seasonName;
+    //private TextView seasonName;
     private TextView seasonOverview;
     private RecyclerView recyclerView;
     private RecyclerViewEpisodeAdapter recyclerViewEpisodeAdapter;
@@ -60,8 +60,11 @@ public class SeasonFragment extends Fragment {
 
                             data.clear();
 
-                            seasonName.setText(seasonDetailed.getName());
-                            seasonOverview.setText(seasonDetailed.getOverview());
+                            //seasonName.setText(seasonDetailed.getName());
+                            if(!seasonDetailed.getOverview().isEmpty())
+                                seasonOverview.setText(seasonDetailed.getOverview());
+                            else
+                                seasonOverview.setText("No description");
 
                             for(Episode episode : seasonDetailed.getEpisodes()){
                                 episode.setTv_show_id(season.getTv_show_id());
@@ -116,8 +119,10 @@ public class SeasonFragment extends Fragment {
                                     }
                                     if(allWatched){
                                         markAllButton.setText(getString(R.string.season_mark_all_as_unseen));
+                                        markAllButton.setBackgroundColor(getResources().getColor(R.color.colorMarked, getContext().getTheme()));
                                     } else {
                                         markAllButton.setText(getString(R.string.season_mark_all_as_seen));
+                                        markAllButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
                                     }
                                     super.onChanged();
                                 }
@@ -127,8 +132,10 @@ public class SeasonFragment extends Fragment {
 
                             if(episodes.size() == data.size()){
                                 markAllButton.setText(getString(R.string.season_mark_all_as_unseen));
+                                markAllButton.setBackgroundColor(getResources().getColor(R.color.colorMarked, getContext().getTheme()));
                             } else {
                                 markAllButton.setText(getString(R.string.season_mark_all_as_seen));
+                                markAllButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
                             }
 
                             markAllButton.setOnClickListener(new View.OnClickListener() {
@@ -153,6 +160,7 @@ public class SeasonFragment extends Fragment {
                                         Objects.requireNonNull(getContext()).startService(intent);
 
                                         markAllButton.setText(getString(R.string.season_mark_all_as_seen));
+                                        markAllButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
                                     } else {
                                         for(Episode e : data){
                                             e.setWatched(true);
@@ -165,6 +173,7 @@ public class SeasonFragment extends Fragment {
                                         Objects.requireNonNull(getContext()).startService(intent);
 
                                         markAllButton.setText(getString(R.string.season_mark_all_as_unseen));
+                                        markAllButton.setBackgroundColor(getResources().getColor(R.color.colorMarked, getContext().getTheme()));
                                     }
                                 }
                             });
@@ -217,8 +226,11 @@ public class SeasonFragment extends Fragment {
         }
 
         if(seasonDetailed != null){
-            seasonName.setText(seasonDetailed.getName());
-            seasonOverview.setText(seasonDetailed.getOverview());
+            //seasonName.setText(seasonDetailed.getName());
+            if(!seasonDetailed.getOverview().isEmpty())
+                seasonOverview.setText(seasonDetailed.getOverview());
+            else
+                seasonOverview.setText("No description");
 
             if(recyclerViewEpisodeAdapter != null){
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -246,7 +258,7 @@ public class SeasonFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_season, container, false);
 
-        seasonName = view.findViewById(R.id.season_name);
+        //seasonName = view.findViewById(R.id.season_name);
 
         seasonOverview = view.findViewById(R.id.season_overview);
 

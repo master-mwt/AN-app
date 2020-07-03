@@ -53,12 +53,14 @@ public class EpisodeFragment extends Fragment {
 
                             episodeName.setText(episodeDetailed.getName());
                             episodeOverview.setText(episodeDetailed.getOverview());
-                            episodeAirDate.setText(episodeDetailed.getAir_date());
+                            episodeAirDate.setText("Date: " + episodeDetailed.getAir_date());
 
                             if(episodeDetailed.isWatched()){
                                 markEpisodeButton.setText(getString(R.string.episode_button_mark_as_unseen));
+                                markEpisodeButton.setBackgroundColor(getResources().getColor(R.color.colorMarked, getContext().getTheme()));
                             } else {
                                 markEpisodeButton.setText(getString(R.string.episode_button_mark_as_seen));
+                                markEpisodeButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
                             }
 
                         }
@@ -88,6 +90,7 @@ public class EpisodeFragment extends Fragment {
 
                                             episodeDetailed.setWatched(false);
                                             markEpisodeButton.setText(getString(R.string.episode_button_mark_as_seen));
+                                            markEpisodeButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
                                         } else {
 
                                             Intent intent = new Intent(getContext(), UserCollectionService.class);
@@ -97,6 +100,7 @@ public class EpisodeFragment extends Fragment {
 
                                             episodeDetailed.setWatched(true);
                                             markEpisodeButton.setText(getString(R.string.episode_button_mark_as_unseen));
+                                            markEpisodeButton.setBackgroundColor(getResources().getColor(R.color.colorMarked, getContext().getTheme()));
                                         }
                                     }
                                 });
@@ -151,7 +155,7 @@ public class EpisodeFragment extends Fragment {
         if(episodeDetailed != null){
             episodeName.setText(episodeDetailed.getName());
             episodeOverview.setText(episodeDetailed.getOverview());
-            episodeAirDate.setText(episodeDetailed.getAir_date());
+            episodeAirDate.setText("Date: " + episodeDetailed.getAir_date());
 
             if(episodeDetailed.isWatched()){
                 markEpisodeButton.setText(getString(R.string.episode_button_mark_as_unseen));

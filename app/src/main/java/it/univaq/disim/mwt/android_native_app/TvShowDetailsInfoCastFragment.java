@@ -94,8 +94,10 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
 
         if(tvShowDetails.isIn_collection()){
             collectionButton.setText(getString(R.string.tvshow_details_button_remove_from_collection));
+            collectionButton.setBackgroundColor(getResources().getColor(R.color.colorMarked, getContext().getTheme()));
         } else {
             collectionButton.setText(getString(R.string.tvshow_details_button_add_to_collection));
+            collectionButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
         }
 
         collectionButton.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +115,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
 
                     tvShowDetails.setIn_collection(false);
                     collectionButton.setText(getString(R.string.tvshow_details_button_add_to_collection));
+                    collectionButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
                 } else {
                     TvShowPreview data = new TvShowPreview();
                     data.setTv_show_id(tvShowDetails.getTv_show_id());
@@ -126,6 +129,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
 
                     tvShowDetails.setIn_collection(true);
                     collectionButton.setText(getString(R.string.tvshow_details_button_remove_from_collection));
+                    collectionButton.setBackgroundColor(getResources().getColor(R.color.colorMarked, getContext().getTheme()));
                 }
             }
         });
