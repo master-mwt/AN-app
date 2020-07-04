@@ -163,4 +163,9 @@ public class Episode implements Serializable {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "S" + season_number + "E" + episode_number + " - " + name + " (" + air_date + ")";
+    }
 }

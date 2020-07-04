@@ -81,4 +81,13 @@
     <string name="settings_description">You can import/export your collection to json local backup file.\nIf you have an account, you can also synchronize your collection using the remote import-from-firestore/export-to-firestore function</string>
     <string name="auth_description">Create an account or sign-in with an existent one to access remote import-from-firestore/export-to-firestore synchronization functions</string>
     <string name="guest">guest</string>
+    <string name="airdate">"Airdate: "</string>
+    <string name="vote_structure">%s / 10 from %d total votes</string>
+    <string name="status">"Status: "</string>
+    <string name="type">"Type: "</string>
+    <string name="original_countries">"Original countries: "</string>
+    <string name="languages">"Languages: "</string>
+    <string name="genres">"Genres: "</string>
+    <string name="last_episode">"Last episode: "</string>
+    <string name="next_episode">"Next episode: "</string>
 </resources>

@@ -1,14 +1,17 @@
 package it.univaq.disim.mwt.android_native_app;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +23,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import it.univaq.disim.mwt.android_native_app.adapters.RecyclerViewTvShowCharacterCardAdapter;
 import it.univaq.disim.mwt.android_native_app.api.TMDB;
@@ -34,8 +38,17 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
     private static final String ARG_TV_SHOW_DETAILS = "tv_show_details";
 
     private TextView name;
+    private TextView voteRating;
+    private RatingBar ratingBar;
     private TextView overview;
     private TextView originalLanguage;
+    private TextView status;
+    private TextView type;
+    private TextView originCountry;
+    private TextView languages;
+    private TextView genres;
+    private TextView lastEpisode;
+    private TextView nextEpisode;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private MaterialButton collectionButton;
@@ -81,6 +94,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
         }
     }
 
+    @SuppressLint("StringFormatMatches")
     @Override
     public void onStart() {
         super.onStart();
@@ -89,8 +103,27 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
         Network.checkAvailability(getContext(), getFragmentManager());
 
         name.setText(tvShowDetails.getName());
+        voteRating.setText(String.format(getString(R.string.vote_structure), tvShowDetails.getVote_average(), tvShowDetails.getVote_count()));
+        if(tvShowDetails.getVote_average() == 0){
+            ratingBar.setRating(0);
+        } else {
+            ratingBar.setRating((float) (tvShowDetails.getVote_average() * 5) / 10);
+        }
         overview.setText(tvShowDetails.getOverview());
         originalLanguage.setText(tvShowDetails.getOriginal_language());
+        status.setText(getString(R.string.status) + tvShowDetails.getStatus());
+        type.setText(getString(R.string.type) + tvShowDetails.getType());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            originCountry.setText(getString(R.string.original_countries) + tvShowDetails.getOrigin_country().stream().collect(Collectors.joining(", ")));
+            languages.setText(getString(R.string.languages) + tvShowDetails.getLanguages().stream().collect(Collectors.joining(", ")));
+            genres.setText(getString(R.string.genres) + tvShowDetails.getGenres().stream().collect(Collectors.joining(", ")));
+        } else {
+            originCountry.setText(getString(R.string.original_countries) + tvShowDetails.getOrigin_country());
+            languages.setText(getString(R.string.languages) + tvShowDetails.getLanguages());
+            genres.setText(getString(R.string.genres) + tvShowDetails.getGenres());
+        }
+        lastEpisode.setText((tvShowDetails.getLast_episode_to_air() != null) ? getString(R.string.last_episode) + tvShowDetails.getLast_episode_to_air() : "");
+        nextEpisode.setText((tvShowDetails.getNext_episode_to_air() != null) ? getString(R.string.next_episode) + tvShowDetails.getNext_episode_to_air() : "");
 
         if(tvShowDetails.isIn_collection()){
             collectionButton.setText(getString(R.string.tvshow_details_button_remove_from_collection));
@@ -161,9 +194,27 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
 
         name = view.findViewById(R.id.name);
 
+        voteRating = view.findViewById(R.id.vote_rating);
+
+        ratingBar = view.findViewById(R.id.rating_bar);
+
         overview = view.findViewById(R.id.overview);
 
         originalLanguage = view.findViewById(R.id.original_language);
+
+        status = view.findViewById(R.id.status);
+
+        type = view.findViewById(R.id.type);
+
+        originCountry = view.findViewById(R.id.origin_country);
+
+        languages = view.findViewById(R.id.languages);
+
+        genres = view.findViewById(R.id.genres);
+
+        lastEpisode = view.findViewById(R.id.last_episode);
+
+        nextEpisode = view.findViewById(R.id.next_episode);
 
         recyclerView = view.findViewById(R.id.cast_recycle_view);
 
