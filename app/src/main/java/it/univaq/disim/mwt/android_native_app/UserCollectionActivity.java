@@ -52,7 +52,6 @@ public class UserCollectionActivity extends AppCompatActivity implements Navigat
                             recyclerViewTvShowCardAdapter.notifyDataSetChanged();
                         }
 
-                        // TODO: Empty collection message
                         if(collection.isEmpty()){
                             recyclerView.setVisibility(View.INVISIBLE);
                             emptyList.setVisibility(View.VISIBLE);

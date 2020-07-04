@@ -34,7 +34,7 @@ import it.univaq.disim.mwt.android_native_app.utils.LocationPermission;
 
 public class InfoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    // TODO: Change variables name (logo, app description fields (?))
+    // TODO: logo ?
     private Toolbar toolbar;
     private GoogleMap map;
     private Marker marker;

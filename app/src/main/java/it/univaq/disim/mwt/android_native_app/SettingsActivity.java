@@ -59,7 +59,6 @@ public class SettingsActivity extends AppCompatActivity {
         importDBButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: needed permissions ?
                 FileHandler.pickBackup(SettingsActivity.this);
             }
         });
@@ -96,7 +95,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: Firestore change database rule on console
         if(mAuth.getCurrentUser() == null){
             exportDBToFirestoreButton.setEnabled(false);
             importDBFromFirestoreButton.setEnabled(false);
