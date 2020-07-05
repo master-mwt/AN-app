@@ -23,13 +23,31 @@
                 android:orientation="vertical"
                 >
 
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    app:cardCornerRadius="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/episode_still_path"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/poster_default"
+                        android:scaleType="centerCrop"
+                        />
+
+                </com.google.android.material.card.MaterialCardView>
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/mark_episode_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
-                    android:layout_marginVertical="10dp"
                     android:layout_marginHorizontal="25dp"
+                    android:layout_marginVertical="10dp"
                     />
 
                 <TextView
@@ -52,15 +70,27 @@
                     android:layout_marginBottom="10dp"
                     />
 
-                <RatingBar
-                    android:id="@+id/episode_rating_bar"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:isIndicator="true"
                     android:layout_marginHorizontal="25dp"
                     android:layout_marginBottom="10dp"
-                    />
+                    >
+
+                    <RatingBar
+                        android:id="@+id/episode_rating_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        style="?android:ratingBarStyleIndicator"
+                        android:numStars="5"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/episode_overview"
@@ -75,17 +105,9 @@
                     android:id="@+id/episode_air_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="25dp"
                     android:textAlignment="center"
-                    />
-
-                <ImageView
-                    android:id="@+id/episode_still_path"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
                     android:layout_marginHorizontal="25dp"
-                    app:srcCompat="@drawable/ic_launcher_background"
+                    android:layout_marginBottom="10dp"
                     />
 
             </LinearLayout>

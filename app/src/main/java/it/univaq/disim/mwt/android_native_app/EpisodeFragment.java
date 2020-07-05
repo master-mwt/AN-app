@@ -78,7 +78,7 @@ public class EpisodeFragment extends Fragment {
                                 markEpisodeButton.setBackgroundColor(getResources().getColor(R.color.colorMarked, getContext().getTheme()));
                             } else {
                                 markEpisodeButton.setText(getString(R.string.episode_button_mark_as_seen));
-                                markEpisodeButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
+                                //markEpisodeButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
                             }
 
                         }

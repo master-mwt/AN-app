@@ -102,6 +102,7 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
         /* Check network connection */
         Network.checkAvailability(getContext(), getFragmentManager());
 
+        //TODO: empty checks w/ string extraction
         name.setText(tvShowDetails.getName());
         voteRating.setText(String.format(getString(R.string.vote_structure), tvShowDetails.getVote_average(), tvShowDetails.getVote_count()));
         if(tvShowDetails.getVote_average() == 0){
