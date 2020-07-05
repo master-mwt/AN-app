@@ -102,29 +102,28 @@ public class TvShowDetailsInfoCastFragment extends Fragment {
         /* Check network connection */
         Network.checkAvailability(getContext(), getFragmentManager());
 
-        //TODO: empty checks w/ string extraction
-        name.setText(tvShowDetails.getName());
+        name.setText((tvShowDetails.getName() != null) ? tvShowDetails.getName() : " - ");
         voteRating.setText(String.format(getString(R.string.vote_structure), tvShowDetails.getVote_average(), tvShowDetails.getVote_count()));
         if(tvShowDetails.getVote_average() == 0){
             ratingBar.setRating(0);
         } else {
             ratingBar.setRating((float) (tvShowDetails.getVote_average() * 5) / 10);
         }
-        overview.setText(tvShowDetails.getOverview());
-        originalLanguage.setText(tvShowDetails.getOriginal_language());
-        status.setText(getString(R.string.status) + tvShowDetails.getStatus());
-        type.setText(getString(R.string.type) + tvShowDetails.getType());
+        overview.setText((tvShowDetails.getOverview() != null) ? tvShowDetails.getOverview() : " - ");
+        originalLanguage.setText((tvShowDetails.getOriginal_language() != null) ? getString(R.string.original_language) + tvShowDetails.getOriginal_language() : getString(R.string.original_language) + " - ");
+        status.setText((tvShowDetails.getStatus() != null) ? getString(R.string.status) + tvShowDetails.getStatus() : getString(R.string.status) + " - ");
+        type.setText((tvShowDetails.getType() != null) ? getString(R.string.type) + tvShowDetails.getType() : getString(R.string.type) + " - ");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            originCountry.setText(getString(R.string.original_countries) + tvShowDetails.getOrigin_country().stream().collect(Collectors.joining(", ")));
-            languages.setText(getString(R.string.languages) + tvShowDetails.getLanguages().stream().collect(Collectors.joining(", ")));
-            genres.setText(getString(R.string.genres) + tvShowDetails.getGenres().stream().collect(Collectors.joining(", ")));
+            originCountry.setText((tvShowDetails.getOrigin_country() != null) ? getString(R.string.original_countries) + tvShowDetails.getOrigin_country().stream().collect(Collectors.joining(", ")) : getString(R.string.original_countries) + " - ");
+            languages.setText((tvShowDetails.getLanguages() != null) ? getString(R.string.languages) + tvShowDetails.getLanguages().stream().collect(Collectors.joining(", ")) : getString(R.string.languages) + " - ");
+            genres.setText((tvShowDetails.getGenres() != null) ? getString(R.string.genres) + tvShowDetails.getGenres().stream().collect(Collectors.joining(", ")) : getString(R.string.genres) + " - ");
         } else {
-            originCountry.setText(getString(R.string.original_countries) + tvShowDetails.getOrigin_country());
-            languages.setText(getString(R.string.languages) + tvShowDetails.getLanguages());
-            genres.setText(getString(R.string.genres) + tvShowDetails.getGenres());
+            originCountry.setText((tvShowDetails.getOrigin_country() != null) ? getString(R.string.original_countries) + tvShowDetails.getOrigin_country() : getString(R.string.original_countries) + " - ");
+            languages.setText((tvShowDetails.getLanguages() != null) ? getString(R.string.languages) + tvShowDetails.getLanguages() : getString(R.string.languages) + " - ");
+            genres.setText((tvShowDetails.getGenres() != null) ? getString(R.string.genres) + tvShowDetails.getGenres() : getString(R.string.genres) + " - ");
         }
-        lastEpisode.setText((tvShowDetails.getLast_episode_to_air() != null) ? getString(R.string.last_episode) + tvShowDetails.getLast_episode_to_air() : "");
-        nextEpisode.setText((tvShowDetails.getNext_episode_to_air() != null) ? getString(R.string.next_episode) + tvShowDetails.getNext_episode_to_air() : "");
+        lastEpisode.setText((tvShowDetails.getLast_episode_to_air() != null) ? getString(R.string.last_episode) + tvShowDetails.getLast_episode_to_air() : getString(R.string.last_episode) + " - ");
+        nextEpisode.setText((tvShowDetails.getNext_episode_to_air() != null) ? getString(R.string.next_episode) + tvShowDetails.getNext_episode_to_air() : getString(R.string.next_episode) + " - ");
 
         if(tvShowDetails.isIn_collection()){
             collectionButton.setText(getString(R.string.tvshow_details_button_remove_from_collection));

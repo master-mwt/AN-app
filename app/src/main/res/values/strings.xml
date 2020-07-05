@@ -90,4 +90,5 @@
     <string name="genres">"Genres: "</string>
     <string name="last_episode">"Last episode: "</string>
     <string name="next_episode">"Next episode: "</string>
+    <string name="original_language">"Original language: "</string>
 </resources>

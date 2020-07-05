@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -16,6 +18,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.Serializable;
@@ -30,6 +34,7 @@ import it.univaq.disim.mwt.android_native_app.model.Season;
 import it.univaq.disim.mwt.android_native_app.services.DataParserService;
 import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 import it.univaq.disim.mwt.android_native_app.utils.Network;
+import it.univaq.disim.mwt.android_native_app.utils.VolleyRequest;
 
 public class SeasonFragment extends Fragment {
     private static final String ARG_SEASON = "arg_season";
@@ -39,6 +44,7 @@ public class SeasonFragment extends Fragment {
     private List<Episode> data = new ArrayList<>();
     //private TextView seasonName;
     private TextView seasonOverview;
+    private ImageView seasonPosterPath;
     private RecyclerView recyclerView;
     private RecyclerViewEpisodeAdapter recyclerViewEpisodeAdapter;
     private ProgressBar progressBar;
@@ -65,6 +71,8 @@ public class SeasonFragment extends Fragment {
                                 seasonOverview.setText(seasonDetailed.getOverview());
                             else
                                 seasonOverview.setText("No description");
+
+                            setTvShowImage(seasonDetailed.getPoster_path());
 
                             for(Episode episode : seasonDetailed.getEpisodes()){
                                 episode.setTv_show_id(season.getTv_show_id());
@@ -232,6 +240,8 @@ public class SeasonFragment extends Fragment {
             else
                 seasonOverview.setText("No description");
 
+            setTvShowImage(seasonDetailed.getPoster_path());
+
             if(recyclerViewEpisodeAdapter != null){
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(recyclerViewEpisodeAdapter);
@@ -262,6 +272,8 @@ public class SeasonFragment extends Fragment {
 
         seasonOverview = view.findViewById(R.id.season_overview);
 
+        seasonPosterPath = view.findViewById(R.id.season_poster_path);
+
         recyclerView = view.findViewById(R.id.episodes_recycle_view);
 
         progressBar = view.findViewById(R.id.season_progress);
@@ -270,5 +282,26 @@ public class SeasonFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void setTvShowImage(String imageUrl){
+
+        String baseUrl = getString(R.string.tmdb_image_baselink);
+
+        if(imageUrl != null && !"".equals(imageUrl) && !"null".equals(imageUrl)){
+            String requestUrl = baseUrl + imageUrl;
+
+            VolleyRequest.getInstance(getContext()).getImageLoader().get(requestUrl, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    seasonPosterPath.setImageBitmap(response.getBitmap());
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.w(TvShowDetailsActivity.class.getName(), (error.getCause() != null) ? error.getCause().getMessage() : error.getMessage());
+                }
+            });
+        }
     }
 }

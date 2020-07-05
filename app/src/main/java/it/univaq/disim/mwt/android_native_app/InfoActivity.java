@@ -28,13 +28,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 import it.univaq.disim.mwt.android_native_app.dialogs.PositionPermissionDeniedDialogFragment;
 import it.univaq.disim.mwt.android_native_app.utils.LocationPermission;
 
 public class InfoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    // TODO: logo ?
     private Toolbar toolbar;
     private GoogleMap map;
     private Marker marker;
@@ -138,7 +138,7 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng userPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
             MarkerOptions options = new MarkerOptions();
-            options.title("current user");
+            options.title((FirebaseAuth.getInstance().getCurrentUser() != null) ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : "guest");
             options.position(userPosition);
             map.addMarker(options);
 

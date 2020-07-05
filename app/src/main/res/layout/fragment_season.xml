@@ -31,7 +31,6 @@
                     android:layout_marginHorizontal="10dp"
                     >
 
-                    <!-- TODO: insert season poster img (if exist) -->
                     <ImageView
                         android:id="@+id/season_poster_path"
                         android:layout_width="match_parent"
