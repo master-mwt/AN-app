@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="it.univaq.disim.mwt.trakd">
     <!-- PERMISSIONS -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,23 +17,34 @@
         android:theme="@style/AppTheme">
 
         <!-- ACTIVITIES -->
-        <activity android:name="it.univaq.disim.mwt.trakd.ExploreActivity">
+        <activity android:name="it.univaq.disim.mwt.trakd.ExploreActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="it.univaq.disim.mwt.trakd.SearchActivity" />
-        <activity android:name="it.univaq.disim.mwt.trakd.TvShowDetailsActivity" />
-        <activity android:name="it.univaq.disim.mwt.trakd.UserCollectionActivity" />
-        <activity android:name="it.univaq.disim.mwt.trakd.SeasonActivity" />
-        <activity android:name="it.univaq.disim.mwt.trakd.EpisodeActivity" />
-        <activity android:name="it.univaq.disim.mwt.trakd.SettingsActivity" />
-        <activity android:name="it.univaq.disim.mwt.trakd.AuthActivity" />
-        <activity android:name="it.univaq.disim.mwt.trakd.InfoActivity" />
-        <activity android:name="it.univaq.disim.mwt.trakd.AuthSignUpActivity" />
-        <activity android:name="it.univaq.disim.mwt.trakd.AuthSignInActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.SearchActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.TvShowDetailsActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.UserCollectionActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.SeasonActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.EpisodeActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.SettingsActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.AuthActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.InfoActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.AuthSignUpActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.AuthSignInActivity" android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!-- SERVICES -->
         <service android:name="it.univaq.disim.mwt.trakd.services.DataParserService" />
