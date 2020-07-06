@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="MAIN">
+    <item android:title="@string/menu_main">
         <menu>
-            <item android:id="@+id/menu_item_search" android:title="search" android:icon="@drawable/ic_search_black_24dp"></item>
-            <item android:id="@+id/menu_item_explore" android:title="explore" android:icon="@drawable/ic_explore_black_24dp"></item>
-            <item android:id="@+id/menu_item_collection" android:title="collection" android:icon="@drawable/ic_star_black_24dp" ></item>
+            <item android:id="@+id/menu_item_search" android:title="@string/menu_search" android:icon="@drawable/ic_search_black_24dp"></item>
+            <item android:id="@+id/menu_item_explore" android:title="@string/menu_explore" android:icon="@drawable/ic_explore_black_24dp"></item>
+            <item android:id="@+id/menu_item_collection" android:title="@string/menu_collection" android:icon="@drawable/ic_star_black_24dp" ></item>
         </menu>
     </item>
-    <item android:title="ACCOUNT">
+    <item android:title="@string/menu_account">
         <menu>
-            <item android:id="@+id/menu_item_auth" android:title="auth" android:icon="@drawable/ic_person_black_24dp"></item>
+            <item android:id="@+id/menu_item_auth" android:title="@string/menu_auth" android:icon="@drawable/ic_person_black_24dp"></item>
         </menu>
     </item>
-    <item android:title="OTHER">
+    <item android:title="@string/menu_other">
         <menu>
-            <item android:id="@+id/menu_item_settings" android:title="settings" android:icon="@drawable/ic_settings_black_24dp"></item>
-            <item android:id="@+id/menu_item_info" android:title="info" android:icon="@drawable/ic_info_black_24dp"></item>
+            <item android:id="@+id/menu_item_settings" android:title="@string/menu_settings" android:icon="@drawable/ic_settings_black_24dp"></item>
+            <item android:id="@+id/menu_item_info" android:title="@string/menu_info" android:icon="@drawable/ic_info_black_24dp"></item>
         </menu>
     </item>
 </menu>

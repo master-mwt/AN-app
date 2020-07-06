@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">android-native-app</string>
+    <string name="navigation_view_open">navigation_view_open</string>
+    <string name="navigation_view_close">navigation_view_close</string>
+
+    <!-- TMDB -->
+    <string name="tmdb_api_url">https://api.themoviedb.org/3/</string>
+    <string name="tmdb_api_key">609fbad41366e27a4f7a58d8d1760a3b</string>
+    <string name="tmdb_api_language">it-IT</string>
+    <string name="tmdb_image_baselink">https://image.tmdb.org/t/p/w500</string>
+
+    <!-- GOOGLE MAPS -->
+    <string name="google_maps_api_key">AIzaSyA5k89K_JJfW6IGyUR3ZmXKmZLZ0Y-2npQ</string>
+
+    <!-- ROOM DATABASE NAME -->
+    <string name="room_database_name">AppDB.db</string>
+
+    <!-- BACKUP FILENAME -->
+    <string name="backup_database_filename">backup.json</string>
+
+    <!-- NOTIFICATION CHANNEL -->
+    <string name="channel_id">database_backup_status</string>
+    <string name="channel_name">Database backup status</string>
+    <string name="channel_description">Notifiche sullo stato dei backup del database</string>
+
+    <!-- DIALOGS TEXT -->
+    <string name="position_permission_denied_dialog_message">Se neghi il permesso non potrai utilizzare questo servizio, attiva il permesso per utilizzare al meglio l\'applicazione</string>
+    <string name="position_permission_denied_dialog_positive_button">Attiva</string>
+    <string name="position_permission_denied_dialog_negative_button">Chiudi</string>
+    <string name="storage_permission_denied_dialog_message">Se neghi il permesso non potrai utilizzare questo servizio, attiva il permesso per utilizzare al meglio l\'applicazione</string>
+    <string name="storage_permission_denied_dialog_positive_button">Attiva</string>
+    <string name="storage_permission_denied_dialog_negative_button">Chiudi</string>
+
+    <!-- APPLICATION TEXT (buttons, messages, titles, text input hints) -->
+    <string name="backup_notification_title_export_error">Errore nell\'export</string>
+    <string name="backup_notification_title_export_complete">Export completato</string>
+    <string name="backup_notification_content_export_error_empty_database">Non è possibile esportare un database vuoto</string>
+    <string name="backup_notification_content_export_error">Errore nell\'export del database su file</string>
+    <string name="backup_notification_content_export_complete">Export del database su file avvenuto con successo</string>
+    <string name="backup_notification_title_import_error">Errore nell\'import</string>
+    <string name="backup_notification_title_import_complete">Import completato</string>
+    <string name="backup_notification_content_import_error">Errore nell\'import del database da file</string>
+    <string name="backup_notification_content_import_complete">Import del database da file avvenuto con successo</string>
+    <string name="firestore_backup_notification_content_export_error">Errore nell\'export del database su Firestore</string>
+    <string name="firestore_backup_notification_content_export_complete">Export del database su Firestore avvenuto con successo</string>
+    <string name="firestore_backup_notification_content_import_complete">Import del database da Firestore avvenuto con successo</string>
+    <string name="firestore_backup_notification_content_import_error">Errore nell\'import del database da Firestore</string>
+    <string name="toast_content_backup_import">importando backup</string>
+    <string name="toast_content_backup_export">esportando backup</string>
+    <string name="episode_button_mark_as_unseen">Marca come non visto</string>
+    <string name="episode_button_mark_as_seen">Marca come visto</string>
+    <string name="fragment_episode_initial_title">"episodio "</string>
+    <string name="fragment_tvshows_popular_title">popolari</string>
+    <string name="fragment_tvshows_top_rated_title">più votati</string>
+    <string name="season_mark_all_as_unseen">Marca tutto come non visto</string>
+    <string name="season_mark_all_as_seen">Marca tutto come visto</string>
+    <string name="toast_content_backup_firestore_export">esportando su Firestore</string>
+    <string name="toast_content_backup_firestore_import">importando da Firestore</string>
+    <string name="fragment_tvshow_details_season_title">stagioni</string>
+    <string name="fragment_tvshow_details_info_cast_title">info</string>
+    <string name="tvshow_details_button_remove_from_collection">Rimuovi dalla collezione</string>
+    <string name="tvshow_details_button_add_to_collection">Aggiungi alla collezione</string>
+    <string name="sign_in_button">Login</string>
+    <string name="sign_up_button">Registrati</string>
+    <string name="email_hint_textinput">Email</string>
+    <string name="password_hint_textinput">Password</string>
+    <string name="logout_button">Logout</string>
+    <string name="settings_import_db_button">Importa database</string>
+    <string name="settings_export_to_firestore_button">Esporta su Firestore</string>
+    <string name="settings_export_db_button">Esporta database</string>
+    <string name="settings_import_from_firestore_button">Importa da Firestore</string>
+    <string name="empty_collection_message">Collezione vuota</string>
+    <string name="snackbar_sign_in_error">"errore nel login: "</string>
+    <string name="snackbar_sign_up_error">"registrazione fallita: "</string>
+    <string name="network_not_available_message">Nessuna connessione disponibile! L\'applicazione ha bisogna di una connessione internet funzionante</string>
+    <string name="network_not_available_positive_button">Controlla di nuovo</string>
+    <string name="network_not_available_negative_button">Esci dall\'app</string>
+    <string name="university_of_laquila">Università degli Studi dell\'Aquila</string>
+    <string name="trakd_description">Trakd è un\'applicazione moderna e minimale per tenere traccia delle proprie serie tv preferite. Informazioni fornite da TMBD API</string>
+    <string name="settings_description">Puoi importare/esportare la tua collezione su un file json in locale.\nSe hai un account, puoi anche sincronizzare la tua collezione usando la funzionalità remota importa-da-firestore/esporta-su-firestore</string>
+    <string name="auth_description">Crea un account o entra con uno esistente per usufruire delle funzionalità di sincronizzazione remota import-da-firestore/export-su-firestore</string>
+    <string name="guest">guest</string>
+    <string name="airdate">"Data di trasmissione: "</string>
+    <string name="vote_structure">%s / 10 su %d voti totali</string>
+    <string name="status">"Stato: "</string>
+    <string name="type">"Tipo: "</string>
+    <string name="original_countries">"Paesi originali: "</string>
+    <string name="languages">"Lingue: "</string>
+    <string name="genres">"Generi: "</string>
+    <string name="last_episode">"Ultimo episodio: "</string>
+    <string name="next_episode">"Prossimo episodio: "</string>
+    <string name="original_language">"Lingua originale: "</string>
+    <string name="change_language">Cambia lingua</string>
+    <string name="lang_english">Inglese</string>
+    <string name="lang_italian">Italiano</string>
+    <string name="language_selection_dialog_title">Scegli una lingua</string>
+    <string name="language_selection_dialog_positive_button">Okay</string>
+    <string name="language_selection_dialog_negative_button">Chiudi</string>
+    <string name="menu_main">MAIN</string>
+    <string name="menu_account">ACCOUNT</string>
+    <string name="menu_other">ALTRO</string>
+    <string name="menu_collection">collezione</string>
+    <string name="menu_explore">esplora</string>
+    <string name="menu_search">cerca</string>
+    <string name="menu_auth">autenticazione</string>
+    <string name="menu_info">info</string>
+    <string name="menu_settings">impostazioni</string>
+</resources>

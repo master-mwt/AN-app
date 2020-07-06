@@ -1,5 +1,4 @@
 <resources>
-    <!-- TODO: language ita -->
     <string name="app_name">android-native-app</string>
     <string name="navigation_view_open">navigation_view_open</string>
     <string name="navigation_view_close">navigation_view_close</string>
@@ -91,4 +90,19 @@
     <string name="last_episode">"Last episode: "</string>
     <string name="next_episode">"Next episode: "</string>
     <string name="original_language">"Original language: "</string>
+    <string name="change_language">Change language</string>
+    <string name="lang_english">English</string>
+    <string name="lang_italian">Italian</string>
+    <string name="language_selection_dialog_title">Choose a language</string>
+    <string name="language_selection_dialog_positive_button">Okay</string>
+    <string name="language_selection_dialog_negative_button">Cancel</string>
+    <string name="menu_main">MAIN</string>
+    <string name="menu_account">ACCOUNT</string>
+    <string name="menu_other">OTHER</string>
+    <string name="menu_collection">collection</string>
+    <string name="menu_explore">explore</string>
+    <string name="menu_search">search</string>
+    <string name="menu_auth">auth</string>
+    <string name="menu_info">info</string>
+    <string name="menu_settings">settings</string>
 </resources>

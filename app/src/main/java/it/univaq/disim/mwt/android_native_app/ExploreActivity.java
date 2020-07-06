@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.univaq.disim.mwt.android_native_app.utils.LanguagePrefs;
 import it.univaq.disim.mwt.android_native_app.utils.Notification;
 
 import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
@@ -42,6 +43,9 @@ public class ExploreActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        LanguagePrefs.setLanguage(this, LanguagePrefs.getLanguage(getApplicationContext()));
+
         setContentView(R.layout.activity_explore);
 
         toolbar = findViewById(R.id.main_toolbar);

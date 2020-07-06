@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 
+import it.univaq.disim.mwt.android_native_app.dialogs.LanguageSelectionDialogFragment;
 import it.univaq.disim.mwt.android_native_app.dialogs.StoragePermissionDeniedDialogFragment;
 import it.univaq.disim.mwt.android_native_app.services.UserCollectionService;
 import it.univaq.disim.mwt.android_native_app.utils.FileHandler;
@@ -25,6 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
     private MaterialButton importDBButton;
     private MaterialButton exportDBToFirestoreButton;
     private MaterialButton importDBFromFirestoreButton;
+    private MaterialButton changeLanguageButton;
     private FirebaseAuth mAuth;
 
     @Override
@@ -88,6 +90,16 @@ public class SettingsActivity extends AppCompatActivity {
                     startService(intent);
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_content_backup_firestore_import), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        changeLanguageButton = findViewById(R.id.change_language_button);
+        changeLanguageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LanguageSelectionDialogFragment dialog = new LanguageSelectionDialogFragment();
+                dialog.setCancelable(false);
+                dialog.show(getSupportFragmentManager(), "language_change_dialog");
             }
         });
     }
