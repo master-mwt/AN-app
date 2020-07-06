@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="it.univaq.disim.mwt.android_native_app">
+    package="it.univaq.disim.mwt.trakd">
     <!-- PERMISSIONS -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,30 +16,27 @@
         android:theme="@style/AppTheme">
 
         <!-- ACTIVITIES -->
-        <activity android:name=".ExploreActivity">
+        <activity android:name="it.univaq.disim.mwt.trakd.ExploreActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".TvShowDetailsActivity" />
-        <activity android:name=".UserCollectionActivity" />
-        <activity android:name=".SeasonActivity" />
-        <activity android:name=".EpisodeActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".AuthActivity" />
-        <activity android:name=".InfoActivity" />
-
-        <!-- TEMP ACTIVITIES -->
-        <activity android:name=".AuthSignUpActivity" />
-        <activity android:name=".AuthSignInActivity" />
-        <!-- /TEMP ACTIVITIES -->
+        <activity android:name="it.univaq.disim.mwt.trakd.SearchActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.TvShowDetailsActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.UserCollectionActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.SeasonActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.EpisodeActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.SettingsActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.AuthActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.InfoActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.AuthSignUpActivity" />
+        <activity android:name="it.univaq.disim.mwt.trakd.AuthSignInActivity" />
 
         <!-- SERVICES -->
-        <service android:name=".services.DataParserService" />
-        <service android:name=".services.UserCollectionService" />
+        <service android:name="it.univaq.disim.mwt.trakd.services.DataParserService" />
+        <service android:name="it.univaq.disim.mwt.trakd.services.UserCollectionService" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

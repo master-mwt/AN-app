@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">android-native-app</string>
+    <string name="app_name">Trakd</string>
     <string name="navigation_view_open">navigation_view_open</string>
     <string name="navigation_view_close">navigation_view_close</string>
 
@@ -11,7 +11,7 @@
     <string name="tmdb_image_baselink">https://image.tmdb.org/t/p/w500</string>
 
     <!-- GOOGLE MAPS -->
-    <string name="google_maps_api_key">AIzaSyA5k89K_JJfW6IGyUR3ZmXKmZLZ0Y-2npQ</string>
+    <string name="google_maps_api_key">AIzaSyDn8YcwyJ-BiQrJDiUvyRke959nPyb_mFg</string>
 
     <!-- ROOM DATABASE NAME -->
     <string name="room_database_name">AppDB.db</string>
