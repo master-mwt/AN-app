@@ -36,13 +36,14 @@ public class RecyclerViewTvShowCharacterCardAdapter extends RecyclerView.Adapter
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_card_adapter, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_card_character_adapter, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.title.setText(data.get(position).getName());
+        holder.subtitle.setText(data.get(position).getCharacter());
 
         String imageUrl = data.get(position).getProfile_path();
 
@@ -72,6 +73,7 @@ public class RecyclerViewTvShowCharacterCardAdapter extends RecyclerView.Adapter
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
+        TextView subtitle;
         ImageView cardImage;
 
         ViewHolder(@NonNull View itemView) {
@@ -79,6 +81,7 @@ public class RecyclerViewTvShowCharacterCardAdapter extends RecyclerView.Adapter
 
             title = itemView.findViewById(R.id.recycler_view_card_adapter_title);
             cardImage = itemView.findViewById(R.id.recycler_view_card_adapter_image);
+            subtitle = itemView.findViewById(R.id.recycler_view_card_adapter_subtitle);
 
         }
     }
