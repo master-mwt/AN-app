@@ -4,13 +4,11 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
 
 import it.univaq.disim.mwt.trakd.model.TvShowPreview;
-import it.univaq.disim.mwt.trakd.model.TvShowPreviewWithEpisodes;
 
 @Dao
 public interface TvShowPreviewDao {
@@ -38,8 +36,4 @@ public interface TvShowPreviewDao {
 
     @Query("SELECT * FROM tv_shows WHERE tv_show_id = :tv_show_id")
     public TvShowPreview findByTvShowId(long tv_show_id);
-
-    @Transaction
-    @Query("SELECT * FROM tv_shows")
-    public List<TvShowPreviewWithEpisodes> getTvShowPreviewWithEpisodes();
 }
