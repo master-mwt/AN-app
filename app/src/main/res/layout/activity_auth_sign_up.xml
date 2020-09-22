@@ -15,7 +15,7 @@
             android:id="@+id/auth_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="sign up"
+            app:title="@string/activity_sign_up"
             android:background="@android:color/white"
             app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
             />

@@ -14,7 +14,7 @@
             android:id="@+id/settings_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="settings"
+            app:title="@string/activity_settings"
             android:background="@android:color/white"
             app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
             />

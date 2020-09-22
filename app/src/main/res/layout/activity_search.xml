@@ -19,8 +19,8 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/search_toolbar"
                 android:layout_width="match_parent"
+                app:title="@string/activity_search"
                 android:layout_height="?attr/actionBarSize"
-                app:title="search"
                 android:background="@android:color/white"
                 app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
                 />

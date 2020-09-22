@@ -41,7 +41,7 @@
                     android:id="@+id/tv_show_details_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:title="details"
+                    app:title="@string/activity_details"
                     android:background="#AAFFFFFF"
                     app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
                     app:layout_collapseMode="pin"

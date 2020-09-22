@@ -15,7 +15,7 @@
             android:id="@+id/auth_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="auth"
+            app:title="@string/activity_account"
             android:background="@android:color/white"
             app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
             />

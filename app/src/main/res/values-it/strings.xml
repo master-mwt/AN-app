@@ -4,6 +4,19 @@
     <string name="navigation_view_open">navigation_view_open</string>
     <string name="navigation_view_close">navigation_view_close</string>
 
+    <!-- ACTIVITY NAMES -->
+    <string name="activity_search">cerca</string>
+    <string name="activity_collection">collezione</string>
+    <string name="activity_sign_in">accedi</string>
+    <string name="activity_sign_up">registrati</string>
+    <string name="activity_account">account</string>
+    <string name="activity_details">dettagli</string>
+    <string name="activity_episode">episodio</string>
+    <string name="activity_explore">esplora</string>
+    <string name="activity_info">info</string>
+    <string name="activity_season">stagione</string>
+    <string name="activity_settings">impostazioni</string>
+
     <!-- TMDB -->
     <string name="tmdb_api_url">https://api.themoviedb.org/3/</string>
     <string name="tmdb_api_key">609fbad41366e27a4f7a58d8d1760a3b</string>
@@ -103,7 +116,7 @@
     <string name="menu_collection">collezione</string>
     <string name="menu_explore">esplora</string>
     <string name="menu_search">cerca</string>
-    <string name="menu_auth">autenticazione</string>
+    <string name="menu_auth">account</string>
     <string name="menu_info">info</string>
     <string name="menu_settings">impostazioni</string>
 </resources>
